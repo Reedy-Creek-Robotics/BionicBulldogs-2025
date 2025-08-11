@@ -46,7 +46,8 @@ class LuaHardwaremap(private val hardwareMap: HardwareMap)
 	fun crservoGet(name: String) = LuaCrServo(hardwareMap.crservo.get(name));
 	fun servoGet(name: String) = LuaServo(hardwareMap.servo.get(name));
 	fun imuGet(): LuaImu = LuaImu(hardwareMap.get(IMU::class.java, "imu"));
-	fun spimuGet(): LuaSparkFunImu = LuaSparkFunImu(hardwareMap.get(SparkFunOTOS::class.java, "imu2"));
+	fun spimuGet(): LuaSparkFunImu =
+		LuaSparkFunImu(hardwareMap.get(SparkFunOTOS::class.java, "imu2"));
 }
 
 class LuaCrServo(private val m: CRServo)
@@ -75,7 +76,8 @@ class LuaCrServo(private val m: CRServo)
 
 	fun setDirection(dir: Int)
 	{
-		m.direction = if(dir == 1) DcMotorSimple.Direction.FORWARD else DcMotorSimple.Direction.REVERSE;
+		m.direction =
+			if (dir == 1) DcMotorSimple.Direction.FORWARD else DcMotorSimple.Direction.REVERSE;
 	}
 }
 
@@ -105,6 +107,6 @@ class LuaServo(private val m: Servo)
 
 	fun setDirection(dir: Int)
 	{
-		m.direction = if(dir == 1) Servo.Direction.FORWARD else Servo.Direction.REVERSE;
+		m.direction = if (dir == 1) Servo.Direction.FORWARD else Servo.Direction.REVERSE;
 	}
 }

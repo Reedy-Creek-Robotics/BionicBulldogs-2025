@@ -43,32 +43,32 @@ class LuaDcMotor(private val m: DcMotor)
 
 	fun setDirection(dir: Int)
 	{
-		m.direction = when(dir)
+		m.direction = when (dir)
 		{
-			0 -> DcMotorSimple.Direction.FORWARD
-			1 -> DcMotorSimple.Direction.REVERSE
-			else -> DcMotorSimple.Direction.FORWARD
+			LuaDefines.Direction.Forward -> DcMotorSimple.Direction.FORWARD
+			LuaDefines.Direction.Reverse -> DcMotorSimple.Direction.REVERSE
+			else                         -> DcMotorSimple.Direction.FORWARD
 		}
 	}
 
 	fun setMode(mode: Int)
 	{
-		m.mode = when(mode)
+		m.mode = when (mode)
 		{
-			0 -> DcMotor.RunMode.RUN_WITHOUT_ENCODER
-			1 -> DcMotor.RunMode.STOP_AND_RESET_ENCODER
-			2 -> DcMotor.RunMode.RUN_TO_POSITION
-			else -> DcMotor.RunMode.RUN_WITHOUT_ENCODER
+			LuaDefines.RunMode.RunWithoutEncoder   -> DcMotor.RunMode.RUN_WITHOUT_ENCODER
+			LuaDefines.RunMode.StopAndResetEncoder -> DcMotor.RunMode.STOP_AND_RESET_ENCODER
+			LuaDefines.RunMode.RunToPosition       -> DcMotor.RunMode.RUN_TO_POSITION
+			else                                   -> DcMotor.RunMode.RUN_WITHOUT_ENCODER
 		}
 	}
 
 	fun setZeroPowerBehavior(mode: Int)
 	{
-		m.zeroPowerBehavior = when(mode)
+		m.zeroPowerBehavior = when (mode)
 		{
-			0 -> DcMotor.ZeroPowerBehavior.FLOAT
-			1 -> DcMotor.ZeroPowerBehavior.BRAKE
-			else -> DcMotor.ZeroPowerBehavior.FLOAT
+			LuaDefines.ZeroPowerBehavior.Float -> DcMotor.ZeroPowerBehavior.FLOAT
+			LuaDefines.ZeroPowerBehavior.Brake -> DcMotor.ZeroPowerBehavior.BRAKE
+			else                               -> DcMotor.ZeroPowerBehavior.FLOAT
 		}
 	}
 
