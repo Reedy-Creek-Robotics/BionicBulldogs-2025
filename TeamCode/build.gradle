@@ -34,3 +34,27 @@ dependencies {
     implementation 'com.acmerobotics.dashboard:dashboard:0.4.16'
     implementation 'org.apache.commons:commons-math3:3.6.1'
 }
+
+def quickStartDir = "/src/main/java/lua"
+
+quickStartDir = getProjectDir().toString() + quickStartDir;
+
+def sdkDir = "";
+
+def file = new File(getProjectDir().parent  + "/local.properties");
+file.eachLine {
+    if(it.startsWith("sdk.dir="))
+        sdkDir = it.split("sdk.dir=")[1];
+}
+
+tasks.register('uploadAdb', Exec) {
+    def adb = "$sdkDir/platform-tools/adb"
+    ignoreExitValue = true
+    commandLine adb, "push", "$quickStartDir/lua", "/sdcard"
+}
+
+tasks.register('upload', Exec) {
+    def prgm = "$quickStartDir/pack"
+    workingDir = quickStartDir
+    commandLine prgm
+}

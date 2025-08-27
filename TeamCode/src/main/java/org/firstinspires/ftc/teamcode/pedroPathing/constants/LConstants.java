@@ -7,7 +7,7 @@ import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
 public class LConstants {
     static {
         TwoWheelConstants.forwardTicksToInches = 0.001977958;
-        TwoWheelConstants.strafeTicksToInches = 0.001982840;
+        TwoWheelConstants.strafeTicksToInches = 0.001982840 * 1.0;
         TwoWheelConstants.forwardY = 0;
         TwoWheelConstants.strafeX = 0;
         TwoWheelConstants.forwardEncoder_HardwareMapName = "backRight";
@@ -18,7 +18,3 @@ public class LConstants {
         TwoWheelConstants.IMU_Orientation = new RevHubOrientationOnRobot(RevHubOrientationOnRobot.LogoFacingDirection.UP, RevHubOrientationOnRobot.UsbFacingDirection.RIGHT);
     }
 }
-
-
-
-

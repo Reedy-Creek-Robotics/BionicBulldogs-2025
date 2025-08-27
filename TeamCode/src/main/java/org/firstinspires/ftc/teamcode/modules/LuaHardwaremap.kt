@@ -21,23 +21,23 @@ class LuaHardwaremap(private val hardwareMap: HardwareMap)
 
 			builder.pushTable("hardwareMap");
 			builder.setCurrentObject(LuaHardwaremap(hardwareMap));
-			builder.addObjectFunction(
+			builder.addGlobalFunction(
 				"dcmotorGet",
 				LuaType.Object(LuaDcMotor::class.java),
 				listOf(LuaType.String)
 			);
-			builder.addObjectFunction(
+			builder.addGlobalFunction(
 				"crservoGet",
 				LuaType.Object(LuaCrServo::class.java),
 				listOf(LuaType.String)
 			);
-			builder.addObjectFunction(
+			builder.addGlobalFunction(
 				"servoGet",
 				LuaType.Object(LuaServo::class.java),
 				listOf(LuaType.String)
 			);
-			builder.addObjectFunction("imuGet", LuaType.Object(LuaImu::class.java));
-			builder.addObjectFunction("spimuGet", LuaType.Object(LuaSparkFunImu::class.java));
+			builder.addGlobalFunction("imuGet", LuaType.Object(LuaImu::class.java));
+			builder.addGlobalFunction("spimuGet", LuaType.Object(LuaSparkFunImu::class.java));
 			builder.popTable();
 		}
 	}

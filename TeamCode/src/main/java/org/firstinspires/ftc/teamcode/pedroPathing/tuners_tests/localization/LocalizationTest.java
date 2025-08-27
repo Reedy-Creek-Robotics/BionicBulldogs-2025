@@ -42,92 +42,117 @@ import org.firstinspires.ftc.teamcode.pedroPathing.constants.*;
  */
 @Config
 @TeleOp(group = "Teleop Test", name = "Localization Test")
-public class LocalizationTest extends OpMode {
-    private PoseUpdater poseUpdater;
-    private DashboardPoseTracker dashboardPoseTracker;
-    private Telemetry telemetryA;
+public class LocalizationTest extends OpMode
+{
+	private PoseUpdater poseUpdater;
+	private DashboardPoseTracker dashboardPoseTracker;
+	private Telemetry telemetryA;
 
-    private DcMotorEx leftFront;
-    private DcMotorEx leftRear;
-    private DcMotorEx rightFront;
-    private DcMotorEx rightRear;
-    private List<DcMotorEx> motors;
+	private DcMotorEx leftFront;
+	private DcMotorEx leftRear;
+	private DcMotorEx rightFront;
+	private DcMotorEx rightRear;
+	private List<DcMotorEx> motors;
 
-    /**
-     * This initializes the PoseUpdater, the mecanum drive motors, and the FTC Dashboard telemetry.
-     */
-    @Override
-    public void init() {
-        Constants.setConstants(FConstants.class, LConstants.class);
-        poseUpdater = new PoseUpdater(hardwareMap, FConstants.class, LConstants.class);
+	private DcMotorEx encForward;
+	private DcMotorEx encRight;
 
-        dashboardPoseTracker = new DashboardPoseTracker(poseUpdater);
+	private int prevForwardTicks = 0;
+	private int prevRightTicks = 0;
 
-        leftFront = hardwareMap.get(DcMotorEx.class, leftFrontMotorName);
-        leftRear = hardwareMap.get(DcMotorEx.class, leftRearMotorName);
-        rightRear = hardwareMap.get(DcMotorEx.class, rightRearMotorName);
-        rightFront = hardwareMap.get(DcMotorEx.class, rightFrontMotorName);
-        leftFront.setDirection(leftFrontMotorDirection);
-        leftRear.setDirection(leftRearMotorDirection);
-        rightFront.setDirection(rightFrontMotorDirection);
-        rightRear.setDirection(rightRearMotorDirection);
+	/**
+	 * This initializes the PoseUpdater, the mecanum drive motors, and the FTC Dashboard telemetry.
+	 */
+	@Override
+	public void init()
+	{
+		Constants.setConstants(FConstants.class, LConstants.class);
+		poseUpdater = new PoseUpdater(hardwareMap, FConstants.class, LConstants.class);
 
-        motors = Arrays.asList(leftFront, leftRear, rightFront, rightRear);
+		dashboardPoseTracker = new DashboardPoseTracker(poseUpdater);
 
-        for (DcMotorEx motor : motors) {
-            MotorConfigurationType motorConfigurationType = motor.getMotorType().clone();
-            motorConfigurationType.setAchieveableMaxRPMFraction(1.0);
-            motor.setMotorType(motorConfigurationType);
-        }
+		leftFront = hardwareMap.get(DcMotorEx.class, leftFrontMotorName);
+		leftRear = hardwareMap.get(DcMotorEx.class, leftRearMotorName);
+		rightRear = hardwareMap.get(DcMotorEx.class, rightRearMotorName);
+		rightFront = hardwareMap.get(DcMotorEx.class, rightFrontMotorName);
+		leftFront.setDirection(leftFrontMotorDirection);
+		leftRear.setDirection(leftRearMotorDirection);
+		rightFront.setDirection(rightFrontMotorDirection);
+		rightRear.setDirection(rightRearMotorDirection);
 
-        for (DcMotorEx motor : motors) {
-            motor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        }
+		encForward = rightRear;
+		encRight = leftRear;
 
-        telemetryA = new MultipleTelemetry(this.telemetry, FtcDashboard.getInstance().getTelemetry());
-        telemetryA.addLine("This will print your robot's position to telemetry while "
-                + "allowing robot control through a basic mecanum drive on gamepad 1.");
-        telemetryA.update();
+		motors = Arrays.asList(leftFront, leftRear, rightFront, rightRear);
 
-        Drawing.drawRobot(poseUpdater.getPose(), "#4CAF50");
-        Drawing.sendPacket();
-    }
+		for (DcMotorEx motor : motors)
+		{
+			MotorConfigurationType motorConfigurationType = motor.getMotorType().clone();
+			motorConfigurationType.setAchieveableMaxRPMFraction(1.0);
+			motor.setMotorType(motorConfigurationType);
+		}
 
-    /**
-     * This updates the robot's pose estimate, the simple mecanum drive, and updates the FTC
-     * Dashboard telemetry with the robot's position as well as draws the robot's position.
-     */
-    @Override
-    public void loop() {
-        poseUpdater.update();
-        dashboardPoseTracker.update();
+		for (DcMotorEx motor : motors)
+		{
+			motor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+		}
 
-        double y = -gamepad1.left_stick_y; // Remember, this is reversed!
-        double x = gamepad1.left_stick_x; // this is strafing
-        double rx = gamepad1.right_stick_x;
+		telemetryA = new MultipleTelemetry(this.telemetry, FtcDashboard.getInstance().getTelemetry());
+		telemetryA.addLine("This will print your robot's position to telemetry while "
+						+ "allowing robot control through a basic mecanum drive on gamepad 1.");
+		telemetryA.update();
 
-        // Denominator is the largest motor power (absolute value) or 1
-        // This ensures all the powers maintain the same ratio, but only when
-        // at least one is out of the range [-1, 1]
-        double denominator = Math.max(Math.abs(y) + Math.abs(x) + Math.abs(rx), 1);
-        double leftFrontPower = (y + x + rx) / denominator;
-        double leftRearPower = (y - x + rx) / denominator;
-        double rightFrontPower = (y - x - rx) / denominator;
-        double rightRearPower = (y + x - rx) / denominator;
+		Drawing.drawRobot(poseUpdater.getPose(), "#4CAF50");
+		Drawing.sendPacket();
+	}
 
-        leftFront.setPower(leftFrontPower);
-        leftRear.setPower(leftRearPower);
-        rightFront.setPower(rightFrontPower);
-        rightRear.setPower(rightRearPower);
+	/**
+	 * This updates the robot's pose estimate, the simple mecanum drive, and updates the FTC
+	 * Dashboard telemetry with the robot's position as well as draws the robot's position.
+	 */
+	@Override
+	public void loop()
+	{
+		poseUpdater.update();
+		dashboardPoseTracker.update();
 
-        telemetryA.addData("x", poseUpdater.getPose().getX());
-        telemetryA.addData("y", poseUpdater.getPose().getY());
-        telemetryA.addData("heading", poseUpdater.getPose().getHeading());
-        telemetryA.addData("total heading", poseUpdater.getTotalHeading());
-        telemetryA.update();
+		double y = -gamepad1.left_stick_y; // Remember, this is reversed!
+		double x = gamepad1.left_stick_x; // this is strafing
+		double rx = gamepad1.right_stick_x;
 
-        Drawing.drawPoseHistory(dashboardPoseTracker, "#4CAF50");
-        Drawing.drawRobot(poseUpdater.getPose(), "#4CAF50");
-        Drawing.sendPacket();
-    }
+		// Denominator is the largest motor power (absolute value) or 1
+		// This ensures all the powers maintain the same ratio, but only when
+		// at least one is out of the range [-1, 1]
+		double denominator = Math.max(Math.abs(y) + Math.abs(x) + Math.abs(rx), 1);
+		double leftFrontPower = (y + x + rx) / denominator;
+		double leftRearPower = (y - x + rx) / denominator;
+		double rightFrontPower = (y - x - rx) / denominator;
+		double rightRearPower = (y + x - rx) / denominator;
+
+		leftFront.setPower(leftFrontPower);
+		leftRear.setPower(leftRearPower);
+		rightFront.setPower(rightFrontPower);
+		rightRear.setPower(rightRearPower);
+
+		int fwPos = encForward.getCurrentPosition();
+		int riPos = encRight.getCurrentPosition();
+
+		int dx = fwPos - prevForwardTicks;
+		int dy = riPos - prevRightTicks;
+
+		prevForwardTicks = fwPos;
+		prevRightTicks = riPos;
+
+		telemetryA.addData("x", poseUpdater.getPose().getX());
+		telemetryA.addData("y", poseUpdater.getPose().getY());
+		telemetryA.addData("heading", poseUpdater.getPose().getHeading());
+		telemetryA.addData("total heading", poseUpdater.getTotalHeading());
+		telemetryA.addData("dx", dx);
+		telemetryA.addData("dy", dy);
+		telemetryA.update();
+
+		Drawing.drawPoseHistory(dashboardPoseTracker, "#4CAF50");
+		Drawing.drawRobot(poseUpdater.getPose(), "#4CAF50");
+		Drawing.sendPacket();
+	}
 }

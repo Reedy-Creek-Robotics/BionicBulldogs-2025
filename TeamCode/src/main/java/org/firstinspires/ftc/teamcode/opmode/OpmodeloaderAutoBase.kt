@@ -1,32 +1,41 @@
 package org.firstinspires.ftc.teamcode.opmode
 
-import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode
 import com.minerkid08.dynamicopmodeloader.OpmodeLoader
-import com.qualcomm.robotcore.eventloop.opmode.TeleOp
+import com.pedropathing.follower.Follower
+import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode
 import com.qualcomm.robotcore.util.ElapsedTime
-import org.firstinspires.ftc.teamcode.modules.LuaGamepad
 import org.firstinspires.ftc.teamcode.modules.LuaHardwaremap
 import org.firstinspires.ftc.teamcode.modules.LuaTelemetry
+import org.firstinspires.ftc.teamcode.modules.pathing.LuaFollower
+import org.firstinspires.ftc.teamcode.modules.pathing.LuaPath
+import org.firstinspires.ftc.teamcode.pedroPathing.constants.FConstants
+import org.firstinspires.ftc.teamcode.pedroPathing.constants.LConstants
 
-abstract class OpmodeloaderOpmodeBase(private val name: String) : LinearOpMode()
+abstract class OpmodeloaderAutoBase(private val name: String) : LinearOpMode()
 {
 	override fun runOpMode()
 	{
 		val opmodeloader = OpmodeLoader();
 		val builder = opmodeloader.getFunctionBuilder();
 
-		LuaGamepad.init(builder, gamepad1);
+		val follower = Follower(hardwareMap, FConstants::class.java, LConstants::class.java);
+
 		LuaHardwaremap.init(builder, hardwareMap);
 		LuaTelemetry.init(builder, telemetry);
+		LuaFollower.init(builder, follower);
+		LuaPath.init(builder, follower);
 
 		opmodeloader.init();
 		opmodeloader.loadOpmode(name);
 		waitForStart();
-
 		if (!opModeIsActive())
 			return;
 
 		opmodeloader.start();
+
+		if (!opModeIsActive())
+			return;
+
 		val e = ElapsedTime();
 		e.reset();
 
@@ -34,7 +43,7 @@ abstract class OpmodeloaderOpmodeBase(private val name: String) : LinearOpMode()
 		var dt: Double;
 		var prev = now;
 
-		while(opModeIsActive())
+		while (opModeIsActive())
 		{
 			now = e.seconds();
 			dt = now - prev;

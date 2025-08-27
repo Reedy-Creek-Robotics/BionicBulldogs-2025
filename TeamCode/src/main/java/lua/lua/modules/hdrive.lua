@@ -1,5 +1,5 @@
-require("class");
-require("utils");
+require("modules.class");
+require("modules.utils");
 
 ---@class HDrive
 ---@field frontLeft DcMotor
@@ -8,7 +8,7 @@ require("utils");
 ---@field backRight DcMotor
 ---@field imu Imu?
 HDrive = {
-	maxPower = 1
+	maxPower = 1,
 };
 
 ---@return HDrive

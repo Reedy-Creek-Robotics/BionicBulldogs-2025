@@ -14,11 +14,11 @@ class LuaTelemetry(private val telem: Telemetry)
 
 			builder.setCurrentObject(LuaTelemetry(telem));
 
-			builder.addObjectFunction("addDataf", argTypes = listOf(LuaType.String, LuaType.Float));
-			builder.addObjectFunction("addDatab", argTypes = listOf(LuaType.String, LuaType.Bool));
-			builder.addObjectFunction("addDatas", argTypes = listOf(LuaType.String, LuaType.String));
-			builder.addObjectFunction("addLine", argTypes = listOf(LuaType.String));
-			builder.addObjectFunction("update");
+			builder.addGlobalFunction("addDataf", argTypes = listOf(LuaType.String, LuaType.Float));
+			builder.addGlobalFunction("addDatab", argTypes = listOf(LuaType.String, LuaType.Bool));
+			builder.addGlobalFunction("addDatas", argTypes = listOf(LuaType.String, LuaType.String));
+			builder.addGlobalFunction("addLine", argTypes = listOf(LuaType.String));
+			builder.addGlobalFunction("update");
 
 			builder.popTable();
 		}

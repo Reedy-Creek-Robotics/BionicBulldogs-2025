@@ -14,29 +14,29 @@ class LuaGamepad(private val gamepad: Gamepad)
 
 			builder.setCurrentObject(LuaGamepad(gamepad));
 
-			builder.addObjectFunction("getLeftStickX", LuaType.Float);
-			builder.addObjectFunction("getLeftStickY", LuaType.Float);
-			builder.addObjectFunction("getRightStickX", LuaType.Float);
-			builder.addObjectFunction("getRightStickY", LuaType.Float);
+			builder.addGlobalFunction("getLeftStickX", LuaType.Float);
+			builder.addGlobalFunction("getLeftStickY", LuaType.Float);
+			builder.addGlobalFunction("getRightStickX", LuaType.Float);
+			builder.addGlobalFunction("getRightStickY", LuaType.Float);
 
-			builder.addObjectFunction("getDpadUp", LuaType.Bool);
-			builder.addObjectFunction("getDpadDown", LuaType.Bool);
-			builder.addObjectFunction("getDpadLeft", LuaType.Bool);
-			builder.addObjectFunction("getDpadRight", LuaType.Bool);
+			builder.addGlobalFunction("getDpadUp", LuaType.Bool);
+			builder.addGlobalFunction("getDpadDown", LuaType.Bool);
+			builder.addGlobalFunction("getDpadLeft", LuaType.Bool);
+			builder.addGlobalFunction("getDpadRight", LuaType.Bool);
 
-			builder.addObjectFunction("getTriangle", LuaType.Bool);
-			builder.addObjectFunction("getCircle", LuaType.Bool);
-			builder.addObjectFunction("getCross", LuaType.Bool);
-			builder.addObjectFunction("getSquare", LuaType.Bool);
+			builder.addGlobalFunction("getTriangle", LuaType.Bool);
+			builder.addGlobalFunction("getCircle", LuaType.Bool);
+			builder.addGlobalFunction("getCross", LuaType.Bool);
+			builder.addGlobalFunction("getSquare", LuaType.Bool);
 
-			builder.addObjectFunction("getLeftTrigger", LuaType.Float);
-			builder.addObjectFunction("getRightTrigger", LuaType.Float);
-			builder.addObjectFunction("getLeftBumper", LuaType.Bool);
-			builder.addObjectFunction("getRightBumper", LuaType.Bool);
+			builder.addGlobalFunction("getLeftTrigger", LuaType.Float);
+			builder.addGlobalFunction("getRightTrigger", LuaType.Float);
+			builder.addGlobalFunction("getLeftBumper", LuaType.Bool);
+			builder.addGlobalFunction("getRightBumper", LuaType.Bool);
 
-			builder.addObjectFunction("getStart", LuaType.Bool);
-			builder.addObjectFunction("getShare", LuaType.Bool);
-			builder.addObjectFunction("getTouchpad", LuaType.Bool);
+			builder.addGlobalFunction("getStart", LuaType.Bool);
+			builder.addGlobalFunction("getShare", LuaType.Bool);
+			builder.addGlobalFunction("getTouchpad", LuaType.Bool);
 			builder.popTable();
 		}
 	}
