@@ -53,7 +53,18 @@ function PathBuilder:addLine(x1, y1, x2, y2) end
 ---@param x3 number
 ---@param y3 number
 ---@return PathBuilder
-function PathBuilder:addCurve(x1, y1, x2, y2, x3, y3) end
+function PathBuilder:addCurve3(x1, y1, x2, y2, x3, y3) end
+
+---@param x1 number
+---@param y1 number
+---@param x2 number
+---@param y2 number
+---@param x3 number
+---@param y3 number
+---@param x4 number
+---@param y4 number
+---@return PathBuilder
+function PathBuilder:addCurve4(x1, y1, x2, y2, x3, y3, x4, y4) end
 
 ---@param h number
 ---@return PathBuilder
@@ -93,7 +104,18 @@ function path.line(x1, y1, x2, y2) end
 ---@param x3 number
 ---@param y3 number
 ---@return Path
-function path.curve(x1, y1, x2, y2, x3, y3) end
+function path.curve3(x1, y1, x2, y2, x3, y3) end
+
+---@param x1 number
+---@param y1 number
+---@param x2 number
+---@param y2 number
+---@param x3 number
+---@param y3 number
+---@param x4 number
+---@param y4 number
+---@return Path
+function path.curve4(x1, y1, x2, y2, x3, y3, x4, y4) end
 
 ---@return PathBuilder
 function path.chain() end

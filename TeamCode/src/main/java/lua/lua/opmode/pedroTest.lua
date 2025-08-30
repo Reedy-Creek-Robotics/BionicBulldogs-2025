@@ -4,12 +4,6 @@ require("modules.action.seqAction");
 ---@type Opmode
 local opmode = { name = "pedroTest" };
 
----@type PathChain
-local p;
-
----@type Action
-local a;
-
 local slide = {};
 
 function slide:init()
@@ -41,6 +35,9 @@ function slide:runToPosition(pos)
 	self.m1:setPower(1);
 	self.m2:setPower(1);
 end
+
+---@type Action
+local a;
 
 function opmode.init()
 	--[[
@@ -123,13 +120,18 @@ function opmode.init()
 end
 
 function opmode.start()
-	a:start();
+	a:start(0);
 end
 
 function opmode.update(dt, et)
-	if (a:update(dt, et) == ActionState.Done) then
-		error("opmode stopped :)");
+	local state = a:update(dt, et);
+	if (state == ActionState.Running) then
+		return false;
+	elseif (state == ActionState.Done) then
+		return true;
 	end
+	error("root action failed");
+	return true;
 end
 
 addOpmode(opmode);

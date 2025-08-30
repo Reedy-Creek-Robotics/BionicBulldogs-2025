@@ -1,7 +1,6 @@
 package org.firstinspires.ftc.teamcode.modules
 
-import com.minerkid08.dynamicopmodeloader.FunctionBuilder
-import com.minerkid08.dynamicopmodeloader.LuaType
+import com.minerkid08.dynamicopmodeloader.OpmodeLoaderFunction
 import com.qualcomm.hardware.rev.RevHubOrientationOnRobot
 import com.qualcomm.hardware.sparkfun.SparkFunOTOS
 import com.qualcomm.robotcore.hardware.IMU
@@ -9,15 +8,6 @@ import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit
 
 class LuaImu(private val imu: IMU)
 {
-	companion object
-	{
-		fun init(builder: FunctionBuilder)
-		{
-			builder.addClassFunction(LuaImu::class.java, "getHeading", LuaType.Double);
-			builder.addClassFunction(LuaImu::class.java, "resetHeading");
-		}
-	}
-
 	init
 	{
 		imu.initialize(
@@ -31,7 +21,10 @@ class LuaImu(private val imu: IMU)
 		imu.resetYaw();
 	}
 
+	@OpmodeLoaderFunction
 	fun getHeading(): Double = imu.robotYawPitchRollAngles.getYaw(AngleUnit.RADIANS);
+
+	@OpmodeLoaderFunction
 	fun resetHeading()
 	{
 		imu.resetYaw();
@@ -40,15 +33,6 @@ class LuaImu(private val imu: IMU)
 
 class LuaSparkFunImu(private val imu: SparkFunOTOS)
 {
-	companion object
-	{
-		fun init(builder: FunctionBuilder)
-		{
-			builder.addClassFunction(LuaSparkFunImu::class.java, "getHeading", LuaType.Double);
-			builder.addClassFunction(LuaSparkFunImu::class.java, "resetHeading");
-		}
-	}
-
 	init
 	{
 		imu.initialize();
@@ -59,7 +43,10 @@ class LuaSparkFunImu(private val imu: SparkFunOTOS)
 		imu.position = SparkFunOTOS.Pose2D(0.0, 0.0, 0.0);
 	}
 
+	@OpmodeLoaderFunction
 	fun getHeading(): Double = imu.position.h;
+
+	@OpmodeLoaderFunction
 	fun resetHeading()
 	{
 		imu.position = SparkFunOTOS.Pose2D(0.0, 0.0, 0.0);

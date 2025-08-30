@@ -42,6 +42,21 @@ class LuaPath(private val follower: Follower)
 	}
 
 	@OpmodeLoaderFunction
+	fun curve4(
+		x1: Double,
+		y1: Double,
+		x2: Double,
+		y2: Double,
+		x3: Double,
+		y3: Double,
+		x4: Double,
+		y4: Double
+	): BezierCurve
+	{
+		return BezierCurve(Point(x1, y1), Point(x2, y2), Point(x3, y3), Point(x4, y4));
+	}
+
+	@OpmodeLoaderFunction
 	fun chain() = LuaPathBuilder(follower.pathBuilder());
 }
 
@@ -63,6 +78,21 @@ class LuaPathBuilder(private val builder: PathBuilder)
 	fun addCurve3(x1: Double, y1: Double, x2: Double, y2: Double, x3: Double, y3: Double)
 	{
 		builder.addBezierCurve(Point(x1, y1), Point(x2, y2), Point(x3, y3));
+	}
+
+	@OpmodeLoaderBuilderFunction
+	fun addCurve4(
+		x1: Double,
+		y1: Double,
+		x2: Double,
+		y2: Double,
+		x3: Double,
+		y3: Double,
+		x4: Double,
+		y4: Double
+	)
+	{
+		builder.addBezierCurve(Point(x1, y1), Point(x2, y2), Point(x3, y3), Point(x4, y4));
 	}
 
 	@OpmodeLoaderBuilderFunction

@@ -1,7 +1,7 @@
 package org.firstinspires.ftc.teamcode.modules
 
 import com.minerkid08.dynamicopmodeloader.FunctionBuilder
-import com.minerkid08.dynamicopmodeloader.LuaType
+import com.minerkid08.dynamicopmodeloader.OpmodeLoaderFunction
 import com.qualcomm.hardware.sparkfun.SparkFunOTOS
 import com.qualcomm.robotcore.hardware.CRServo
 import com.qualcomm.robotcore.hardware.DcMotorSimple
@@ -15,65 +15,44 @@ class LuaHardwaremap(private val hardwareMap: HardwareMap)
 	{
 		fun init(builder: FunctionBuilder, hardwareMap: HardwareMap)
 		{
-			LuaDcMotor.init(builder);
-			LuaCrServo.init(builder);
-			LuaImu.init(builder);
+			builder.addClassAsClass(LuaDcMotor::class.java)
+			builder.addClassAsClass(LuaServo::class.java)
+			builder.addClassAsClass(LuaCrServo::class.java)
+			builder.addClassAsClass(LuaImu::class.java)
+			builder.addClassAsClass(LuaSparkFunImu::class.java)
 
 			builder.pushTable("hardwareMap");
-			builder.setCurrentObject(LuaHardwaremap(hardwareMap));
-			builder.addGlobalFunction(
-				"dcmotorGet",
-				LuaType.Object(LuaDcMotor::class.java),
-				listOf(LuaType.String)
-			);
-			builder.addGlobalFunction(
-				"crservoGet",
-				LuaType.Object(LuaCrServo::class.java),
-				listOf(LuaType.String)
-			);
-			builder.addGlobalFunction(
-				"servoGet",
-				LuaType.Object(LuaServo::class.java),
-				listOf(LuaType.String)
-			);
-			builder.addGlobalFunction("imuGet", LuaType.Object(LuaImu::class.java));
-			builder.addGlobalFunction("spimuGet", LuaType.Object(LuaSparkFunImu::class.java));
+			builder.addObjectAsGlobal(LuaHardwaremap(hardwareMap));
 			builder.popTable();
 		}
 	}
 
+	@OpmodeLoaderFunction
 	fun dcmotorGet(name: String) = LuaDcMotor(hardwareMap.dcMotor.get(name));
+
+	@OpmodeLoaderFunction
 	fun crservoGet(name: String) = LuaCrServo(hardwareMap.crservo.get(name));
+
+	@OpmodeLoaderFunction
 	fun servoGet(name: String) = LuaServo(hardwareMap.servo.get(name));
+
+	@OpmodeLoaderFunction
 	fun imuGet(): LuaImu = LuaImu(hardwareMap.get(IMU::class.java, "imu"));
+
+	@OpmodeLoaderFunction
 	fun spimuGet(): LuaSparkFunImu =
 		LuaSparkFunImu(hardwareMap.get(SparkFunOTOS::class.java, "imu2"));
 }
 
 class LuaCrServo(private val m: CRServo)
 {
-	companion object
-	{
-		fun init(builder: FunctionBuilder)
-		{
-			builder.addClassFunction(
-				LuaCrServo::class.java,
-				"setPower",
-				argTypes = listOf(LuaType.Double)
-			);
-			builder.addClassFunction(
-				LuaCrServo::class.java,
-				"setDirection",
-				argTypes = listOf(LuaType.Int)
-			);
-		}
-	}
-
+	@OpmodeLoaderFunction
 	fun setPower(power: Double)
 	{
 		m.power = power;
 	}
 
+	@OpmodeLoaderFunction
 	fun setDirection(dir: Int)
 	{
 		m.direction =
@@ -83,28 +62,13 @@ class LuaCrServo(private val m: CRServo)
 
 class LuaServo(private val m: Servo)
 {
-	companion object
-	{
-		fun init(builder: FunctionBuilder)
-		{
-			builder.addClassFunction(
-				LuaCrServo::class.java,
-				"setPos",
-				argTypes = listOf(LuaType.Double)
-			);
-			builder.addClassFunction(
-				LuaCrServo::class.java,
-				"setDirection",
-				argTypes = listOf(LuaType.Int)
-			);
-		}
-	}
-
-	fun setPower(power: Double)
+	@OpmodeLoaderFunction
+	fun setPos(power: Double)
 	{
 		m.position = power;
 	}
 
+	@OpmodeLoaderFunction
 	fun setDirection(dir: Int)
 	{
 		m.direction = if (dir == 1) Servo.Direction.FORWARD else Servo.Direction.REVERSE;

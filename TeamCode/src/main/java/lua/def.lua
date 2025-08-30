@@ -2,7 +2,7 @@
 ---@field name string
 ---@field init fun()?
 ---@field start fun(recog: number)?
----@field update fun(dt: number, elapsed: number)?
+---@field update (fun(dt: number, elapsed: number): boolean)?
 
 ---@param opmode Opmode
 function addOpmode(opmode) end
@@ -131,5 +131,23 @@ function gamepad.getShare() end
 
 ---@return boolean
 function gamepad.getTouchpad() end
+
+log = {};
+
+---@param tag string
+---@param value string
+function log.d(tag, value) end
+
+---@param tag string
+---@param value string
+function log.i(tag, value) end
+
+---@param tag string
+---@param value string
+function log.w(tag, value) end
+
+---@param tag string
+---@param value string
+function log.e(tag, value) end
 
 require("pedro");

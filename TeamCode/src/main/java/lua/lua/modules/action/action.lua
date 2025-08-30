@@ -9,15 +9,16 @@ ActionState = {
 };
 
 ---@class Action
----@field start fun()?
+---@field name string
+---@field start fun(self: Action, et: number)?
 ---@field update fun(self: Action, dt: number, et: number): ActionState
----@field finish fun()?
----@field error fun()?
+---@field finish fun(self: Action)?
+---@field error fun(self: Action)?
 
 ---@class SleepAction : Action
 ---@field delay number
 ---@field startTime number
-SleepAction = {};
+SleepAction = { name = "sleepAction" };
 
 ---@param time number
 ---@return SleepAction
@@ -28,14 +29,15 @@ function SleepAction.new(time)
 	return a;
 end
 
+function SleepAction:start(et)
+	self.startTime = et;
+end
+
 ---@param dt number
 ---@param et number
 ---@return ActionState
 function SleepAction:update(dt, et)
-	if (self.startTime == -1) then
-		self.startTime = et;
-	end
-	if (self.startTime + self.delay < et) then
+	if (self.startTime + self.delay <= et) then
 		return ActionState.Done;
 	end
 	return ActionState.Running;
@@ -43,7 +45,7 @@ end
 
 ---@class PathAction : Action
 ---@field path PathChain
-PathAction = {};
+PathAction = { name = "pathAction" };
 
 ---@param path PathChain
 ---@return PathAction
@@ -69,7 +71,7 @@ function PathAction:update(dt, et)
 end
 
 ---@class CallbackAction : Action
-CallbackAction = {};
+CallbackAction = { name = "callbackAction" };
 
 ---@param callback function
 ---@return CallbackAction

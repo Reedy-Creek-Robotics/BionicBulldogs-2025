@@ -4,14 +4,14 @@ require("modules.class");
 ---@class SeqAction : Action
 ---@field actions Action[]
 ---@field index number
-SeqAction = {}
+SeqAction = { name = "seqAction" }
 
 ---@param ... Action
 ---@return SeqAction
 function SeqAction.new(...)
 	local a = new(SeqAction);
 	a.actions = {};
-	for _, v in pairs(...) do
+	for _, v in pairs({ ... }) do
 		table.insert(a.actions, v);
 	end
 	return a;
@@ -24,9 +24,13 @@ function SeqAction:add(a)
 	return self;
 end
 
-function SeqAction:start()
+---@param et number
+function SeqAction:start(et)
 	self.index = 1;
-	self.actions[1]:start();
+	local a = self.actions[1];
+	if (a.start ~= nil) then
+		a:start(et);
+	end
 end
 
 ---@param dt number
@@ -57,6 +61,7 @@ function SeqAction:update(dt, et)
 		if (action.error ~= nil) then
 			action:error();
 		end
+		log.e("actions", "action '" .. action.name .. "' failed");
 	end
 
 	self.index = self.index + 1;
@@ -66,7 +71,7 @@ function SeqAction:update(dt, et)
 		return ActionState.Done;
 	end
 	if (nextAction.start ~= nil) then
-		nextAction:start();
+		nextAction:start(et);
 	end
 
 	return ActionState.Running;

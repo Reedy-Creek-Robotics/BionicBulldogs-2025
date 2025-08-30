@@ -15,9 +15,11 @@ HDrive = {
 function HDrive.new()
 	local motorNames = { "frontLeft", "frontRight", "backLeft", "backRight" };
 	local m = new(HDrive);
-	for k, name in pairs(motorNames) do
-		m[name] = hardwareMap.dcMotorGet(name);
+	for _, name in pairs(motorNames) do
+		m[name] = hardwareMap.dcmotorGet(name);
 	end
+	m.frontRight:setDirection(Direction.Reverse);
+	m.backRight:setDirection(Direction.Reverse);
 	return m;
 end
 

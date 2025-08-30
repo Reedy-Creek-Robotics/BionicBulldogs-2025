@@ -5,6 +5,7 @@ import com.pedropathing.follower.Follower
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode
 import com.qualcomm.robotcore.util.ElapsedTime
 import org.firstinspires.ftc.teamcode.modules.LuaHardwaremap
+import org.firstinspires.ftc.teamcode.modules.LuaLog
 import org.firstinspires.ftc.teamcode.modules.LuaTelemetry
 import org.firstinspires.ftc.teamcode.modules.pathing.LuaFollower
 import org.firstinspires.ftc.teamcode.modules.pathing.LuaPath
@@ -24,6 +25,7 @@ abstract class OpmodeloaderAutoBase(private val name: String) : LinearOpMode()
 		LuaTelemetry.init(builder, telemetry);
 		LuaFollower.init(builder, follower);
 		LuaPath.init(builder, follower);
+		LuaLog.init(builder);
 
 		opmodeloader.init();
 		opmodeloader.loadOpmode(name);
@@ -48,7 +50,8 @@ abstract class OpmodeloaderAutoBase(private val name: String) : LinearOpMode()
 			now = e.seconds();
 			dt = now - prev;
 			prev = now;
-			opmodeloader.update(dt, now);
+			if(opmodeloader.update(dt, now))
+				break;
 		}
 		opmodeloader.close();
 	}

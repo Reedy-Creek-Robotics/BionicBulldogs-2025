@@ -16,7 +16,7 @@ function opmode.update()
 	local right = gamepad.getLeftStickX();
 	local rotate = gamepad.getRightStickX();
 	drive:driveFr(forward, right, rotate);
+	return false;
 end
 
-print("adding opmode " .. opmode.name);
 addOpmode(opmode);

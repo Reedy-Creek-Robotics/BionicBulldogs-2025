@@ -1,46 +1,24 @@
 package org.firstinspires.ftc.teamcode.modules
 
-import com.minerkid08.dynamicopmodeloader.FunctionBuilder
-import com.minerkid08.dynamicopmodeloader.LuaType
+import com.minerkid08.dynamicopmodeloader.OpmodeLoaderFunction
 import com.qualcomm.robotcore.hardware.DcMotor
 import com.qualcomm.robotcore.hardware.DcMotorSimple
 
 class LuaDcMotor(private val m: DcMotor)
 {
-	companion object
-	{
-		fun init(builder: FunctionBuilder)
-		{
-			builder.addClassFunction(
-				LuaDcMotor::class.java, "setPower", argTypes = listOf(LuaType.Double)
-			);
-			builder.addClassFunction(
-				LuaDcMotor::class.java, "setTargetPosition", argTypes = listOf(LuaType.Int)
-			);
-			builder.addClassFunction(
-				LuaDcMotor::class.java, "setDirection", argTypes = listOf(LuaType.Int)
-			);
-			builder.addClassFunction(
-				LuaDcMotor::class.java, "setMode", argTypes = listOf(LuaType.Int)
-			);
-			builder.addClassFunction(
-				LuaDcMotor::class.java, "setZeroPowerBehavior", argTypes = listOf(LuaType.Int)
-			);
-			builder.addClassFunction(LuaDcMotor::class.java, "getCurrentPosition", LuaType.Int);
-			builder.addClassFunction(LuaDcMotor::class.java, "getTargetPosition", LuaType.Int);
-		}
-	}
-
+	@OpmodeLoaderFunction
 	fun setPower(power: Double)
 	{
 		m.power = power;
 	}
 
+	@OpmodeLoaderFunction
 	fun setTargetPosition(pos: Int)
 	{
 		m.targetPosition = pos;
 	}
 
+	@OpmodeLoaderFunction
 	fun setDirection(dir: Int)
 	{
 		m.direction = when (dir)
@@ -51,6 +29,7 @@ class LuaDcMotor(private val m: DcMotor)
 		}
 	}
 
+	@OpmodeLoaderFunction
 	fun setMode(mode: Int)
 	{
 		m.mode = when (mode)
@@ -62,6 +41,7 @@ class LuaDcMotor(private val m: DcMotor)
 		}
 	}
 
+	@OpmodeLoaderFunction
 	fun setZeroPowerBehavior(mode: Int)
 	{
 		m.zeroPowerBehavior = when (mode)
@@ -72,6 +52,9 @@ class LuaDcMotor(private val m: DcMotor)
 		}
 	}
 
+	@OpmodeLoaderFunction
 	fun getCurrentPosition(): Int = m.currentPosition;
+
+	@OpmodeLoaderFunction
 	fun getTargetPosition(): Int = m.targetPosition;
 }
