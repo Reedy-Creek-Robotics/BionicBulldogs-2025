@@ -3,9 +3,10 @@ package org.firstinspires.ftc.teamcode.modules.pathing
 import com.minerkid08.dynamicopmodeloader.FunctionBuilder
 import com.minerkid08.dynamicopmodeloader.OpmodeLoaderFunction
 import com.pedropathing.follower.Follower
-import com.pedropathing.localization.Pose
-import com.pedropathing.pathgen.Path
-import com.pedropathing.pathgen.PathChain
+import com.pedropathing.geometry.Pose
+import com.pedropathing.paths.Path
+import com.pedropathing.paths.PathChain
+import org.firstinspires.ftc.teamcode.modules.Debug
 
 class LuaFollower(private val follower: Follower)
 {
@@ -51,5 +52,11 @@ class LuaFollower(private val follower: Follower)
 	fun update()
 	{
 		follower.update();
+	}
+
+	@OpmodeLoaderFunction
+	fun telem()
+	{
+		Debug.drawDebug(follower);
 	}
 }

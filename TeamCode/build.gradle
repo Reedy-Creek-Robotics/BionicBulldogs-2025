@@ -30,7 +30,9 @@ android {
 dependencies {
     implementation project(':FtcRobotController')
     implementation files(getProjectDir().parent + "/opmodeloader.aar")
-    implementation 'com.pedropathing:pedro:1.0.9'
+    implementation 'com.pedropathing:ftc:2.0.0'
+    implementation 'com.pedropathing:telemetry:0.0.6'
+    implementation 'com.bylazar:fullpanels:1.0.2'
     implementation 'com.acmerobotics.dashboard:dashboard:0.4.16'
     implementation 'org.apache.commons:commons-math3:3.6.1'
 }

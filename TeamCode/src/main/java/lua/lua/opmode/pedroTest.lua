@@ -1,5 +1,6 @@
 require("modules.action.action");
 require("modules.action.seqAction");
+require("modules.action.parallelAction");
 
 ---@type Opmode
 local opmode = { name = "pedroTest" };
@@ -40,64 +41,15 @@ end
 local a;
 
 function opmode.init()
-	--[[
-	p = path.chain()
-		:add(path.line(0, 0, 72, 0))
-		:constantHeading(0)
-		:add(path.curve3(72, 0, 96, 0, 96, 24))
-		:constantHeading(0)
-		:distanceCallback(0.5, function ()
-			slide:runToPosition(-500)
-		end)
-
-		:add(path.line(96, 24, 96, 72))
-		:constantHeading(0)
-		:add(path.curve3(96, 72, 96, 96, 72, 96))
-		:constantHeading(0)
-
-		:add(path.line(72, 96, 24, 96))
-		:constantHeading(0)
-		:add(path.curve3(24, 96, 0, 96, 0, 72))
-		:constantHeading(0)
-		:distanceCallback(0.5, function ()
-			slide:runToPosition(0)
-		end)
-
-		:add(path.line(0, 72, 0, 0))
-		:constantHeading(0)
-		:build();
-
-		]]
-
-	a = SeqAction.new(
+	a = ParallelAction.new(
 		PathAction.new(
 			path.chain()
 			:add(path.line(0, 0, 72, 0))
 			:constantHeading(0)
 			:add(path.curve3(72, 0, 96, 0, 96, 24))
 			:constantHeading(0)
-			:distanceCallback(0.5, function ()
-				slide:runToPosition(-500)
-			end)
 
-			:add(path.line(96, 24, 96, 48))
-			:constantHeading(0)
-			:build()
-		),
-		CallbackAction.new(
-			function ()
-				slide:runToPosition(0);
-			end
-		),
-		SleepAction.new(2),
-		CallbackAction.new(
-			function ()
-				slide:runToPosition(-500);
-			end
-		),
-		PathAction.new(
-			path.chain()
-			:add(path.line(96, 48, 96, 72))
+			:add(path.line(96, 24, 96, 72))
 			:constantHeading(0)
 			:add(path.curve3(96, 72, 96, 96, 72, 96))
 			:constantHeading(0)
@@ -106,15 +58,37 @@ function opmode.init()
 			:constantHeading(0)
 			:add(path.curve3(24, 96, 0, 96, 0, 72))
 			:constantHeading(0)
-			:distanceCallback(0.5, function ()
-				slide:runToPosition(0)
-			end)
 
 			:add(path.line(0, 72, 0, 0))
 			:constantHeading(0)
 			:build()
+		),
+		SeqAction.new(
+			CallbackAction.new(
+				function ()
+					slide:runToPosition(-500);
+				end
+			),
+			SleepAction.new(2),
+			CallbackAction.new(
+				function ()
+					slide:runToPosition(0);
+				end
+			),
+			SleepAction.new(2),
+			CallbackAction.new(
+				function ()
+					slide:runToPosition(-500);
+				end
+			),
+			SleepAction.new(2),
+			CallbackAction.new(
+				function ()
+					slide:runToPosition(0);
+				end
+			)
 		)
-	);
+	)
 
 	slide:init();
 end
@@ -124,6 +98,7 @@ function opmode.start()
 end
 
 function opmode.update(dt, et)
+	follower.telem();
 	local state = a:update(dt, et);
 	if (state == ActionState.Running) then
 		return false;
@@ -131,7 +106,7 @@ function opmode.update(dt, et)
 		return true;
 	end
 	error("root action failed");
-	return true;
+    return true;
 end
 
 addOpmode(opmode);

@@ -9,8 +9,7 @@ import org.firstinspires.ftc.teamcode.modules.LuaLog
 import org.firstinspires.ftc.teamcode.modules.LuaTelemetry
 import org.firstinspires.ftc.teamcode.modules.pathing.LuaFollower
 import org.firstinspires.ftc.teamcode.modules.pathing.LuaPath
-import org.firstinspires.ftc.teamcode.pedroPathing.constants.FConstants
-import org.firstinspires.ftc.teamcode.pedroPathing.constants.LConstants
+import org.firstinspires.ftc.teamcode.pedroPathing.Constants
 
 abstract class OpmodeloaderAutoBase(private val name: String) : LinearOpMode()
 {
@@ -19,7 +18,7 @@ abstract class OpmodeloaderAutoBase(private val name: String) : LinearOpMode()
 		val opmodeloader = OpmodeLoader();
 		val builder = opmodeloader.getFunctionBuilder();
 
-		val follower = Follower(hardwareMap, FConstants::class.java, LConstants::class.java);
+		val follower = Constants.createFollower(hardwareMap);
 
 		LuaHardwaremap.init(builder, hardwareMap);
 		LuaTelemetry.init(builder, telemetry);

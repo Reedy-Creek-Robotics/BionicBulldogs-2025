@@ -5,11 +5,11 @@ import com.minerkid08.dynamicopmodeloader.LuaCallback
 import com.minerkid08.dynamicopmodeloader.OpmodeLoaderBuilderFunction
 import com.minerkid08.dynamicopmodeloader.OpmodeLoaderFunction
 import com.pedropathing.follower.Follower
-import com.pedropathing.pathgen.BezierCurve
-import com.pedropathing.pathgen.BezierLine
-import com.pedropathing.pathgen.PathBuilder
-import com.pedropathing.pathgen.PathChain
-import com.pedropathing.pathgen.Point
+import com.pedropathing.geometry.BezierCurve
+import com.pedropathing.geometry.BezierLine
+import com.pedropathing.geometry.Pose
+import com.pedropathing.paths.PathBuilder
+import com.pedropathing.paths.PathChain
 
 class LuaPath(private val follower: Follower)
 {
@@ -32,13 +32,13 @@ class LuaPath(private val follower: Follower)
 	@OpmodeLoaderFunction
 	fun line(x1: Double, y1: Double, x2: Double, y2: Double): BezierLine
 	{
-		return BezierLine(Point(x1, y1), Point(x2, y2));
+		return BezierLine(Pose(x1, y1), Pose(x2, y2));
 	}
 
 	@OpmodeLoaderFunction
 	fun curve3(x1: Double, y1: Double, x2: Double, y2: Double, x3: Double, y3: Double): BezierCurve
 	{
-		return BezierCurve(Point(x1, y1), Point(x2, y2), Point(x3, y3));
+		return BezierCurve(Pose(x1, y1), Pose(x2, y2), Pose(x3, y3));
 	}
 
 	@OpmodeLoaderFunction
@@ -53,7 +53,7 @@ class LuaPath(private val follower: Follower)
 		y4: Double
 	): BezierCurve
 	{
-		return BezierCurve(Point(x1, y1), Point(x2, y2), Point(x3, y3), Point(x4, y4));
+		return BezierCurve(Pose(x1, y1), Pose(x2, y2), Pose(x3, y3), Pose(x4, y4));
 	}
 
 	@OpmodeLoaderFunction
@@ -66,33 +66,6 @@ class LuaPathBuilder(private val builder: PathBuilder)
 	fun add(curve: BezierCurve)
 	{
 		builder.addPath(curve);
-	}
-
-	@OpmodeLoaderBuilderFunction
-	fun addLine(x1: Double, y1: Double, x2: Double, y2: Double)
-	{
-		builder.addBezierLine(Point(x1, y1), Point(x2, y2))
-	}
-
-	@OpmodeLoaderBuilderFunction
-	fun addCurve3(x1: Double, y1: Double, x2: Double, y2: Double, x3: Double, y3: Double)
-	{
-		builder.addBezierCurve(Point(x1, y1), Point(x2, y2), Point(x3, y3));
-	}
-
-	@OpmodeLoaderBuilderFunction
-	fun addCurve4(
-		x1: Double,
-		y1: Double,
-		x2: Double,
-		y2: Double,
-		x3: Double,
-		y3: Double,
-		x4: Double,
-		y4: Double
-	)
-	{
-		builder.addBezierCurve(Point(x1, y1), Point(x2, y2), Point(x3, y3), Point(x4, y4));
 	}
 
 	@OpmodeLoaderBuilderFunction
