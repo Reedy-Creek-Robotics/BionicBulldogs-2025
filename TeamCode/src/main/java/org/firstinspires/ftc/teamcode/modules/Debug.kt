@@ -9,10 +9,10 @@ import com.pedropathing.util.PoseHistory
 
 object Debug
 {
-	val ROBOT_RADIUS = 9.0;
-	val field = PanelsField.field;
-	val robotLook = Style("", "#3F51B5", 0.0);
-	val historyLook = Style("", "#4CAF50", 0.0);
+	private const val ROBOT_RADIUS = 9.0;
+	private val field = PanelsField.field;
+	private val robotLook = Style("", "#3F51B5", 0.0);
+	private val historyLook = Style("", "#4CAF50", 0.0);
 
 	init
 	{
@@ -21,12 +21,11 @@ object Debug
 
 	fun drawDebug(follower: Follower)
 	{
-		if (follower.currentPath != null)
+		if(follower.currentPath != null)
 		{
 			drawPath(follower.currentPath, robotLook);
 			val closestPoint = follower.getPointFromPath(
-				follower.currentPath
-					.closestPointTValue
+				follower.currentPath.closestPointTValue
 			);
 			drawRobot(
 				Pose(
@@ -43,15 +42,15 @@ object Debug
 
 	fun drawRobot(pose: Pose, style: Style)
 	{
-		if (pose.x.isNaN() || pose.y.isNaN() || pose.heading.isNaN())
+		if(pose.x.isNaN() || pose.y.isNaN() || pose.heading.isNaN())
 			return;
 
 		field.setStyle(style);
-		field.moveCursor(pose.getX(), pose.getY());
+		field.moveCursor(pose.x, pose.y);
 		field.circle(ROBOT_RADIUS);
 
 		val v = pose.headingAsUnitVector;
-		v.magnitude = v.magnitude * ROBOT_RADIUS;
+		v.magnitude *= ROBOT_RADIUS;
 		val x1 = pose.x + v.xComponent / 2;
 		val y1 = pose.y + v.yComponent / 2;
 		val x2 = pose.x + v.xComponent
@@ -66,11 +65,11 @@ object Debug
 	{
 		val points = path.panelsDrawingPoints;
 
-		for (i in 0 until points[0].size)
+		for(i in 0 until points[0].size)
 		{
-			for (j in 0 until points.size)
+			for(j in points.indices)
 			{
-				if (points[j][i].isNaN())
+				if(points[j][i].isNaN())
 					points[j][i] = 0.0;
 			}
 		}
@@ -85,7 +84,7 @@ object Debug
 		field.setStyle(style);
 
 		val size = poseTracker.xPositionsArray.size;
-		for (i in 0 until size - 1)
+		for(i in 0 until size - 1)
 		{
 			field.moveCursor(poseTracker.xPositionsArray[i], poseTracker.yPositionsArray[i]);
 			field.line(poseTracker.xPositionsArray[i + 1], poseTracker.yPositionsArray[i + 1]);
