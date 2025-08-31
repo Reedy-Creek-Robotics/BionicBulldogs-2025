@@ -3,7 +3,13 @@ require("modules.class");
 
 ---@class ParallelAction: Action
 ---@field actions Action[]
-ParallelAction = { name = "parallelAction" }
+ParallelAction = {
+	mt = {
+		__tostring = function (self)
+			return "ParallelAction: " .. self.__id;
+		end
+	}
+}
 
 ---@param ... Action
 ---@return ParallelAction
@@ -53,13 +59,15 @@ function ParallelAction:update(dt, et)
 					a:error();
 				end
 			end
-			log.e("actions", "action '" .. action.name .. "' failed");
+			log.e("actions", "action '" .. tostring(action) .. "' failed");
+			actionPane:addLine("error: action '" .. tostring(action) .. "' failed");
 			return ActionState.Error;
 		elseif (newState == ActionState.ErrCont) then
 			if (action.error ~= nil) then
 				action:error();
 			end
-			log.e("actions", "action '" .. action.name .. "' failed");
+			log.e("actions", "action '" .. tostring(action) .. "' failed");
+			actionPane:addLine("error: action '" .. tostring(action) .. "' failed");
 			self.actions[k] = nil;
 		end
 		::continue::

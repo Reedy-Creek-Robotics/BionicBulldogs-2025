@@ -4,7 +4,13 @@ require("modules.class");
 ---@class SeqAction : Action
 ---@field actions Action[]
 ---@field index number
-SeqAction = { name = "seqAction" }
+SeqAction = {
+	mt = {
+		__tostring = function (self)
+			return "SeqAction: " .. self.__id;
+		end
+	}
+}
 
 ---@param ... Action
 ---@return SeqAction
@@ -61,7 +67,8 @@ function SeqAction:update(dt, et)
 		if (action.error ~= nil) then
 			action:error();
 		end
-		log.e("actions", "action '" .. action.name .. "' failed");
+		log.e("actions", "action '" .. tostring(action) .. "' failed");
+		actionPane:addLine("error: action '" .. tostring(action) .. "' failed");
 	end
 
 	self.index = self.index + 1;

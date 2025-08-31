@@ -9,6 +9,7 @@ log = {};
 function log.e(tag, value)
 	print(("[%d] %10s | %s"):format(t, tag, value));
 end
+
 function log.d(tag, value)
 	print(("[%d] %10s | %s"):format(t, tag, value));
 end
@@ -30,7 +31,7 @@ local a = SeqAction.new(
 		name = "test",
 		update = function (self, dt, et)
 			return ActionState.ErrCont;
-		end,
+		end
 	},
 	CallbackAction.new(
 		function ()
@@ -62,8 +63,15 @@ local b = SeqAction.new(
 
 local c = ParallelAction.new(a, b);
 
-c:start(t);
+c:start(0);
 
-while (c:update(0, t) == ActionState.Running) do
+while (true) do
+	local s = c:update(0, t);
 	t = os.time();
+	if (s == ActionState.Done) then
+		break;
+	end
+	if (s ~= ActionState.Running) then
+		error(("root action '%s' failed"):format(tostring(c)));
+	end
 end

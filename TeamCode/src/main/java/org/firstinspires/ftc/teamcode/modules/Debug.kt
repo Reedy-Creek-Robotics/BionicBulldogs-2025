@@ -30,14 +30,11 @@ object Debug
 			drawRobot(
 				Pose(
 					closestPoint.x, closestPoint.y,
-					follower.currentPath.getHeadingGoal(follower.currentPath.closestPointTValue)
+					currentPath.getHeadingGoal(currentPath.closestPointTValue)
 				), robotLook
 			);
+			field.update();
 		}
-		drawPoseHistory(follower.poseHistory, historyLook);
-		drawRobot(follower.pose, historyLook);
-
-		field.update();
 	}
 
 	fun drawRobot(pose: Pose, style: Style)

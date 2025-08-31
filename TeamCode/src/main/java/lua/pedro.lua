@@ -1,8 +1,6 @@
 ---@class Path
-Path = {};
 
 ---@class PathChain
-PathChain = {};
 
 follower = {};
 
@@ -30,6 +28,7 @@ function follower.followPathc(path) end
 function follower.isBusy() end
 
 function follower.update() end
+function follower.telem() end
 
 
 ---@class PathBuilder
@@ -38,33 +37,6 @@ PathBuilder = {};
 ---@param curve Path
 ---@return PathBuilder
 function PathBuilder:add(curve) end
-
----@param x1 number
----@param y1 number
----@param x2 number
----@param y2 number
----@return PathBuilder
-function PathBuilder:addLine(x1, y1, x2, y2) end
-
----@param x1 number
----@param y1 number
----@param x2 number
----@param y2 number
----@param x3 number
----@param y3 number
----@return PathBuilder
-function PathBuilder:addCurve3(x1, y1, x2, y2, x3, y3) end
-
----@param x1 number
----@param y1 number
----@param x2 number
----@param y2 number
----@param x3 number
----@param y3 number
----@param x4 number
----@param y4 number
----@return PathBuilder
-function PathBuilder:addCurve4(x1, y1, x2, y2, x3, y3, x4, y4) end
 
 ---@param h number
 ---@return PathBuilder

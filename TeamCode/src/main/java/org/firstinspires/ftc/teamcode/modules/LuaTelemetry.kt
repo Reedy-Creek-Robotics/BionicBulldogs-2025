@@ -1,7 +1,6 @@
 package org.firstinspires.ftc.teamcode.modules
 
 import com.minerkid08.dynamicopmodeloader.FunctionBuilder
-import com.minerkid08.dynamicopmodeloader.LuaType
 import com.minerkid08.dynamicopmodeloader.OpmodeLoaderFunction
 import org.firstinspires.ftc.robotcore.external.Telemetry
 
@@ -11,6 +10,7 @@ class LuaTelemetry(private val telem: Telemetry)
 	{
 		fun init(builder: FunctionBuilder, telem: Telemetry)
 		{
+      telem.setDisplayFormat(Telemetry.DisplayFormat.MONOSPACE);
 			builder.pushTable("telem");
 			builder.addObjectAsGlobal(LuaTelemetry(telem));
 			builder.popTable();
