@@ -77,12 +77,20 @@ public class MotorTester extends LinearOpMode {
 
             // start the test
             if( gamepad1.xWasPressed() ) {
+                isRunning = true;
                 motor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+                motor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
                 motor.setPower(motorPower);
             }
 
             // stop the test
             if( gamepad1.yWasPressed() ) {
+                isRunning = false;
+                motor.setTargetPosition(0);
+                motor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                while( motor.isBusy() ) {
+                    // do nothing
+                }
                 motor.setPower(0);
             }
 
@@ -96,14 +104,18 @@ public class MotorTester extends LinearOpMode {
             log.current.set(current);
             log.running.set(isRunning);
             log.ticks.set(ticks);
-            log.setPower.set(motorPower);
+            log.motorPower.set(motorPower);
+            log.motorType.set(motorType[motorIndex]);
+            log.velocity.set(velocity);
             log.writeLine();
 
             // telemetry
             telemetry.addData("set power", motorPower);
+            telemetry.addData("actual power", motor.getPower());
             telemetry.addData("current", current);
             telemetry.addData("ticks", ticks );
             telemetry.addData("velocity",velocity);
+            telemetry.addData("motor type",motorType[motorIndex]);
             telemetry.update();
         }
     }

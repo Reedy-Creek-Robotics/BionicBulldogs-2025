@@ -8,9 +8,10 @@ public class Datalog {
     // Note that order here is NOT important. The order is important in the setFields() call below
     public Datalogger.GenericField current = new Datalogger.GenericField("Current");
     public Datalogger.GenericField ticks = new Datalogger.GenericField("Ticks");
-    public Datalogger.GenericField setPower = new Datalogger.GenericField("Set Power");
+    public Datalogger.GenericField motorPower = new Datalogger.GenericField("Set Power");
     public Datalogger.GenericField velocity = new Datalogger.GenericField("Velocity");
     public Datalogger.GenericField running = new Datalogger.GenericField("Running");
+    public Datalogger.GenericField motorType = new Datalogger.GenericField("Motor Type");
 
     public Datalog(String name)
     {
@@ -26,7 +27,7 @@ public class Datalog {
             // Tell it about the fields we care to log.
             // Note that order *IS* important here! The order in which we list
             // the fields is the order in which they will appear in the log.
-            .setFields(current, ticks, setPower, velocity, running).build();
+            .setFields(motorType, motorPower, current, running, ticks, velocity).build();
     }
 
     // Tell the datalogger to gather the values of the fields
