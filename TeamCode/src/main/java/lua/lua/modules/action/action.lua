@@ -9,7 +9,6 @@ ActionState = {
 };
 
 ---@class Action
----@field name string
 ---@field start fun(self: Action, et: number)?
 ---@field update fun(self: Action, dt: number, et: number): ActionState
 ---@field finish fun(self: Action)?
@@ -18,7 +17,13 @@ ActionState = {
 ---@class SleepAction : Action
 ---@field delay number
 ---@field startTime number
-SleepAction = { name = "sleepAction" };
+SleepAction = {
+	mt = {
+		__tostring = function (self)
+			return ("SleepAction(%.2fs): %s"):format(self.delay, self.__id);
+		end
+	}
+};
 
 ---@param time number
 ---@return SleepAction
@@ -45,7 +50,13 @@ end
 
 ---@class PathAction : Action
 ---@field path PathChain
-PathAction = { name = "pathAction" };
+PathAction = {
+	mt = {
+		__tostring = function (self)
+			return "PathAction: " .. self.__id;
+		end
+	}
+};
 
 ---@param path PathChain
 ---@return PathAction
@@ -71,7 +82,13 @@ function PathAction:update(dt, et)
 end
 
 ---@class CallbackAction : Action
-CallbackAction = { name = "callbackAction" };
+CallbackAction = {
+	mt = {
+		__tostring = function (self)
+			return "CallbackAction: " .. self.__id;
+		end
+	}
+};
 
 ---@param callback function
 ---@return CallbackAction

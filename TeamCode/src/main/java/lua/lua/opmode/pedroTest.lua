@@ -1,3 +1,4 @@
+require("modules.telemetry");
 require("modules.action.action");
 require("modules.action.seqAction");
 require("modules.action.parallelAction");
@@ -98,6 +99,12 @@ function opmode.start()
 end
 
 function opmode.update(dt, et)
+	drivePane:addData("x", follower.getPositionX());
+	drivePane:addData("y", follower.getPositionY());
+	drivePane:addData("h", follower.getPositionH());
+	robotPane:addData("slide pos", slide.m1:getPosition());
+	robotPane:addData("slide target pos", slide.m1:getTargetPositon());
+	TelemPaneManager:update();
 	follower.telem();
 	local state = a:update(dt, et);
 	if (state == ActionState.Running) then
@@ -105,8 +112,8 @@ function opmode.update(dt, et)
 	elseif (state == ActionState.Done) then
 		return true;
 	end
-	error("root action failed");
-    return true;
+	error(("root action '%s' failed"):format(tostring(a)));
+	return true;
 end
 
 addOpmode(opmode);

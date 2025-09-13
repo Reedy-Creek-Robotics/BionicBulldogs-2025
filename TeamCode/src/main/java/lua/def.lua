@@ -150,4 +150,18 @@ function log.w(tag, value) end
 ---@param value string
 function log.e(tag, value) end
 
+telemetry = {}
+
+---@param tag string
+---@param value string
+function telemetry.addData(tag, value)
+end
+
+---@param line string
+function telemetry.addLine(line)
+end
+
+function telemetry.update()
+end
+
 require("pedro");

@@ -7,5 +7,10 @@ function new(t)
 		n[k] = v;
 	end
 	n.new = nil;
+	n.mt = nil;
+	n.__id = tostring(n):sub(8);
+	if(t.mt ~= nil) then
+	   setmetatable(n, t.mt);
+	end
 	return n;
 end
