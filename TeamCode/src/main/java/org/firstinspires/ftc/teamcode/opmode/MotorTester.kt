@@ -8,7 +8,10 @@ import com.qualcomm.robotcore.hardware.DcMotorEx
 import com.qualcomm.robotcore.util.ElapsedTime
 import org.firstinspires.ftc.robotcore.external.navigation.CurrentUnit
 import java.io.File
+import java.io.FileInputStream
+import kotlin.io.path.createTempFile
 import kotlin.math.max
+
 
 @TeleOp
 @Config
@@ -44,13 +47,13 @@ class MotorTester: LinearOpMode()
 		motor.mode = DcMotor.RunMode.STOP_AND_RESET_ENCODER
 
 
-		var current = motor.getCurrent(CurrentUnit.AMPS)
+		var current = motor.getCurrent(CurrentUnit.AMPS).toDouble()
 		//Tp =  ((-Distance)*ticks*GR)
 		motor.targetPosition = (-60 * ticksPerRev * 10).toInt()
 		motor.mode = DcMotor.RunMode.RUN_TO_POSITION
 
-		val e = ElapsedTime();
-		e.reset()
+		val el = ElapsedTime();
+		el.reset()
 
 		waitForStart()
 		var xpressed = 0
@@ -62,7 +65,7 @@ class MotorTester: LinearOpMode()
 			if(gamepad1.xWasPressed())
 			{
 				xpressed += 1
-				e.startTime()
+				el.startTime()
 
 			}
 			else if(gamepad1.yWasPressed())
@@ -82,13 +85,27 @@ class MotorTester: LinearOpMode()
 				motor.power = s
 
 			}
-        val file = Fi
+
 			current = max(current, motor.getCurrent(CurrentUnit.AMPS))
 			telemetry.addData("current", current)
-			telemetry.addData("time", e.seconds())
+			telemetry.addData("time", el.seconds())
 			telemetry.addData("x was pressed", xpressed)
 			telemetry.addData("y was pressed", ypressed)
 			telemetry.update()
+			val motordata = ArrayList<Int>()
+
+
+			fun main() {
+				val fileName = "motor_values.txt"
+				val file = File(fileName)
+			if (file.createNewFile()) {
+			println("File '$fileName' created successfully.")
+		} else {
+			println("File '$fileName' already exists.")
+		}
+			}
+
+
 
 
 		}
