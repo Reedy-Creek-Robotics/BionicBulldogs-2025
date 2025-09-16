@@ -11,6 +11,8 @@ import java.io.File
 import java.io.FileInputStream
 import kotlin.io.path.createTempFile
 import kotlin.math.max
+import kotlin.time.Duration.Companion.minutes
+import kotlin.time.Duration.Companion.seconds
 
 
 @TeleOp
@@ -59,6 +61,11 @@ class MotorTester: LinearOpMode()
 		var xpressed = 0
 		var ypressed = 0
 		var s = 1.0
+			val motor_values = "motor_values" + System.nanoTime()
+			val file = File(motor_values)
+
+
+
 
 		while(opModeIsActive())
 		{
@@ -66,6 +73,7 @@ class MotorTester: LinearOpMode()
 			{
 				xpressed += 1
 				el.startTime()
+				motor.power = 0.1
 
 			}
 			else if(gamepad1.yWasPressed())
@@ -75,39 +83,32 @@ class MotorTester: LinearOpMode()
 			}
 			if(gamepad1.dpadUpWasPressed())
 			{
-				s += 1.0
+				s += 0.1
 				motor.power = s;
 
 			}
 			else if(gamepad1.dpadDownWasPressed())
 			{
-				s -= 1.0
+				s -= 0.1
 				motor.power = s
 
 			}
 
-			current = max(current, motor.getCurrent(CurrentUnit.AMPS))
+			current = (motor.getCurrent(CurrentUnit.AMPS))
 			telemetry.addData("current", current)
 			telemetry.addData("time", el.seconds())
 			telemetry.addData("x was pressed", xpressed)
 			telemetry.addData("y was pressed", ypressed)
 			telemetry.update()
-			val motordata = ArrayList<Int>()
+			if (file.exists()) {
+				file.writeText("current:$current time:${time.minutes}:${time.seconds}")
+			} else {
+				val motor_values = "motor_values.txt" + System.nanoTime()
+				val file = File(motor_values)
 
-
-			fun main() {
-				val fileName = "motor_values.txt"
-				val file = File(fileName)
-			if (file.createNewFile()) {
-			println("File '$fileName' created successfully.")
-		} else {
-			println("File '$fileName' already exists.")
-		}
 			}
 
-
-
-
+			}
 		}
 	}
 }
