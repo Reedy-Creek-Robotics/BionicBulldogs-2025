@@ -1,5 +1,7 @@
 package org.firstinspires.ftc.teamcode.log;
 
+import android.provider.ContactsContract;
+
 public class Datalog {
     // The underlying datalogger object - it cares only about an array of loggable fields
     private final Datalogger datalogger;
@@ -12,6 +14,7 @@ public class Datalog {
     public Datalogger.GenericField velocity = new Datalogger.GenericField("Velocity");
     public Datalogger.GenericField running = new Datalogger.GenericField("Running");
     public Datalogger.GenericField motorType = new Datalogger.GenericField("Motor Type");
+    public Datalogger.GenericField ballShot = new Datalogger.GenericField("Ball Shot");
 
     public Datalog(String name)
     {
@@ -27,7 +30,7 @@ public class Datalog {
             // Tell it about the fields we care to log.
             // Note that order *IS* important here! The order in which we list
             // the fields is the order in which they will appear in the log.
-            .setFields(motorType, motorPower, current, running, ticks, velocity).build();
+            .setFields(motorPower, current, running, ticks, velocity, ballShot).build();
     }
 
     // Tell the datalogger to gather the values of the fields
