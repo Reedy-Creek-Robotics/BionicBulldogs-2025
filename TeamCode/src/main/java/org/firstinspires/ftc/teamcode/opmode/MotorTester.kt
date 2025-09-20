@@ -71,6 +71,7 @@ motor.mode =DcMotor.RunMode.RUN_WITHOUT_ENCODER
 				xpressed += 1
 				el.startTime()
 				motor.power = s
+				el.reset()
 
 			}
 			else if(gamepad1.yWasPressed())
@@ -102,7 +103,6 @@ motor.mode =DcMotor.RunMode.RUN_WITHOUT_ENCODER
 				file.writeText("current:$current time:${time.minutes}:${time.seconds}")
 			} else {
 				val motor_values = "motor_values.txt" + System.nanoTime()
-
 
 			}
 
