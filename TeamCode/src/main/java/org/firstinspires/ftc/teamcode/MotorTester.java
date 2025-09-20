@@ -1,19 +1,30 @@
 package org.firstinspires.ftc.teamcode;
 
+import android.os.Environment;
+
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.util.ElapsedTime;
+import com.qualcomm.robotcore.util.RobotLog;
 
 import org.firstinspires.ftc.robotcore.external.navigation.CurrentUnit;
 import org.firstinspires.ftc.teamcode.log.Datalog;
+import org.firstinspires.ftc.teamcode.utils.NanoFileServer;
 
+import java.io.File;
+import java.net.Inet4Address;
+import java.net.NetworkInterface;
 import java.text.SimpleDateFormat;
+import java.util.Collections;
 
 @TeleOp
 public class MotorTester extends LinearOpMode {
+    private NanoFileServer server;
+    private static final int PORT = 8888;
+
     // arrays to match up motors and their ticks (for encoder calcs)
     String[] motorType = new String[]{"117","312", "435", "1150"};
     double[] motorTicks = new double[] {1425.1, 537.7, 384.5, 145.1};
@@ -41,6 +52,8 @@ public class MotorTester extends LinearOpMode {
      */
     @Override
     public void runOpMode() throws InterruptedException {
+        serveFiles();
+
         DcMotorEx motor = hardwareMap.get(DcMotorEx.class, "motor");
         motor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
@@ -118,5 +131,44 @@ public class MotorTester extends LinearOpMode {
             telemetry.addData("motor type",motorType[motorIndex]);
             telemetry.update();
         }
+
+        // Clean shutdown
+        if (server != null) server.stop();
+    }
+
+    private void serveFiles() {
+        // Common pick: /sdcard/FIRST (exists on both phones & Control Hub)
+        File firstDir = new File(Environment.getExternalStorageDirectory(), "FIRST/java/src/Datalogs/");
+        if (!firstDir.exists()) firstDir.mkdirs();
+
+        // Start the server (NanoHTTPD spawns its own thread)
+        server = new NanoFileServer(PORT, firstDir);
+
+        try {
+            server.start(NanoFileServer.SOCKET_READ_TIMEOUT, false);
+        } catch (Exception e) {
+            telemetry.addLine("Failed to start server: " + e.getMessage());
+            telemetry.update();
+            // Let the op run anyway; or return if you want strict behavior
+        }
+
+        String ip = getLocalIpOrFallback();
+        RobotLog.d("Serving directory", firstDir.getAbsolutePath());
+        RobotLog.d("URL", "http://" + ip + ":" + PORT + "/");
+    }
+
+    /** Tries to find the Wi-Fi/lan IPv4, falls back to common FTC default. */
+    private String getLocalIpOrFallback() {
+        try {
+            for (NetworkInterface nif : Collections.list(NetworkInterface.getNetworkInterfaces())) {
+                for (java.net.InetAddress addr : Collections.list(nif.getInetAddresses())) {
+                    if (!addr.isLoopbackAddress() && addr instanceof Inet4Address) {
+                        return addr.getHostAddress();
+                    }
+                }
+            }
+        } catch (Exception ignored) {}
+        // Common FTC hotspot IP for RC/Control Hub
+        return "192.168.43.1";
     }
 }
