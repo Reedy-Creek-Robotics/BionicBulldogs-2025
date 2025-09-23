@@ -23,6 +23,9 @@ abstract class OpmodeloaderOpmodeBase(private val name: String) : LinearOpMode()
 
 		opmodeloader.init();
 		opmodeloader.loadOpmode(name);
+
+		telemetry.addLine("initalised");
+		telemetry.update();
 		waitForStart();
 
 		if (!opModeIsActive())

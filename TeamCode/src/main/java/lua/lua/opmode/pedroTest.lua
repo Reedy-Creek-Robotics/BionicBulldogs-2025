@@ -6,38 +6,6 @@ require("modules.action.parallelAction");
 ---@type Opmode
 local opmode = { name = "pedroTest" };
 
-local slide = {};
-
-function slide:init()
-	self.m1 = hardwareMap.dcmotorGet("slide");
-	self.m2 = hardwareMap.dcmotorGet("slide2");
-
-	self.m1:setMode(DcMotorRunMode.StopAndResetEncoder);
-	self.m2:setMode(DcMotorRunMode.StopAndResetEncoder);
-
-	self.m1:setZeroPowerBehavior(DcMotorZeroPowerBehavior.Brake);
-	self.m2:setZeroPowerBehavior(DcMotorZeroPowerBehavior.Brake);
-
-	self.m2:setDirection(Direction.Reverse);
-end
-
-function slide:runToPosition(pos)
-	self.m1:setPower(0);
-	self.m2:setPower(0);
-
-	self.m1:setMode(DcMotorRunMode.RunWithoutEncoder);
-	self.m2:setMode(DcMotorRunMode.RunWithoutEncoder);
-
-	self.m1:setTargetPosition(pos);
-	self.m2:setTargetPosition(pos);
-
-	self.m1:setMode(DcMotorRunMode.RunToPosition);
-	self.m2:setMode(DcMotorRunMode.RunToPosition);
-
-	self.m1:setPower(1);
-	self.m2:setPower(1);
-end
-
 ---@type Action
 local a;
 
@@ -63,36 +31,11 @@ function opmode.init()
 			:add(path.line(0, 72, 0, 0))
 			:constantHeading(0)
 			:build()
-		),
-		SeqAction.new(
-			CallbackAction.new(
-				function ()
-					slide:runToPosition(-500);
-				end
-			),
-			SleepAction.new(2),
-			CallbackAction.new(
-				function ()
-					slide:runToPosition(0);
-				end
-			),
-			SleepAction.new(2),
-			CallbackAction.new(
-				function ()
-					slide:runToPosition(-500);
-				end
-			),
-			SleepAction.new(2),
-			CallbackAction.new(
-				function ()
-					slide:runToPosition(0);
-				end
-			)
 		)
 	)
-
-	slide:init();
 end
+
+telemetry.addLine("help");
 
 function opmode.start()
 	a:start(0);
@@ -102,8 +45,6 @@ function opmode.update(dt, et)
 	drivePane:addData("x", follower.getPositionX());
 	drivePane:addData("y", follower.getPositionY());
 	drivePane:addData("h", follower.getPositionH());
-	robotPane:addData("slide pos", slide.m1:getPosition());
-	robotPane:addData("slide target pos", slide.m1:getTargetPositon());
 	TelemPaneManager:update();
 	follower.telem();
 	local state = a:update(dt, et);
