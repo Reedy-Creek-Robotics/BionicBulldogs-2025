@@ -9,7 +9,7 @@ import com.qualcomm.robotcore.hardware.DcMotorEx
 
 @TeleOp
 @Config
-class MotorTester: LinearOpMode()
+class ShooterTester: LinearOpMode()
 {
 	companion object
 	{
