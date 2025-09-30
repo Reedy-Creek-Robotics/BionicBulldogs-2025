@@ -31,7 +31,7 @@ object Debug
 			drawRobot(
 				Pose(
 					closestPoint.x, closestPoint.y,
-					currentPath.getHeadingGoal(currentPath.closestPointTValue)
+					follower.currentPath.getHeadingGoal(follower.currentPath.closestPointTValue)
 				), robotLook
 			);
 			field.update();
