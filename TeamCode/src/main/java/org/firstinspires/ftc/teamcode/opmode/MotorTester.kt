@@ -13,7 +13,7 @@ import kotlin.time.Duration.Companion.seconds
 
 @TeleOp
 @Config
-class MotorTester: LinearOpMode()
+class MotorTester : LinearOpMode()
 {
 	companion object
 	{
@@ -48,7 +48,7 @@ class MotorTester: LinearOpMode()
 		var Mposition = motor.currentPosition
 		var MVelocity = motor.getVelocity()
 		//Tp =  ((-Distance)*ticks*GR)
-		motor.mode =DcMotor.RunMode.RUN_WITHOUT_ENCODER
+		motor.mode = DcMotor.RunMode.RUN_WITHOUT_ENCODER
 		val el = ElapsedTime();
 		el.reset()
 
@@ -59,13 +59,13 @@ class MotorTester: LinearOpMode()
 		var s = 0.0
 		val motor_values = "motor_values" + System.nanoTime()
 		val file = File("/sdcard/FIRST/java/src/Datalog/motor_values" + System.nanoTime())
-		if(!file.exists())
+		if (!file.exists())
 			file.createNewFile();
 
 
-		while(opModeIsActive())
+		while (opModeIsActive())
 		{
-			if(gamepad1.xWasPressed())
+			if (gamepad1.xWasPressed())
 			{
 				xpressed += 1
 				el.reset()
@@ -74,23 +74,22 @@ class MotorTester: LinearOpMode()
 
 
 			}
-			else if(gamepad1.yWasPressed())
+			else if (gamepad1.yWasPressed())
 			{
 				ypressed += 1
 				motor.power = 0.0
 
 			}
-			if(gamepad1.dpadUpWasPressed())
+			if (gamepad1.dpadUpWasPressed())
 			{
 				s += 0.1
 				motor.power = s
 
 			}
-			else if(gamepad1.dpadDownWasPressed())
+			else if (gamepad1.dpadDownWasPressed())
 			{
 				s -= 0.1
 				motor.power = s
-
 			}
 
 			Mposition = motor.currentPosition
@@ -100,14 +99,13 @@ class MotorTester: LinearOpMode()
 			telemetry.addData("time", el.seconds())
 			telemetry.addData("stared", xpressed)
 			telemetry.addData("stoped", ypressed)
-			telemetry.addData("power",s)
-			telemetry.addData("tick rate",ticksPerRev)
+			telemetry.addData("power", s)
+			telemetry.addData("tick rate", ticksPerRev)
 			telemetry.update()
-			if (file.exists()) {
+			if (file.exists())
+			{
 				file.writeText("$current ,$Mposition,$MVelocity,${time.minutes}:${time.seconds}")
-
 			}
-
 		}
 	}
 }

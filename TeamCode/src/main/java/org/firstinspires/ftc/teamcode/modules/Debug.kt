@@ -21,11 +21,12 @@ object Debug
 
 	fun drawDebug(follower: Follower)
 	{
-		if(follower.currentPath != null)
+		val currentPath = follower.currentPath;
+		if(currentPath != null)
 		{
-			drawPath(follower.currentPath, robotLook);
+			drawPath(currentPath, robotLook);
 			val closestPoint = follower.getPointFromPath(
-				follower.currentPath.closestPointTValue
+				currentPath.closestPointTValue
 			);
 			drawRobot(
 				Pose(

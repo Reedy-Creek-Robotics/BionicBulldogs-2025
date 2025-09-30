@@ -1,7 +1,6 @@
 package org.firstinspires.ftc.teamcode.opmode
 
 import com.minerkid08.dynamicopmodeloader.OpmodeLoader
-import com.pedropathing.follower.Follower
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode
 import com.qualcomm.robotcore.util.ElapsedTime
 import org.firstinspires.ftc.teamcode.modules.LuaHardwaremap
@@ -28,6 +27,9 @@ abstract class OpmodeloaderAutoBase(private val name: String) : LinearOpMode()
 
 		opmodeloader.init();
 		opmodeloader.loadOpmode(name);
+
+		telemetry.addLine("initalised");
+		telemetry.update();
 		waitForStart();
 		if (!opModeIsActive())
 			return;

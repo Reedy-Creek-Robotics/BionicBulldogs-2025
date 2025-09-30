@@ -12,4 +12,4 @@ DcMotorRunMode = {
 DcMotorZeroPowerBehavior = {
 	Float = 0,
 	Brake = 1
-};
+}
