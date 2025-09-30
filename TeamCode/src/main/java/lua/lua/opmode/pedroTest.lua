@@ -35,8 +35,6 @@ function opmode.init()
 	)
 end
 
-telemetry.addLine("help");
-
 function opmode.start()
 	a:start(0);
 end

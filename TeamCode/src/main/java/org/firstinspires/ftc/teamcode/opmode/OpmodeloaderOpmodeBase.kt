@@ -2,7 +2,6 @@ package org.firstinspires.ftc.teamcode.opmode
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode
 import com.minerkid08.dynamicopmodeloader.OpmodeLoader
-import com.qualcomm.robotcore.eventloop.opmode.TeleOp
 import com.qualcomm.robotcore.util.ElapsedTime
 import org.firstinspires.ftc.teamcode.modules.LuaGamepad
 import org.firstinspires.ftc.teamcode.modules.LuaHardwaremap

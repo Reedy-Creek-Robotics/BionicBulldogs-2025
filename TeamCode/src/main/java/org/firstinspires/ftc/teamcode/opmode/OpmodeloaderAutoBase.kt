@@ -1,7 +1,6 @@
 package org.firstinspires.ftc.teamcode.opmode
 
 import com.minerkid08.dynamicopmodeloader.OpmodeLoader
-import com.pedropathing.follower.Follower
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode
 import com.qualcomm.robotcore.util.ElapsedTime
 import org.firstinspires.ftc.teamcode.modules.LuaHardwaremap

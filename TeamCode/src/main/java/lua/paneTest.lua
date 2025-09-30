@@ -26,8 +26,3 @@ robotPane:addData("slide state", "reset");
 otherPane:addLine("no path running");
 
 TelemPaneManager:update();
-actionPane:addLine("error: 'path' action failed2");
-actionPane:addLine("error: 'path' action failed3");
-actionPane:addLine("error: 'path' action failed4");
-actionPane:addLine("error: 'path' action failed5");
-TelemPaneManager:update();
