@@ -1,7 +1,7 @@
 package.path = package.path .. ";./lua/?.lua";
 
-require("lua.modules.action.seqAction");
-require("lua.modules.action.parallelAction");
+require("modules.action.seqAction");
+require("modules.action.parallelAction");
 
 local t = os.time();
 
