@@ -12,38 +12,20 @@ function opmode.init()
 	a = SeqAction.new(
 		PathAction.new(
 			path.chain()
-			:add(path.line(24, 24, 24, 72))
-			:constantHeading(90)
-			:add(path.curve3(24, 72, 24, 96, 48, 96))
-			:constantHeading(90)
-			:add(path.line(48, 96, 96, 96))
-			:constantHeading(90)
-			:add(path.curve3(96, 96, 120, 96, 120, 72))
-			:constantHeading(90)
-			:add(path.line(120, 72, 120, 24))
-			:constantHeading(90)
+			:add(path.line(24.00, 12.00, 24.00, 60.00))
+			:constantHeading(90.00)
+			:add(path.curve3(24.00, 60.00, 24.00, 84.00, 48.00, 84.00))
+			:constantHeading(90.00)
+			:add(path.line(48.00, 84.00, 96.00, 84.00))
+			:linearHeading(90.00, 0.00)
+			:add(path.curve3(96.00, 84.00, 120.00, 84.00, 120.00, 60.00))
+			:constantHeading(0.00)
+			:add(path.line(120.00, 60.00, 120.00, 12.00))
+			:constantHeading(0.00)
 			:build()
 		)
-	);
+	)
 end
-
-
-SeqAction.new(
-  PathAction.new(
-      path.chain()
-      :add(path.line(24, 24, 24, 72))
-      :constantHeading(90)
-      :add(path.curve3(24, 72, 24, 96, 48, 96))
-      :constantHeading(90)
-      :add(path.line(48, 96, 96, 96))
-      :constantHeading(90)
-      :add(path.curve3(96, 96, 120, 96, 120, 72))
-      :constantHeading(90)
-      :add(path.line(120, 72, 120, 24))
-      :constantHeading(90)
-      :build()
-  )
-)
 
 function opmode.start()
 	follower.initTelem();

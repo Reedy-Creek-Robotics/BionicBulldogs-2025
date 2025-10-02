@@ -50,7 +50,7 @@ file.eachLine {
 }
 
 tasks.register('uploadAdb', Exec) {
-    def adb = "$sdkDir/platform-tools/adb"
+    def adb = "$sdkDir\\\\platform-tools\\\\adb"
     ignoreExitValue = true
     commandLine adb, "push", "$quickStartDir/lua", "/sdcard"
 }
