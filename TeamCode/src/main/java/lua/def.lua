@@ -30,6 +30,13 @@ function DcMotor:setMode(mode) end
 ---@param mode integer
 function DcMotor:setZeroPowerBehavior(mode) end
 
+---@class DcMotorEx : DcMotor
+DcMotorEx = {};
+---@return number
+function DcMotorEx:getCurrent() end
+---@return number
+function DcMotorEx:getVelocity() end
+
 ---@class Servo
 Servo = {};
 ---@param power number
@@ -58,6 +65,10 @@ hardwareMap = {};
 ---@param name string
 ---@return DcMotor
 function hardwareMap.dcmotorGet(name) end
+
+---@param name string
+---@return DcMotorEx
+function hardwareMap.dcmotorexGet(name) end
 
 ---@param name string
 ---@return Servo
