@@ -1,5 +1,6 @@
 require("modules.telemetry");
 require("modules.action.init");
+require("modules.action.robot");
 
 ---@type Opmode
 local opmode = { name = "redFront" };
