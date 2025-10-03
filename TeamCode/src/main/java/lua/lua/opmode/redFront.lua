@@ -3,7 +3,7 @@ require("modules.action.init");
 require("modules.action.robot");
 
 ---@type Opmode
-local opmode = { name = "redBack" };
+local opmode = { name = "redFront" };
 
 ---@type Action
 local a;
@@ -11,21 +11,33 @@ local a;
 function opmode.init()
 	follower.setPosition(24, 24, 90);
 	a = SeqAction.new(
+        PathAction.new(
+            path.chain()
+            :add(path.line(60.00, 7.00, 60.00, 12.00))
+            :linearHeading(90.00, 66.72)
+            :build()
+        ),
         Shoot.new(3),
         PathAction.new(
             path.chain()
-            :add(path.line(60.00, 136.00, 40.00, 84.00))
-            :linearHeading(0.00, 180.00)
+            :add(path.line(60.00, 12.00, 38.00, 36.00))
+            :linearHeading(66.72, 180.00)
             :build()
         ),
         Load.new(3),
         PathAction.new(
             path.chain()
-            :add(path.line(40.00, 84.00, 61.00, 97.00))
-            :linearHeading(180.00, 30.00)
+            :add(path.line(38.00, 36.00, 60.00, 12.00))
+            :linearHeading(-180.00, 66.72)
             :build()
         ),
-        Shoot.new(3)
+        Shoot.new(3),
+        PathAction.new(
+            path.chain()
+            :add(path.line(60.00, 12.00, 60.00, 36.00))
+            :linearHeading(66.72, 90.00)
+            :build()
+        )
       )
 
 end
@@ -43,7 +55,7 @@ function opmode.update(dt, et)
 	follower.telem();
 	local state = a:update(dt, et);
 	if (state ~= ActionState.Running) then
-		profiler.genString("redBack.txt", a);
+		profiler.genString("redFront.txt", a);
 		if (state ~= ActionState.Done) then
 			error(("root action '%s' failed"):format(tostring(a)));
 		end
