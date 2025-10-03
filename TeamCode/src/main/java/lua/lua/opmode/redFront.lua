@@ -31,7 +31,13 @@ function opmode.init()
             :linearHeading(-180.00, 66.72)
             :build()
         ),
-        Shoot.new(3)
+        Shoot.new(3),
+        PathAction.new(
+            path.chain()
+            :add(path.line(60.00, 12.00, 60.00, 36.00))
+            :linearHeading(66.72, 90.00)
+            :build()
+        )
       )
 
 end
