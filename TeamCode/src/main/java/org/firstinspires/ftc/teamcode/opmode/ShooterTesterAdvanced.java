@@ -24,7 +24,7 @@ public class ShooterTesterAdvanced extends LinearOpMode {
     private NanoFileServer server;
     private static final int PORT = 8888;
 
-    double powerIncrement = 0.1;
+    double powerIncrement = 0.05;
 
     Datalog log;
 
@@ -111,6 +111,8 @@ public class ShooterTesterAdvanced extends LinearOpMode {
             }
 
             // telemetry
+            telemetry.addData("IS_LOGGING", loggingEnabled);
+            telemetry.addLine("");
             telemetry.addData("set power", motorPower);
             telemetry.addData("actual power", motor.getPower());
             telemetry.addData("current", current);
