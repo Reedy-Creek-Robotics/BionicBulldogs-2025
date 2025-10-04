@@ -13,6 +13,7 @@ object LuaDefines
 		const val RunWithoutEncoder = 0;
 		const val StopAndResetEncoder = 1;
 		const val RunToPosition = 2;
+		const val RunUsingEncoder = 3;
 	}
 
 	object ZeroPowerBehavior
