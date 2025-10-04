@@ -26,6 +26,8 @@ local shooter;
 local shooterMotor;
 ---@type DcMotor
 local intakeMotor;
+---@type number
+local maxVelocity = 2100;
 
 ---@enum IntakeState
 IntakeState = {
@@ -122,7 +124,7 @@ function opmode.update(dt, et)
 --2240 | 2600 | 2100
 --PIDF Shooter Acceleration to target RPM
 	if (shooterRunning) then
-		shooterMotor:setVelocity(2100 * shooterCurrentPower)
+		shooterMotor:setVelocity(maxVelocity * shooterCurrentPower)
 	end
 
 	robotPane:addData("shooterPwr", shooterPower);
