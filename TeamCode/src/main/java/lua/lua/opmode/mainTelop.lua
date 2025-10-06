@@ -27,7 +27,7 @@ local shooterMotor;
 ---@type DcMotor
 local intakeMotor;
 ---@type number
-local maxVelocity = 2100;
+local maxVelocity = 2600;
 
 ---@enum IntakeState
 IntakeState = {
@@ -44,6 +44,7 @@ function opmode.init()
 	require("modules.telemetry");
 	drive = HDrive.new();
 	drive.imu = hardwareMap.spimuGet();
+	aprilTagProcessor.init(1280, 720, 2, 255)
 
 	shooter = hardwareMap.servoGet("transfer");
 	shooterMotor = hardwareMap.dcmotorexGet("shooter");
@@ -57,13 +58,13 @@ function opmode.start()
 end
 
 function opmode.update(dt, et)
---Drive the bot
+	--Drive the bot
 	local forward = gamepad.getLeftStickY();
 	local right = gamepad.getLeftStickX();
-  local rotate = gamepad.getRightStickX();
+	local rotate = gamepad.getRightStickX();
 	drive:driveFr(forward, right, rotate);
 
---Forward/stop intake
+	--Forward/stop intake
 	if (gamepad.getRightBumper2()) then
 		if (intakeState == IntakeState.Forward) then
 			intakeMotor:setPower(IntakeState.Stopped);
@@ -74,7 +75,7 @@ function opmode.update(dt, et)
 		end
 	end
 
---Reverse/stop intake
+	--Reverse/stop intake
 	if (gamepad.getLeftBumper2()) then
 		if (intakeState == IntakeState.Reverse) then
 			intakeMotor:setPower(IntakeState.Stopped);
@@ -85,7 +86,7 @@ function opmode.update(dt, et)
 		end
 	end
 
---Run/don't run specifically the shooter
+	--Run/don't run specifically the shooter
 	if (gamepad.getCircle2()) then
 		shooterCurrentPower = shooterPower;
 		shooterMotor:setPower(shooterPower);
@@ -97,7 +98,7 @@ function opmode.update(dt, et)
 		shooterRunning = false;
 	end
 
---Start intake and shooter
+	--Start intake and shooter
 	if (gamepad.getCross2()) then
 		intakeState = IntakeState.Forward;
 		intakeMotor:setPower(IntakeState.Forward);
@@ -106,7 +107,7 @@ function opmode.update(dt, et)
 		shooterState = 1;
 	end
 
---Close shooter automatically after 3 secs
+	--Close shooter automatically after 3 secs
 	if (shooterState == 1) then
 		if (shooterTime + 3 <= et) then
 			shooter:setPosition(ShooterClosed);
@@ -114,15 +115,24 @@ function opmode.update(dt, et)
 		end
 	end
 
---Increment/decrement Shooter Power
+	--Increment/decrement Shooter Power
 	if (gamepad.getDpadUp2()) then
 		shooterPower = shooterPower + 0.05;
 	end
 	if (gamepad.getDpadDown2()) then
 		shooterPower = shooterPower - 0.05;
 	end
---2240 | 2600 | 2100
---PIDF Shooter Acceleration to target RPM
+	--2240 | 2600 | 2100
+	--PIDF Shooter Acceleration to target RPM
+
+--Obtain the blue goal april tag
+	local bTag = aprilTagProcessor.getTag(20)
+
+	--Calculate power to distance (const may be a function for regression)
+	local const = 0.5
+	--local dist = bTag:getDist * const
+	local maxVelocity = 2600
+
 	if (shooterRunning) then
 		shooterMotor:setVelocity(maxVelocity * shooterCurrentPower)
 	end
@@ -131,6 +141,7 @@ function opmode.update(dt, et)
 	robotPane:addData("shooterPwr2", shooterCurrentPower);
 	robotPane:addData("shooterCur", shooterMotor:getCurrent());
 	robotPane:addData("shooterVel", shooterMotor:getVelocity());
+  if bTag:valid() then aprilTagPane:addData("tag distance", bTag:getDist()) else aprilTagPane:addLine("tag distance: -1") end
 	TelemPaneManager:update();
 
 	return false;
