@@ -8,7 +8,9 @@ local shooterCurrentLimit = 2.25;
 
 local shooterCurrentPower = 0;
 
+---@type number
 local shooterTime = 0;
+
 local shooterState = 0;
 local shooterPower = 1;
 
@@ -28,6 +30,14 @@ local shooterMotor;
 local intakeMotor;
 ---@type number
 local maxVelocity = 2600;
+---@type number[]
+local shooterVelocity = {1200, 1300, 1600}
+---@type number
+local id = 1
+
+--Id to string label for telemetry
+---@type string[]
+local shooterLabel = {"Close", "Moderate", "Far"}
 
 ---@enum IntakeState
 IntakeState = {
@@ -35,6 +45,8 @@ IntakeState = {
 	Stopped = 0,
 	Reverse = -1
 }
+
+
 
 ---@type IntakeState
 local intakeState = IntakeState.Stopped;
@@ -44,7 +56,7 @@ function opmode.init()
 	require("modules.telemetry");
 	drive = HDrive.new();
 	drive.imu = hardwareMap.spimuGet();
-	aprilTagProcessor.init(1280, 720, 2, 255)
+	--aprilTagProcessor.init(1280, 720, 2, 255)
 
 	shooter = hardwareMap.servoGet("transfer");
 	shooterMotor = hardwareMap.dcmotorexGet("shooter");
@@ -63,6 +75,15 @@ function opmode.update(dt, et)
 	local right = gamepad.getLeftStickX();
 	local rotate = gamepad.getRightStickX();
 	drive:driveFr(forward, right, rotate);
+
+	--Sets velocity off of Dpad
+	if (gamepad.getDpadDown2() and id ~= 1) then
+		id = id - 1
+	end
+
+	if (gamepad.getDpadUp2() and id ~= 3) then
+		id = id + 1
+	end
 
 	--Forward/stop intake
 	if (gamepad.getRightBumper2()) then
@@ -107,26 +128,16 @@ function opmode.update(dt, et)
 		shooterState = 1;
 	end
 
-	--Close shooter automatically after 3 secs
+	--Close shooter automatically after 0.2 secs
 	if (shooterState == 1) then
-		if (shooterTime + 3 <= et) then
+		if (shooterTime + 0.2 <= et) then
 			shooter:setPosition(ShooterClosed);
 			shooterState = 0;
 		end
 	end
 
-	--Increment/decrement Shooter Power
-	if (gamepad.getDpadUp2()) then
-		shooterPower = shooterPower + 0.05;
-	end
-	if (gamepad.getDpadDown2()) then
-		shooterPower = shooterPower - 0.05;
-	end
-	--2240 | 2600 | 2100
-	--PIDF Shooter Acceleration to target RPM
-
 --Obtain the blue goal april tag
-	local bTag = aprilTagProcessor.getTag(20)
+	--local bTag = aprilTagProcessor.getTag(20)
 
 	--Calculate power to distance (const may be a function for regression)
 	local const = 0.5
@@ -134,14 +145,15 @@ function opmode.update(dt, et)
 	local maxVelocity = 2600
 
 	if (shooterRunning) then
-		shooterMotor:setVelocity(maxVelocity * shooterCurrentPower)
+		shooterMotor:setVelocity(shooterVelocity[id])
 	end
 
-	robotPane:addData("shooterPwr", shooterPower);
 	robotPane:addData("shooterPwr2", shooterCurrentPower);
 	robotPane:addData("shooterCur", shooterMotor:getCurrent());
 	robotPane:addData("shooterVel", shooterMotor:getVelocity());
-  if bTag:valid() then aprilTagPane:addData("tag distance", bTag:getDist()) else aprilTagPane:addLine("tag distance: -1") end
+	robotPane:addLine(shooterLabel[id]);
+	robotPane:addData("setVel", shooterVelocity[id]);
+	--if bTag:valid() then aprilTagPane:addData("tag distance", bTag:getDist()) else aprilTagPane:addLine("tag distance: -1") end
 	TelemPaneManager:update();
 
 	return false;
