@@ -89,6 +89,7 @@ public class ShooterTesterAdvanced extends LinearOpMode {
                 motor.setPower(0);
             }
 
+            // Toggles the logging
             if( gamepad1.circleWasPressed()) {
                 loggingEnabled = !loggingEnabled;
             }
