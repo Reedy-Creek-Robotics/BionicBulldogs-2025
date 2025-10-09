@@ -9,33 +9,27 @@ local opmode = { name = "redBack" };
 local a;
 
 function opmode.init()
+	shooter:init();
+	intake:init();
 	follower.setPosition(24, 24, 90);
 	a = SeqAction.new(
-        Shoot.new(3),
-        PathAction.new(
-            path.chain()
-            :add(path.line(60.00, 136.00, 40.00, 84.00))
-            :linearHeading(0.00, 180.00)
-            :build()
-        ),
-        Load.new(3),
-        PathAction.new(
-            path.chain()
-            :add(path.line(40.00, 84.00, 61.00, 97.00))
-            :linearHeading(180.00, 30.00)
-            :build()
-        ),
-        Shoot.new(3)
-      )
-
+		IntakeAction.new(3),
+		ShooterEnableAction.new(1600),
+		SleepAction.new(5),
+		ShootAction.new(),
+		ShooterDisableAction.new(),
+		SleepAction.new(5)
+	)
 end
 
 function opmode.start()
+	shooter:close();
 	follower.initTelem();
 	a:start(0);
 end
 
 function opmode.update(dt, et)
+	shooter:telem();
 	drivePane:addData("x", follower.getPositionX());
 	drivePane:addData("y", follower.getPositionY());
 	drivePane:addData("h", follower.getPositionH());

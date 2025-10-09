@@ -88,9 +88,7 @@ function opmode.update(dt, et)
 	--Obtain the blue goal april tag
 	--local bTag = aprilTagProcessor.getTag(20)
 
-	robotPane:addData("shooterPwr2", 1);
-	robotPane:addData("shooterCur", shooter.motor:getCurrent());
-	robotPane:addData("shooterVel", shooter.motor:getVelocity());
+	shooter:telem();
 	robotPane:addLine(shooterLabel[id]);
 	robotPane:addData("setVel", shooterVelocity[id]);
 	--if bTag:valid() then aprilTagPane:addData("tag distance", bTag:getDist()) else aprilTagPane:addLine("tag distance: -1") end

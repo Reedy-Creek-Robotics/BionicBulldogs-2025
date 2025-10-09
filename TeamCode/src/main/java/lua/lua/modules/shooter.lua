@@ -35,15 +35,24 @@ function shooter:shoot(et)
 end
 
 ---@param et number
+---@return boolean
 function shooter:update(et)
 	if (self.time ~= nil) then
 		if (self.time + 0.2 <= et) then
 			self.gate:setPosition(self.gateClosed);
 			self.time = nil;
+			return true;
 		end
 	end
+	return false;
 end
 
 function shooter:close()
 	self.gate:setPosition(self.gateClosed);
+end
+
+function shooter:telem()
+	robotPane:addData("shooterPwr2", 1);
+	robotPane:addData("shooterCur", shooter.motor:getCurrent());
+	robotPane:addData("shooterVel", shooter.motor:getVelocity());
 end
