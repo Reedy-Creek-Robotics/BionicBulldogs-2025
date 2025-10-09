@@ -56,7 +56,7 @@ function opmode.init()
 	require("modules.telemetry");
 	drive = HDrive.new();
 	drive.imu = hardwareMap.spimuGet();
-	--aprilTagProcessor.init(1280, 720, 2, 255)
+  aprilTagProcessor.init(1280, 720, 2, 255)
 
 	shooter = hardwareMap.servoGet("transfer");
 	shooterMotor = hardwareMap.dcmotorexGet("shooter");
@@ -137,7 +137,7 @@ function opmode.update(dt, et)
 	end
 
 --Obtain the blue goal april tag
-	--local bTag = aprilTagProcessor.getTag(20)
+	local bTag = aprilTagProcessor.getTag(20)
 
 	--Calculate power to distance (const may be a function for regression)
 	local const = 0.5
@@ -153,7 +153,7 @@ function opmode.update(dt, et)
 	robotPane:addData("shooterVel", shooterMotor:getVelocity());
 	robotPane:addLine(shooterLabel[id]);
 	robotPane:addData("setVel", shooterVelocity[id]);
-	--if bTag:valid() then aprilTagPane:addData("tag distance", bTag:getDist()) else aprilTagPane:addLine("tag distance: -1") end
+	if bTag:valid() then aprilTagPane:addData("tag distance", bTag:getDist()) else aprilTagPane:addLine("tag distance: -1") end
 	TelemPaneManager:update();
 
 	return false;

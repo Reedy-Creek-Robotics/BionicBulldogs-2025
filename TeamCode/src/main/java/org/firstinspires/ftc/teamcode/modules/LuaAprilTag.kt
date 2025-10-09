@@ -31,7 +31,12 @@ object LuaAprilTagProcessor
 	@JvmStatic
 	fun init(width: Int, height: Int, exposureMS: Int, gain: Int)
 	{
-		processor = AprilTagProcessor.Builder().build();
+		processor = AprilTagProcessor.Builder()
+			.setLensIntrinsics(596.507, 596.507, 960.585, 536.89)
+			.build();
+
+		processor?.setDecimation(1.0f)
+
 		val visionPortal = VisionPortal.Builder()
 			.setCamera(hardwareMap?.get(WebcamName::class.java, "Webcam 1"))
 			.addProcessor(processor)
@@ -39,6 +44,7 @@ object LuaAprilTagProcessor
 			.setCameraResolution(Size(width, height))
 			.setAutoStartStreamOnBuild(true)
 			.build();
+
 		setManualExposure(exposureMS, gain, visionPortal);
 	}
 
