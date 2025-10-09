@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.pedroPathing;
 
+import com.pedropathing.control.FilteredPIDFCoefficients;
 import com.pedropathing.follower.Follower;
 import com.pedropathing.follower.FollowerConstants;
 import com.pedropathing.ftc.FollowerBuilder;
@@ -17,7 +18,8 @@ public class Constants
 					.mass(13)
 					.forwardZeroPowerAcceleration(-32.247)
 					.lateralZeroPowerAcceleration(-63.754)
-					.centripetalScaling(0.0005);
+					.centripetalScaling(0.0005)
+					.drivePIDFCoefficients(new FilteredPIDFCoefficients(0.015, 0, 0.00001, 0.6, 0.01));
 
 	public static MecanumConstants driveConstants = new MecanumConstants()
 					.leftFrontMotorName("frontLeft")
@@ -32,12 +34,14 @@ public class Constants
 					.yVelocity(51.9);
 
 	public static TwoWheelConstants localizerConstants = new TwoWheelConstants()
-					.forwardTicksToInches(0.001977958)
-					.strafeTicksToInches(0.0019282840)
+					//.forwardTicksToInches(0.001977958)
+					//.strafeTicksToInches(0.0019282840)
+					.forwardTicksToInches(0.0019707)
+					.strafeTicksToInches(0.001980123)
 					.forwardPodY(0)
 					.strafePodX(0)
 					.forwardEncoder_HardwareMapName("backRight")
-					.strafeEncoder_HardwareMapName("backLeft")
+					.strafeEncoder_HardwareMapName("frontLeft")
 					.forwardEncoderDirection(Encoder.FORWARD)
 					.strafeEncoderDirection(Encoder.FORWARD)
 					.IMU_HardwareMapName("imu")
@@ -48,7 +52,7 @@ public class Constants
 									)
 					);
 
-	public static PathConstraints pathConstraints = new PathConstraints(0.995, 0.1, 0.1, 0.007, 500, 4, 10, 1);
+	public static PathConstraints pathConstraints = new PathConstraints(0.995, 0.1, 0.1, 0.007, 500, 1, 10, 1);
 
 	public static Follower createFollower(HardwareMap hardwareMap)
 	{

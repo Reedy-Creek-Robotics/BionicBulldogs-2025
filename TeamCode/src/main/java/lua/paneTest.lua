@@ -23,6 +23,6 @@ drivePane:addData("h", 45);
 robotPane:addData("pos", -300);
 robotPane:addData("target pos", 500);
 robotPane:addData("slide state", "reset");
-otherPane:addLine("no path running");
+aprilTagPane:addLine("no path running");
 
 TelemPaneManager:update();

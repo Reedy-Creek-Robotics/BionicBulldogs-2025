@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode.opmode
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode
 import com.minerkid08.dynamicopmodeloader.OpmodeLoader
 import com.qualcomm.robotcore.util.ElapsedTime
+import org.firstinspires.ftc.teamcode.modules.LuaAprilTagProcessor
 import org.firstinspires.ftc.teamcode.modules.LuaGamepad
 import org.firstinspires.ftc.teamcode.modules.LuaHardwaremap
 import org.firstinspires.ftc.teamcode.modules.LuaLog
@@ -18,6 +19,7 @@ abstract class OpmodeloaderOpmodeBase(private val name: String) : LinearOpMode()
 		LuaGamepad.init(builder, gamepad1);
 		LuaHardwaremap.init(builder, hardwareMap);
 		LuaTelemetry.init(builder, telemetry);
+		LuaAprilTagProcessor.build(builder, hardwareMap)
 		LuaLog.init(builder);
 
 		opmodeloader.init();

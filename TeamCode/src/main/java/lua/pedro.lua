@@ -29,6 +29,7 @@ function follower.isBusy() end
 
 function follower.update() end
 function follower.telem() end
+function follower.initTelem() end
 
 
 ---@class PathBuilder
