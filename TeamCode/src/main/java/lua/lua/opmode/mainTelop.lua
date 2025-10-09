@@ -1,20 +1,7 @@
 require("modules.hdrive");
 require("modules.telemPanes");
-
-local ShooterOpen = 0.85;
-local ShooterClosed = 1;
-
-local shooterCurrentLimit = 2.25;
-
-local shooterCurrentPower = 0;
-
----@type number
-local shooterTime = 0;
-
-local shooterState = 0;
-local shooterPower = 1;
-
-local shooterRunning = false;
+require("modules.intake");
+require("modules.shooter");
 
 ---@type Opmode
 local opmode = { name = "mainTelop" };
@@ -22,51 +9,27 @@ local opmode = { name = "mainTelop" };
 ---@type HDrive
 local drive;
 
----@type Servo
-local shooter;
----@type DcMotorEx
-local shooterMotor;
----@type DcMotor
-local intakeMotor;
----@type number
-local maxVelocity = 2600;
 ---@type number[]
-local shooterVelocity = {1200, 1300, 1600}
+local shooterVelocity = { 1200, 1300, 1600 }
 ---@type number
 local id = 1
 
 --Id to string label for telemetry
 ---@type string[]
-local shooterLabel = {"Close", "Moderate", "Far"}
-
----@enum IntakeState
-IntakeState = {
-	Forward = 1,
-	Stopped = 0,
-	Reverse = -1
-}
-
-
-
----@type IntakeState
-local intakeState = IntakeState.Stopped;
-
+local shooterLabel = { "Close", "Moderate", "Far" }
 
 function opmode.init()
 	require("modules.telemetry");
 	drive = HDrive.new();
 	drive.imu = hardwareMap.spimuGet();
-  aprilTagProcessor.init(1280, 720, 2, 255)
+	--aprilTagProcessor.init(1280, 720, 2, 255)
 
-	shooter = hardwareMap.servoGet("transfer");
-	shooterMotor = hardwareMap.dcmotorexGet("shooter");
-	intakeMotor = hardwareMap.dcmotorGet("intake");
-	shooterMotor:setMode(DcMotorRunMode.RunUsingEncoder);
-	shooterMotor:setDirection(Direction.Reverse);
+	intake:init();
+	shooter:init();
 end
 
 function opmode.start()
-	shooter:setPosition(ShooterClosed);
+	shooter:close();
 end
 
 function opmode.update(dt, et)
@@ -79,81 +42,58 @@ function opmode.update(dt, et)
 	--Sets velocity off of Dpad
 	if (gamepad.getDpadDown2() and id ~= 1) then
 		id = id - 1
+		shooter:start(shooterVelocity[id]);
 	end
 
 	if (gamepad.getDpadUp2() and id ~= 3) then
 		id = id + 1
+		shooter:start(shooterVelocity[id]);
 	end
 
 	--Forward/stop intake
 	if (gamepad.getRightBumper2()) then
-		if (intakeState == IntakeState.Forward) then
-			intakeMotor:setPower(IntakeState.Stopped);
-			intakeState = IntakeState.Stopped;
+		if (intake.state == IntakeState.Forward) then
+			intake:stop();
 		else
-			intakeMotor:setPower(IntakeState.Forward);
-			intakeState = IntakeState.Forward;
+			intake:forward();
 		end
 	end
 
 	--Reverse/stop intake
 	if (gamepad.getLeftBumper2()) then
-		if (intakeState == IntakeState.Reverse) then
-			intakeMotor:setPower(IntakeState.Stopped);
-			intakeState = IntakeState.Stopped;
+		if (intake.state == IntakeState.Reverse) then
+			intake:stop();
 		else
-			intakeMotor:setPower(IntakeState.Reverse);
-			intakeState = IntakeState.Reverse;
+			intake:reverse()
 		end
 	end
 
 	--Run/don't run specifically the shooter
 	if (gamepad.getCircle2()) then
-		shooterCurrentPower = shooterPower;
-		shooterMotor:setPower(shooterPower);
-		shooterRunning = true;
+		shooter:start(shooterVelocity[id]);
 	end
 	if (gamepad.getTriangle2()) then
-		shooterCurrentPower = 0;
-		shooterMotor:setPower(0);
-		shooterRunning = false;
+		shooter:stop();
 	end
 
 	--Start intake and shooter
 	if (gamepad.getCross2()) then
-		intakeState = IntakeState.Forward;
-		intakeMotor:setPower(IntakeState.Forward);
-		shooter:setPosition(ShooterOpen);
-		shooterTime = et;
-		shooterState = 1;
+		intake:forward();
+		shooter:shoot(et);
 	end
 
 	--Close shooter automatically after 0.2 secs
-	if (shooterState == 1) then
-		if (shooterTime + 0.2 <= et) then
-			shooter:setPosition(ShooterClosed);
-			shooterState = 0;
-		end
-	end
+	shooter:update(et);
 
---Obtain the blue goal april tag
-	local bTag = aprilTagProcessor.getTag(20)
+	--Obtain the blue goal april tag
+	--local bTag = aprilTagProcessor.getTag(20)
 
-	--Calculate power to distance (const may be a function for regression)
-	local const = 0.5
-	--local dist = bTag:getDist * const
-	local maxVelocity = 2600
-
-	if (shooterRunning) then
-		shooterMotor:setVelocity(shooterVelocity[id])
-	end
-
-	robotPane:addData("shooterPwr2", shooterCurrentPower);
-	robotPane:addData("shooterCur", shooterMotor:getCurrent());
-	robotPane:addData("shooterVel", shooterMotor:getVelocity());
+	robotPane:addData("shooterPwr2", 1);
+	robotPane:addData("shooterCur", shooter.motor:getCurrent());
+	robotPane:addData("shooterVel", shooter.motor:getVelocity());
 	robotPane:addLine(shooterLabel[id]);
 	robotPane:addData("setVel", shooterVelocity[id]);
-	if bTag:valid() then aprilTagPane:addData("tag distance", bTag:getDist()) else aprilTagPane:addLine("tag distance: -1") end
+	--if bTag:valid() then aprilTagPane:addData("tag distance", bTag:getDist()) else aprilTagPane:addLine("tag distance: -1") end
 	TelemPaneManager:update();
 
 	return false;
