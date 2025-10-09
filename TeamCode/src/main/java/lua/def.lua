@@ -36,6 +36,8 @@ DcMotorEx = {};
 function DcMotorEx:getCurrent() end
 ---@return number
 function DcMotorEx:getVelocity() end
+---@param ticks number
+function DcMotorEx:setVelocity(ticks) end
 
 ---@class Servo
 Servo = {};

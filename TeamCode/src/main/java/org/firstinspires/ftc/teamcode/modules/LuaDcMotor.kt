@@ -39,6 +39,7 @@ class LuaDcMotor(private val m: DcMotor)
 			LuaDefines.RunMode.RunWithoutEncoder   -> DcMotor.RunMode.RUN_WITHOUT_ENCODER
 			LuaDefines.RunMode.StopAndResetEncoder -> DcMotor.RunMode.STOP_AND_RESET_ENCODER
 			LuaDefines.RunMode.RunToPosition       -> DcMotor.RunMode.RUN_TO_POSITION
+			LuaDefines.RunMode.RunUsingEncoder     -> DcMotor.RunMode.RUN_USING_ENCODER
 			else                                   -> DcMotor.RunMode.RUN_WITHOUT_ENCODER
 		}
 	}
@@ -74,6 +75,13 @@ class LuaDcMotorEx(private val m: DcMotorEx)
 	{
 		m.power = power;
 	}
+
+	@OpmodeLoaderFunction
+	fun setVelocity(ticks: Double)
+	{
+		m.velocity = ticks;
+	}
+
 
 	@OpmodeLoaderFunction
 	fun setTargetPosition(pos: Int)

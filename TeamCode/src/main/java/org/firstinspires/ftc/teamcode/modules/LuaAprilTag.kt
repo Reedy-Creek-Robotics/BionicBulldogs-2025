@@ -18,8 +18,9 @@ object LuaAprilTagProcessor
 	fun build(builder: FunctionBuilder, hwMap: HardwareMap)
 	{
 		hardwareMap = hwMap;
-		builder.pushTable("aprilTag");
+		builder.pushTable("aprilTagProcessor");
 		builder.addStaticClassAsGlobal(LuaAprilTagProcessor::class.java)
+		builder.addClassAsClass(LuaAprilTag::class.java)
 		builder.popTable();
 	}
 
@@ -27,19 +28,28 @@ object LuaAprilTagProcessor
 	var processor: AprilTagProcessor? = null;
 
 	@OpmodeLoaderFunction
-	fun init()
+	@JvmStatic
+	fun init(width: Int, height: Int, exposureMS: Int, gain: Int)
 	{
-		processor = AprilTagProcessor.Builder().build();
+		processor = AprilTagProcessor.Builder()
+			.setLensIntrinsics(596.507, 596.507, 960.585, 536.89)
+			.build();
+
+		processor?.setDecimation(1.0f)
+
 		val visionPortal = VisionPortal.Builder()
 			.setCamera(hardwareMap?.get(WebcamName::class.java, "Webcam 1"))
 			.addProcessor(processor)
 			.setStreamFormat(VisionPortal.StreamFormat.MJPEG)
-			.setCameraResolution(Size(1920, 1080))
+			.setCameraResolution(Size(width, height))
+			.setAutoStartStreamOnBuild(true)
 			.build();
-		setManualExposure(2, 255, visionPortal);
+
+		setManualExposure(exposureMS, gain, visionPortal);
 	}
 
 	@OpmodeLoaderFunction
+	@JvmStatic
 	fun getTag(id: Int): LuaAprilTag
 	{
 		val detections = processor?.detections;
@@ -92,5 +102,10 @@ class LuaAprilTag(private val tag: AprilTagDetection?)
 	fun valid() = (tag != null)
 
 	@OpmodeLoaderFunction
-	fun getDist() = tag?.ftcPose?.bearing;
+	fun getDist(): Double
+	{
+		if(tag != null)
+			return tag.ftcPose.range;
+		return -1.0;
+	}
 }
