@@ -8,35 +8,38 @@ local opmode = { name = "AprilTelop" };
 ---@type HDrive
 local drive;
 
+---@integer
+--Use nums between 20 (Blue goal) and 24 (Red goal)
+local id = 24
+
 function opmode.init()
-	require("modules.telemetry");
-  aprilTagProcessor.init(1280, 720, 2, 255)
+    require("modules.telemetry");
+    --For accurate distances, the camera resolution MUST be exact to the resolution calibrated at
+    aprilTagProcessor.init(1920, 1080, 2, 255, 0.5)
 end
 
 --[[function opmode.start()
 
-end]]--
+end]] --
 
 function opmode.update()
     --Drive the bot
-  drive = HDrive.new();
-	drive.imu = hardwareMap.imuGet()
-	local forward = gamepad.getLeftStickY();
-	local right = gamepad.getLeftStickX();
-	local rotate = gamepad.getRightStickX();
-	drive:driveFr(forward, right, rotate);
+    drive = HDrive.new();
+    drive.imu = hardwareMap.imuGet()
+    local forward = gamepad.getLeftStickY();
+    local right = gamepad.getLeftStickX();
+    local rotate = gamepad.getRightStickX();
+    drive:driveFr(forward, right, rotate);
 
---Obtain the blue goal april tag
-	local bTag = aprilTagProcessor.getTag(20)
+    --Obtain the blue goal april tag
+    local bTag = aprilTagProcessor.getTag(id)
 
-	--Calculate power to distance (const may be a function for regression)
-	local const = 0.5
-	--local dist = bTag:getDist * const
-	local maxVelocity = 2600
-
-	if bTag:valid() then aprilTagPane:addData("tag distance", bTag:getDist()) else aprilTagPane:addLine("tag distance: -1") end
-	TelemPaneManager:update();
-	return false;
+    aprilTagPane:addData("is valid", bTag:valid())
+    aprilTagPane:addData("target id", id)
+    --get distance is exact to the pythagorean theorem
+    aprilTagPane:addData("distance", bTag:getDist())
+    TelemPaneManager:update();
+    return false;
 end
 
 addOpmode(opmode);

@@ -9,6 +9,10 @@ AprilTag = {}
 function AprilTag:valid() end
 ---@return number
 function AprilTag:getDist() end
+---@return number
+function AprilTag:y() end
+---@return number
+function AprilTag:x() end
 
 aprilTagProcessor = {}
 
@@ -16,8 +20,10 @@ aprilTagProcessor = {}
 ---@param height integer
 ---@param exposureMS integer
 ---@param gain integer
-function aprilTagProcessor.init(width, height, exposureMS, gain) end
+---@param decimation number
+function aprilTagProcessor.init(width, height, exposureMS, gain, decimation) end
 
 ---@param id integer
 ---@return AprilTag
 function aprilTagProcessor.getTag(id) end
+

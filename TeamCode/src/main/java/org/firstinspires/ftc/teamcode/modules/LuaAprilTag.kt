@@ -29,13 +29,14 @@ object LuaAprilTagProcessor
 
 	@OpmodeLoaderFunction
 	@JvmStatic
-	fun init(width: Int, height: Int, exposureMS: Int, gain: Int)
+	fun init(width: Int, height: Int, exposureMS: Int, gain: Int, decimation: Float)
 	{
 		processor = AprilTagProcessor.Builder()
 			.setLensIntrinsics(596.507, 596.507, 960.585, 536.89)
+			.setDrawAxes(true)
 			.build();
 
-		processor?.setDecimation(1.0f)
+		processor?.setDecimation(decimation)
 
 		val visionPortal = VisionPortal.Builder()
 			.setCamera(hardwareMap?.get(WebcamName::class.java, "Webcam 1"))
@@ -104,8 +105,24 @@ class LuaAprilTag(private val tag: AprilTagDetection?)
 	@OpmodeLoaderFunction
 	fun getDist(): Double
 	{
-		if(tag != null)
+		if (tag != null)
 			return tag.ftcPose.range;
 		return -1.0;
+	}
+
+	@OpmodeLoaderFunction
+	fun x(): Double
+	{
+		if (tag != null)
+			return tag.ftcPose.x;
+		return -1.0
+	}
+
+	@OpmodeLoaderFunction
+	fun y(): Double
+	{
+		if (tag != null)
+			return tag.ftcPose.y;
+		return -1.0
 	}
 }
