@@ -6,6 +6,7 @@ require("modules.utils")
 ---@field gateClosed number
 ---@field gateOpen number
 ---@field time number
+---@field vel number
 shooter = {
 	gateOpen = 0.85,
 	gateClosed = 1
@@ -20,6 +21,7 @@ end
 
 ---@param vel number
 function shooter:start(vel)
+	self.vel = vel;
 	self.motor:setPower(1);
 	self.motor:setVelocity(vel);
 end
@@ -45,6 +47,14 @@ function shooter:update(et)
 		end
 	end
 	return false;
+end
+
+function shooter:ready()
+	local vel = self.motor:getVelocity();
+	local dif = vel - (self.prevVel or 40);
+	local c = vel > self.vel - 10 and vel < self.vel + 10 and dif < 20;
+	self.prevVel = vel;
+	return c;
 end
 
 function shooter:close()

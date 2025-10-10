@@ -8,36 +8,40 @@ local opmode = { name = "blueBack" };
 ---@type Action
 local a;
 
-
-
 function opmode.init()
-	follower.setPosition(24, 24, 90);
-	a = SeqAction.new(
-          Shoot.new(3),
-          PathAction.new(
-              path.chain()
-              :add(path.line(84.00, 136.00, 104.00, 84.00))
-              :linearHeading(-180.00, 0.00)
-              :build()
-          ),
-          Load.new(3),
-          PathAction.new(
-              path.chain()
-              :add(path.line(104.00, 84.00, 83.00, 98.00))
-              :linearHeading(0.00, 150.00)
-              :build()
-          ),
-          Shoot.new(3)
-        )
+	shooter:init();
+	intake:init();
+	follower.setPosition(0, 0, 90);
 
+	a = SeqAction.new(
+		ShooterEnableAction.new(1460),
+		PathAction.new(
+			path.chain()
+			:add(path.line(0, 0, 0, 10))
+			:linearHeading(90, 112)
+			:build()
+		),
+		SleepAction.new(2),
+		ShootAction.new(4),
+		SleepAction.new(2),
+		ShooterDisableAction.new(),
+		PathAction.new(
+			path.chain()
+			:add(path.line(0, 10, 0, 15))
+			:constantHeading(112)
+			:build()
+		)
+	)
 end
 
 function opmode.start()
+	shooter:close();
 	follower.initTelem();
 	a:start(0);
 end
 
 function opmode.update(dt, et)
+	shooter:telem();
 	drivePane:addData("x", follower.getPositionX());
 	drivePane:addData("y", follower.getPositionY());
 	drivePane:addData("h", follower.getPositionH());
@@ -45,7 +49,7 @@ function opmode.update(dt, et)
 	follower.telem();
 	local state = a:update(dt, et);
 	if (state ~= ActionState.Running) then
-		profiler.genString("blueBack.txt", a);
+		profiler.genString("redBack.txt", a);
 		if (state ~= ActionState.Done) then
 			error(("root action '%s' failed"):format(tostring(a)));
 		end

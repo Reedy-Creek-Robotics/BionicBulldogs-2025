@@ -14,10 +14,21 @@ function opmode.init()
 	follower.setPosition(0, 0, 90);
 
 	a = SeqAction.new(
+		ShooterEnableAction.new(1460),
 		PathAction.new(
 			path.chain()
-			:add(path.line(0, 0, 0, 48))
-			:linearHeading(90, 70)
+			:add(path.line(0, 0, 0, 10))
+			:linearHeading(90, 68)
+			:build()
+		),
+		SleepAction.new(2),
+		ShootAction.new(4),
+		SleepAction.new(2),
+		ShooterDisableAction.new(),
+		PathAction.new(
+			path.chain()
+			:add(path.line(0, 10, 0, 15))
+			:constantHeading(68)
 			:build()
 		)
 	)

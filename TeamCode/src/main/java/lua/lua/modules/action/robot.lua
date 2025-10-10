@@ -4,31 +4,49 @@ require("modules.intake")
 
 
 ---@class ShootAction : Action
+---@field n number
 ShootAction = {
 	mt = {
 		__tostring = function (self)
 			return "Shoot";
 		end
-	}
+	},
+	t = -1
 };
 
 ---@return ShootAction
-function ShootAction.new()
+---@param n number
+function ShootAction.new(n)
 	local a = new(ShootAction);
+	a.n = n;
 	return a;
 end
 
 function ShootAction:start(et)
 	intake:forward();
-	shooter:shoot(et);
 end
 
 ---@param dt number
 ---@param et number
 ---@return ActionState
 function ShootAction:update(dt, et)
+	if (self.t == -1) then
+		if (shooter:ready()) then
+			self.t = et;
+		end
+	end
+	if (self.t > 0 and self.t + 0.1 <= et) then
+		shooter:shoot(et);
+		actionPane:addData("shoot", et);
+		self.t = -2;
+	end
 	if (shooter:update(et)) then
-		return ActionState.Done;
+		actionPane:addData("shoot reset", et);
+		self.n = self.n - 1;
+		if (self.n == 0) then
+			return ActionState.Done;
+		end
+		self.t = -1;
 	end
 	return ActionState.Running;
 end
