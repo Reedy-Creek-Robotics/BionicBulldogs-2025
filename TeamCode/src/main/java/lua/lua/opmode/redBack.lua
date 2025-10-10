@@ -11,14 +11,15 @@ local a;
 function opmode.init()
 	shooter:init();
 	intake:init();
-	follower.setPosition(24, 24, 90);
+	follower.setPosition(0, 0, 90);
+
 	a = SeqAction.new(
-		IntakeAction.new(3),
-		ShooterEnableAction.new(1600),
-		SleepAction.new(5),
-		ShootAction.new(),
-		ShooterDisableAction.new(),
-		SleepAction.new(5)
+		PathAction.new(
+			path.chain()
+			:add(path.line(0, 0, 0, 48))
+			:linearHeading(90, 70)
+			:build()
+		)
 	)
 end
 
