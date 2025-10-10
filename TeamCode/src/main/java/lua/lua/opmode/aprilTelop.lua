@@ -15,7 +15,7 @@ local id = 24
 function opmode.init()
     require("modules.telemetry");
     --For accurate distances, the camera resolution MUST be exact to the resolution calibrated at
-    aprilTagProcessor.init(1920, 1080, 2, 255, 0.5)
+    aprilTagProcessor.init(1920, 1080, 2, 255, 1.0)
 end
 
 --[[function opmode.start()
