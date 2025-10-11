@@ -13,6 +13,8 @@ function AprilTag:getDist() end
 function AprilTag:y() end
 ---@return number
 function AprilTag:x() end
+---@return number
+function AprilTag:bearing() end
 
 aprilTagProcessor = {}
 

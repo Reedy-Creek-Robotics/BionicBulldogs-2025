@@ -27,7 +27,7 @@ function opmode.init()
     require("modules.telemetry");
     drive = HDrive.new();
     drive.imu = hardwareMap.spimuGet();
-    --aprilTagProcessor.init(1280, 720, 2, 255)
+    aprilTagProcessor.init(1280, 720, 2, 255, 1.0)
 
     intake:init();
     shooter:init();
@@ -45,8 +45,8 @@ function opmode.update(dt, et)
     drive:driveFr(forward, right, rotate);
 
     --Obtain the blue goal april tag
-    --local bTag = aprilTagProcessor.getTag(20)
-    -----@type number
+    local bTag = aprilTagProcessor.getTag(20)
+    ---@type number
     --local shooterVelocity = ((4.10351*(bTag:getDist())) + 1020.46204)
 
     --Sets velocity off of Dpad
@@ -93,6 +93,8 @@ function opmode.update(dt, et)
         shooter:shoot(et);
     end
 
+    follower.turn()
+
     --Automatically updates
     shooter:update(et);
 
@@ -100,7 +102,15 @@ function opmode.update(dt, et)
     robotPane:addData("shooterVel", shooter.motor:getVelocity());
     robotPane:addLine(shooterLabel[id]);
     robotPane:addData("setVel", shooterVelocity[id]);
-    --if bTag:valid() then aprilTagPane:addData("tag distance", bTag:getDist()) else aprilTagPane:addLine("tag distance: -1") end
+    robotPane:addData("yaw", bTag:yaw())
+    if bTag:valid() then
+        aprilTagPane:addData("tag distance", bTag:getDist())
+        --positive error means tag is to the right, and vice versa
+        aprilTagPane:addData("angle error", bTag:bearing())
+    else
+        aprilTagPane:addLine("tag distance: -1")
+        aprilTagPane:addLine("angle error: -1")
+    end
     TelemPaneManager:update();
 
     return false;

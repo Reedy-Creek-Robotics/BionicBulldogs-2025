@@ -33,13 +33,13 @@ class AprilTagTest : LinearOpMode()
 		telemetry.setDisplayFormat(Telemetry.DisplayFormat.MONOSPACE);
 		val processor = AprilTagProcessor.Builder().build();
 
-		processor.setDecimation(2.0f);
+		processor.setDecimation(1.0f);
 		val camera = hardwareMap.get(WebcamName::class.java, "Webcam 1");
 		val visionPortal = VisionPortal.Builder()
 			.setCamera(camera)
 			.addProcessor(processor)
 			.setStreamFormat(VisionPortal.StreamFormat.MJPEG)
-			.setCameraResolution(Size(1280, 720))
+			.setCameraResolution(Size(1920, 1080))
 			.build();
 
 		setManualExposure(2, 255, visionPortal);

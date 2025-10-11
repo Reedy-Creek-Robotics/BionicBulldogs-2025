@@ -125,4 +125,12 @@ class LuaAprilTag(private val tag: AprilTagDetection?)
 			return tag.ftcPose.y;
 		return -1.0
 	}
+
+	@OpmodeLoaderFunction
+	fun bearing(): Double
+	{
+		if (tag != null)
+			return tag.ftcPose.bearing
+		return -1.0
+	}
 }
