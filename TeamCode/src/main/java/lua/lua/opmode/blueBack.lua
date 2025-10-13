@@ -17,20 +17,21 @@ function opmode.init()
 		ShooterEnableAction.new(1460),
 		PathAction.new(
 			path.chain()
-			:add(path.line(0, 0, 0, 10))
-			:linearHeading(90, 112)
+			:add(path.line(0, 0, 0, 9))
+			:linearHeading(90, 90 + 22)
 			:build()
 		),
-		SleepAction.new(2),
+		SleepAction.new(2.5),
 		ShootAction.new(4),
 		SleepAction.new(2),
 		ShooterDisableAction.new(),
 		PathAction.new(
 			path.chain()
 			:add(path.line(0, 10, 0, 15))
-			:constantHeading(112)
+			:linearHeading(90 + 22, 180)
 			:build()
-		)
+		),
+		SleepAction.new(2.1)
 	)
 end
 

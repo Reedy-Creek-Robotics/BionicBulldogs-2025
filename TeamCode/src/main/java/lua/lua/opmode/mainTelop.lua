@@ -82,6 +82,10 @@ function opmode.update(dt, et)
 		shooter:shoot(et);
 	end
 
+	if (gamepad.getStart2()) then
+		drive.imu:resetHeading();
+	end
+
 	--Close shooter automatically after 0.2 secs
 	shooter:update(et);
 

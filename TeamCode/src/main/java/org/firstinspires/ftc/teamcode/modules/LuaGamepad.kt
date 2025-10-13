@@ -54,6 +54,10 @@ class LuaGamepad(private val gamepad: Gamepad)
 
 			builder.addGlobalFunction("getLeftBumper2", LuaType.Bool);
 			builder.addGlobalFunction("getRightBumper2", LuaType.Bool);
+
+			builder.addGlobalFunction("getStart2", LuaType.Bool);
+			builder.addGlobalFunction("getShare2", LuaType.Bool);
+			builder.addGlobalFunction("getTouchpad2", LuaType.Bool);
 			builder.popTable();
 		}
 	}
