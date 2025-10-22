@@ -10,7 +10,7 @@ import org.firstinspires.ftc.teamcode.modules.pathing.LuaFollower
 import org.firstinspires.ftc.teamcode.modules.pathing.LuaPath
 import org.firstinspires.ftc.teamcode.pedroPathing.Constants
 
-abstract class OpmodeloaderAutoBase(private val name: String) : LinearOpMode()
+open class OpmodeloaderAutoBase(private val name: String) : LinearOpMode()
 {
 	override fun runOpMode()
 	{
