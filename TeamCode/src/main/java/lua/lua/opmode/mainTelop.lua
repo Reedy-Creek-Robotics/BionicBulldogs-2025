@@ -10,7 +10,7 @@ local opmode = { name = "mainTelop" };
 local drive;
 
 ---@type number[]
-local shooterVelocity = { 1200, 1300, 1600 }
+local shooterVelocity = {}
 
 -- Find where I found my distance values here: https://www.desmos.com/calculator/u0kuzoiwb1
 -- Distances = { 39.9530975019, 73.8935044507, 139.256956738 }
@@ -47,18 +47,7 @@ function opmode.update(dt, et)
     --Obtain the blue goal april tag
     local bTag = aprilTagProcessor.getTag(20)
     ---@type number
-    --local shooterVelocity = ((4.10351*(bTag:getDist())) + 1020.46204)
-
-    --Sets velocity off of Dpad
-    if (gamepad.getDpadDown2() and id ~= 1) then
-        id = id - 1
-        shooter:start(shooterVelocity[id]);
-    end
-
-    if (gamepad.getDpadUp2() and id ~= 3) then
-        id = id + 1
-        shooter:start(shooterVelocity[id]);
-    end
+    --local shooterVelocity = math.floor(((4.10351*(bTag:getDist())) + 1020.46204))
 
     --Forward/stop intake
     if (gamepad.getRightBumper2()) then
@@ -102,7 +91,6 @@ function opmode.update(dt, et)
     robotPane:addData("shooterVel", shooter.motor:getVelocity());
     robotPane:addLine(shooterLabel[id]);
     robotPane:addData("setVel", shooterVelocity[id]);
-    robotPane:addData("yaw", bTag:yaw())
     if bTag:valid() then
         aprilTagPane:addData("tag distance", bTag:getDist())
         --positive error means tag is to the right, and vice versa

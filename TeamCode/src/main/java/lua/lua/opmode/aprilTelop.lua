@@ -1,4 +1,5 @@
 --Uses silver bot instead of main bot for ONLY HDrive (no imu) and camera
+--Please use this opmode rather than main telop for turret and distance
 require("modules.hdrive");
 require("modules.telemPanes");
 
@@ -37,8 +38,9 @@ function opmode.update()
 
     aprilTagPane:addData("is valid", tag:valid())
     aprilTagPane:addData("target id", id)
-    --get distance is exact to the pythagorean theorem
-    aprilTagPane:addData("distance", tag:getDist())
+    --get distance is exact to the pythagorean theorem; if its inaccurate, then the x/y is inaccurate
+		--aprilTagPane:addData("distance", tag:getDist())
+    aprilTagPane:addData("angle", tag:bearing())
     TelemPaneManager:update();
     return false;
 end

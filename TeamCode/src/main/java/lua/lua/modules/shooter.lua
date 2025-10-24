@@ -20,7 +20,6 @@ end
 
 ---@param vel number
 function shooter:start(vel)
-	self.motor:setPower(1);
 	self.motor:setVelocity(vel);
 end
 
