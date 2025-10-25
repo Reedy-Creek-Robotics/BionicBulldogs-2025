@@ -24,84 +24,86 @@ local id = 1
 local shooterLabel = { "Close", "Moderate", "Far" }
 
 function opmode.init()
-    require("modules.telemetry");
-    drive = HDrive.new();
-    drive.imu = hardwareMap.spimuGet();
-    aprilTagProcessor.init(1280, 720, 2, 255, 1.0)
+	require("modules.telemetry");
+	drive = HDrive.new();
+	drive.imu = hardwareMap.spimuGet();
+	aprilTagProcessor.init(1920, 1080, 2, 255, 1.0)
 
-    intake:init();
-    shooter:init();
+	intake:init();
+	shooter:init();
 end
 
 function opmode.start()
-    shooter:close();
+	shooter:close();
 end
 
 function opmode.update(dt, et)
-    --Drive the bot
-    local forward = gamepad.getLeftStickY();
-    local right = gamepad.getLeftStickX();
-    local rotate = gamepad.getRightStickX();
-    drive:driveFr(forward, right, rotate);
+	--Drive the bot
+	local forward = gamepad.getLeftStickY();
+	local right = gamepad.getLeftStickX();
+	local rotate = gamepad.getRightStickX();
+	drive:driveFr(forward, right, rotate);
 
-    --Obtain the blue goal april tag
-    local bTag = aprilTagProcessor.getTag(20)
-    ---@type number
-    --local shooterVelocity = math.floor(((4.10351*(bTag:getDist())) + 1020.46204))
+	--Obtain the blue goal april tag
+	local bTag = aprilTagProcessor.getTag(20)
+	local dist = 0;
 
-    --Forward/stop intake
-    if (gamepad.getRightBumper2()) then
-        if (intake.state == IntakeState.Forward) then
-            intake:stop();
-        else
-            intake:forward();
-        end
-    end
+	if (bTag:valid()) then
+		dist = bTag:getDist()
+	end
 
-    --Reverse/stop intake
-    if (gamepad.getLeftBumper2()) then
-        if (intake.state == IntakeState.Reverse) then
-            intake:stop();
-        else
-            intake:reverse()
-        end
-    end
+	--Forward/stop intake
+	if (gamepad.getRightBumper2()) then
+		if (intake.state == IntakeState.Forward) then
+			intake:stop();
+		else
+			intake:forward();
+		end
+	end
 
-    --Run/don't run specifically the shooter
-    if (gamepad.getCircle2()) then
-        shooter:start(shooterVelocity[id]);
-        --shooter:start(shooterVelocity);
-    end
-    if (gamepad.getTriangle2()) then
-        shooter:stop();
-    end
+	--Reverse/stop intake
+	if (gamepad.getLeftBumper2()) then
+		if (intake.state == IntakeState.Reverse) then
+			intake:stop();
+		else
+			intake:reverse()
+		end
+	end
 
-    --Start intake and shooter
-    if (gamepad.getCross2()) then
-        intake:forward();
-        shooter:shoot(et);
-    end
+	--Run/don't run specifically the shooter
+	if (gamepad.getCircle2()) then
+		shooter:start(shooterVelocity[id]);
+	end
+	if (gamepad.getTriangle2()) then
+		shooter:stop();
+	end
 
-    follower.turn()
+	--Start intake and shooter
+	if (gamepad.getCross2()) then
+		intake:forward();
+		shooter:shoot(et);
+	end
 
-    --Automatically updates
-    shooter:update(et);
+	follower.turn()
 
-    robotPane:addData("shooterCur", shooter.motor:getCurrent());
-    robotPane:addData("shooterVel", shooter.motor:getVelocity());
-    robotPane:addLine(shooterLabel[id]);
-    robotPane:addData("setVel", shooterVelocity[id]);
-    if bTag:valid() then
-        aprilTagPane:addData("tag distance", bTag:getDist())
-        --positive error means tag is to the right, and vice versa
-        aprilTagPane:addData("angle error", bTag:bearing())
-    else
-        aprilTagPane:addLine("tag distance: -1")
-        aprilTagPane:addLine("angle error: -1")
-    end
-    TelemPaneManager:update();
+	--Automatically updates
+	shooter:update(et);
 
-    return false;
+	robotPane:addData("shooterCur", shooter.motor:getCurrent());
+	robotPane:addData("shooterVel", shooter.motor:getVelocity());
+	robotPane:addLine(shooterLabel[id]);
+	robotPane:addData("setVel", shooterVelocity[id]);
+	if bTag:valid() then
+		aprilTagPane:addData("tag distance", bTag:getDist())
+		--positive error means tag is to the right, and vice versa
+		aprilTagPane:addData("angle error", bTag:bearing())
+	else
+		aprilTagPane:addLine("tag distance: -1")
+		aprilTagPane:addLine("angle error: -1")
+	end
+	TelemPaneManager:update();
+
+	return false;
 end
 
 addOpmode(opmode);

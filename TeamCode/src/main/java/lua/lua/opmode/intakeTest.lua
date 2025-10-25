@@ -1,35 +1,58 @@
 require("modules.hdrive");
 
 ---@type Opmode
-local opmode = { name = "intakeTest" };
+local opmode = { name = "t_intakeTest" };
 
 ---@type HDrive
 local drive;
 
----@type DcMotor
+---@type DcMotorEx
 local intake;
+
+---@type number
+local power;
+
+---@type number[]
+local list = {};
 
 function opmode.init()
 	drive = HDrive.new();
-	drive.imu = hardwareMap.spimuGet();
-	intake = hardwareMap.dcmotorGet("intake");
+	intake = hardwareMap.dcmotorexGet("intake");
 end
 
 function opmode.update()
 	local forward = gamepad.getLeftStickY();
 	local right = gamepad.getLeftStickX();
 	local rotate = gamepad.getRightStickX();
-	drive:driveFr(forward, right, rotate);
+	drive:drive(forward, right, rotate);
 
-	if(gamepad.getDpadUp()) then
-		intake:setPower(1.0);
+	if (gamepad.getDpadUp()) then
+		power = 1
+		intake:setPower(power);
 	end
-	if(gamepad.getDpadDown()) then
-		intake:setPower(-1.0);
+
+	if (gamepad.getDpadDown()) then
+		power = -1
+		intake:setPower(power);
 	end
-	if(gamepad.getCross()) then
-		intake:setPower(0.0);
+
+	if (gamepad.getCross()) then
+		power = 0
+		intake:setPower(power);
 	end
+
+	if (gamepad.getRightBumper()) then
+		table.insert(list, intake:getCurrent());
+	end
+
+	robotPane:addData("current", intake:getCurrent());
+	if (list ~= nil) then
+		robotPane:addData("avg current", table.mean(list))
+		robotPane:addData("max current", table.max(list))
+	end
+	robotPane:addData("set power", power);
+
+	TelemPaneManager:update();
 
 	return false;
 end
