@@ -15,6 +15,7 @@ public class Datalog {
     public Datalogger.GenericField running = new Datalogger.GenericField("Running");
     public Datalogger.GenericField motorType = new Datalogger.GenericField("Motor Type");
     public Datalogger.GenericField batteryVoltage = new Datalogger.GenericField("Battery Voltage");
+    public Datalogger.GenericField pidfValues = new Datalogger.GenericField("PIDF");
 
     public Datalog(String name)
     {
@@ -30,7 +31,7 @@ public class Datalog {
             // Tell it about the fields we care to log.
             // Note that order *IS* important here! The order in which we list
             // the fields is the order in which they will appear in the log.
-            .setFields(motorPower, current, batteryVoltage, running, ticks, velocity).build();
+            .setFields(motorPower, current, batteryVoltage, running, ticks, velocity, pidfValues).build();
     }
 
     // Tell the datalogger to gather the values of the fields

@@ -7,6 +7,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
+import com.qualcomm.robotcore.hardware.PIDFCoefficients;
 import com.qualcomm.robotcore.hardware.VoltageSensor;
 import com.qualcomm.robotcore.util.RobotLog;
 
@@ -100,6 +101,7 @@ public class ShooterTesterAdvanced extends LinearOpMode {
             double current = motor.getCurrent(CurrentUnit.AMPS);
             double velocity = motor.getVelocity();
             double ticks = motor.getCurrentPosition();
+            PIDFCoefficients pidf = motor.getPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER);
 
             // log - only when logging is enabled
             if( loggingEnabled ) {
@@ -109,17 +111,19 @@ public class ShooterTesterAdvanced extends LinearOpMode {
                 //log.motorPower.set(motorVelocity);
                 log.velocity.set(velocity);
                 log.batteryVoltage.set(getBatteryVoltage());
+                log.pidfValues.set(pidf.toString());
                 log.writeLine();
             }
 
             // telemetry
-            telemetry.addData("IS_LOGGING", loggingEnabled);
+            telemetry.addData("IS_LOGGING", loggingEnabled + ", " + timeStamp);
             telemetry.addLine("");
             telemetry.addData("set velocity", motorVelocity);
             telemetry.addData("motor power", motor.getPower());
             telemetry.addData("current", current);
             telemetry.addData("ticks", ticks );
             telemetry.addData("actual velocity",velocity);
+            telemetry.addData("PID: ", pidf);
             telemetry.update();
         }
 
