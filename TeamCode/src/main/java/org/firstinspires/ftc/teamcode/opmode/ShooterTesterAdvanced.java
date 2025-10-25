@@ -6,6 +6,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.VoltageSensor;
 import com.qualcomm.robotcore.util.RobotLog;
 
@@ -24,7 +25,7 @@ public class ShooterTesterAdvanced extends LinearOpMode {
     private NanoFileServer server;
     private static final int PORT = 8888;
 
-    double powerIncrement = 0.05;
+    double velocityIncrement = 50;
 
     Datalog log;
 
@@ -51,10 +52,11 @@ public class ShooterTesterAdvanced extends LinearOpMode {
 
         DcMotorEx motor = hardwareMap.get(DcMotorEx.class, "shooter");
         motor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        motor.setDirection(DcMotorSimple.Direction.REVERSE);
 
 
         // current power setting
-        double motorPower = 0.0;
+        double motorVelocity = 0.0;
 
         // init the file logging
         // add a timestamp on end of filename so each run of op mode gives
@@ -70,32 +72,31 @@ public class ShooterTesterAdvanced extends LinearOpMode {
         while(opModeIsActive()) {
             // controls
             if( gamepad1.dpadDownWasPressed() ) {
-                motorPower -= powerIncrement;
+                motorVelocity -= velocityIncrement;
             }
 
             if( gamepad1.dpadUpWasPressed() ) {
-                motorPower += powerIncrement;
+                motorVelocity += velocityIncrement;
             }
 
             // start the test
             if( gamepad1.squareWasPressed() ) {
                 isRunning = true;
-                motor.setPower(motorPower);
+                motor.setVelocity(motorVelocity);
             }
 
             // stop the test
             if( gamepad1.triangleWasPressed() ) {
                 isRunning = false;
-                motor.setPower(0);
+                motor.setVelocity(0);
             }
 
-            // Toggles the logging
             if( gamepad1.circleWasPressed()) {
                 loggingEnabled = !loggingEnabled;
             }
 
             // collect data
-            double actualPower = motor.getPower();
+            //double actualPower = motor.getPower();
             double current = motor.getCurrent(CurrentUnit.AMPS);
             double velocity = motor.getVelocity();
             double ticks = motor.getCurrentPosition();
@@ -105,7 +106,7 @@ public class ShooterTesterAdvanced extends LinearOpMode {
                 log.current.set(current);
                 log.running.set(isRunning);
                 log.ticks.set(ticks);
-                log.motorPower.set(motorPower);
+                //log.motorPower.set(motorVelocity);
                 log.velocity.set(velocity);
                 log.batteryVoltage.set(getBatteryVoltage());
                 log.writeLine();
@@ -114,11 +115,11 @@ public class ShooterTesterAdvanced extends LinearOpMode {
             // telemetry
             telemetry.addData("IS_LOGGING", loggingEnabled);
             telemetry.addLine("");
-            telemetry.addData("set power", motorPower);
-            telemetry.addData("actual power", motor.getPower());
+            telemetry.addData("set velocity", motorVelocity);
+            telemetry.addData("motor power", motor.getPower());
             telemetry.addData("current", current);
             telemetry.addData("ticks", ticks );
-            telemetry.addData("velocity",velocity);
+            telemetry.addData("actual velocity",velocity);
             telemetry.update();
         }
 
