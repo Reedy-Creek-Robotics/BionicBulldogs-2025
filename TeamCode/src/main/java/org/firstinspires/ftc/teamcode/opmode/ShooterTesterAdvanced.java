@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode.opmode;
 
 import android.os.Environment;
 
+import com.acmerobotics.dashboard.config.Config;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -55,6 +56,13 @@ public class ShooterTesterAdvanced extends LinearOpMode {
         motor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         motor.setDirection(DcMotorSimple.Direction.REVERSE);
 
+        PIDFCoefficients defaultPID = motor.getPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER);
+        TuningConfig.P = defaultPID.p;
+        TuningConfig.I = defaultPID.i;
+        TuningConfig.D = defaultPID.d;
+
+
+        // P - I - D values
 
         // current power setting
         double motorVelocity = 0.0;
@@ -71,6 +79,9 @@ public class ShooterTesterAdvanced extends LinearOpMode {
         boolean isRunning = false;
         boolean loggingEnabled = false;
         while(opModeIsActive()) {
+            PIDFCoefficients newPID = new PIDFCoefficients(TuningConfig.P, TuningConfig.I, TuningConfig.D, defaultPID.f);
+            motor.setPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER, newPID);
+
             // controls
             if( gamepad1.dpadDownWasPressed() ) {
                 motorVelocity -= velocityIncrement;
@@ -97,7 +108,7 @@ public class ShooterTesterAdvanced extends LinearOpMode {
             }
 
             // collect data
-            //double actualPower = motor.getPower();
+            // double actualPower = motor.getPower();
             double current = motor.getCurrent(CurrentUnit.AMPS);
             double velocity = motor.getVelocity();
             double ticks = motor.getCurrentPosition();
