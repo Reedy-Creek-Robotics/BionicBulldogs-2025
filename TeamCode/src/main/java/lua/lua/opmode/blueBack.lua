@@ -3,7 +3,7 @@ require("modules.action.init");
 require("modules.action.robot");
 
 ---@type Opmode
-local opmode = { name = "redBack" };
+local opmode = { name = "blueBack" };
 
 ---@type Action
 local a;
@@ -18,7 +18,7 @@ function opmode.init()
 		PathAction.new(
 			path.chain()
 			:add(path.line(0, 0, 0, 9))
-			:linearHeading(90, 90 - 22)
+			:linearHeading(90, 90 + 22)
 			:build()
 		),
 		SleepAction.new(2.5),
@@ -27,8 +27,8 @@ function opmode.init()
 		ShooterDisableAction.new(),
 		PathAction.new(
 			path.chain()
-			:add(path.line(0, 9, 0, 15))
-			:linearHeading(90 - 22, 0)
+			:add(path.line(0, 10, 0, 15))
+			:linearHeading(90 + 22, 180)
 			:build()
 		),
 		SleepAction.new(2.1)

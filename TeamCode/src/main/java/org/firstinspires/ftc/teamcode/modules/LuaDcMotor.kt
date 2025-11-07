@@ -108,6 +108,7 @@ class LuaDcMotorEx(private val m: DcMotorEx)
 			LuaDefines.RunMode.RunWithoutEncoder   -> DcMotor.RunMode.RUN_WITHOUT_ENCODER
 			LuaDefines.RunMode.StopAndResetEncoder -> DcMotor.RunMode.STOP_AND_RESET_ENCODER
 			LuaDefines.RunMode.RunToPosition       -> DcMotor.RunMode.RUN_TO_POSITION
+			LuaDefines.RunMode.RunUsingEncoder     -> DcMotor.RunMode.RUN_USING_ENCODER
 			else                                   -> DcMotor.RunMode.RUN_WITHOUT_ENCODER
 		}
 	}
