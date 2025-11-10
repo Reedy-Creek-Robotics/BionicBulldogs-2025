@@ -84,6 +84,7 @@ function PathAction:update(dt, et)
 	if (follower.isBusy()) then
 		return ActionState.Running;
 	end
+	--follower.stop();
 	return ActionState.Done;
 end
 

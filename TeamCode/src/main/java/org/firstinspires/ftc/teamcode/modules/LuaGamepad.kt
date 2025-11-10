@@ -37,6 +37,27 @@ class LuaGamepad(private val gamepad: Gamepad)
 			builder.addGlobalFunction("getStart", LuaType.Bool);
 			builder.addGlobalFunction("getShare", LuaType.Bool);
 			builder.addGlobalFunction("getTouchpad", LuaType.Bool);
+
+			builder.addGlobalFunction("getDpadUp2", LuaType.Bool);
+			builder.addGlobalFunction("getDpadDown2", LuaType.Bool);
+			builder.addGlobalFunction("getDpadLeft2", LuaType.Bool);
+			builder.addGlobalFunction("getDpadRight2", LuaType.Bool);
+
+			builder.addGlobalFunction("getTriangle2", LuaType.Bool);
+			builder.addGlobalFunction("getCircle2", LuaType.Bool);
+			builder.addGlobalFunction("getCross2", LuaType.Bool);
+			builder.addGlobalFunction("getSquare2", LuaType.Bool);
+
+			builder.addGlobalFunction("getStart2", LuaType.Bool);
+			builder.addGlobalFunction("getShare2", LuaType.Bool);
+			builder.addGlobalFunction("getTouchpad2", LuaType.Bool);
+
+			builder.addGlobalFunction("getLeftBumper2", LuaType.Bool);
+			builder.addGlobalFunction("getRightBumper2", LuaType.Bool);
+
+			builder.addGlobalFunction("getStart2", LuaType.Bool);
+			builder.addGlobalFunction("getShare2", LuaType.Bool);
+			builder.addGlobalFunction("getTouchpad2", LuaType.Bool);
 			builder.popTable();
 		}
 	}
@@ -65,4 +86,22 @@ class LuaGamepad(private val gamepad: Gamepad)
 	fun getStart() = gamepad.start;
 	fun getShare() = gamepad.share;
 	fun getTouchpad() = gamepad.touchpad;
+
+
+	fun getDpadUp2() = gamepad.dpadUpWasPressed();
+	fun getDpadDown2() = gamepad.dpadDownWasPressed();
+	fun getDpadLeft2() = gamepad.dpadLeftWasPressed();
+	fun getDpadRight2() = gamepad.dpadRightWasReleased();
+
+	fun getCross2() = gamepad.crossWasPressed();
+	fun getSquare2() = gamepad.squareWasPressed();
+	fun getTriangle2() = gamepad.triangleWasPressed();
+	fun getCircle2() = gamepad.circleWasPressed();
+
+	fun getLeftBumper2() = gamepad.leftBumperWasPressed();
+	fun getRightBumper2() = gamepad.rightBumperWasPressed();
+
+	fun getStart2() = gamepad.startWasPressed();
+	fun getShare2() = gamepad.shareWasPressed();
+	fun getTouchpad2() = gamepad.touchpadWasPressed();
 }

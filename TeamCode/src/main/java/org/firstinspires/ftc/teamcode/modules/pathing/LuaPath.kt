@@ -7,7 +7,9 @@ import com.minerkid08.dynamicopmodeloader.OpmodeLoaderFunction
 import com.pedropathing.follower.Follower
 import com.pedropathing.geometry.BezierCurve
 import com.pedropathing.geometry.BezierLine
+import com.pedropathing.geometry.BezierPoint
 import com.pedropathing.geometry.Pose
+import com.pedropathing.paths.Path
 import com.pedropathing.paths.PathBuilder
 import com.pedropathing.paths.PathChain
 
@@ -25,6 +27,7 @@ class LuaPath(private val follower: Follower)
 
 			builder.createClass(BezierCurve::class.simpleName!!);
 			builder.createClass(BezierLine::class.simpleName!!);
+			builder.createClass(BezierPoint::class.simpleName!!);
 			builder.createClass(PathChain::class.simpleName!!);
 		}
 	}

@@ -39,7 +39,7 @@ class AprilTagTest : LinearOpMode()
 			.setCamera(camera)
 			.addProcessor(processor)
 			.setStreamFormat(VisionPortal.StreamFormat.MJPEG)
-			.setCameraResolution(Size(1920, 1080))
+			.setCameraResolution(Size(1280, 720))
 			.build();
 
 		setManualExposure(2, 255, visionPortal);

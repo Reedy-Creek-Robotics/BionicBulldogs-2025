@@ -23,6 +23,7 @@ import com.pedropathing.telemetry.SelectableOpMode;
 import com.pedropathing.util.*;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.DcMotor;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -140,7 +141,7 @@ class LocalizationTest extends OpMode {
 
 	@Override
 	public void start() {
-		follower.startTeleopDrive();
+		follower.startTeleopDrive(true);
 		follower.update();
 	}
 
@@ -1188,10 +1189,10 @@ class Drawing {
 	private static final FieldManager panelsField = PanelsField.INSTANCE.getField();
 
 	private static final Style robotLook = new Style(
-					"", "#3F51B5", 0.0
+					"", "#3F51B5", 0.75
 	);
 	private static final Style historyLook = new Style(
-					"", "#4CAF50", 0.0
+					"", "#4CAF50", 0.75
 	);
 
 	/**

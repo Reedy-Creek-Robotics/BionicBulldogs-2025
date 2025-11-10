@@ -11,10 +11,10 @@ object Debug
 {
 	private const val ROBOT_RADIUS = 9.0;
 	private val field = PanelsField.field;
-	private val robotLook = Style("", "#3F51B5", 0.0);
-	private val historyLook = Style("", "#4CAF50", 0.0);
+	private val robotLook = Style("", "#3F51B5", 0.5);
+	private val historyLook = Style("", "#4CAF50", 0.5);
 
-	init
+	fun init()
 	{
 		field.setOffsets(PanelsField.presets.PEDRO_PATHING);
 	}
