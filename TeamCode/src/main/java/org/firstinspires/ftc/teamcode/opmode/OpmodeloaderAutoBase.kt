@@ -3,6 +3,8 @@ package org.firstinspires.ftc.teamcode.opmode
 import com.minerkid08.dynamicopmodeloader.OpmodeLoader
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode
 import com.qualcomm.robotcore.util.ElapsedTime
+import org.firstinspires.ftc.teamcode.modules.ApriltagDistance
+import org.firstinspires.ftc.teamcode.modules.LuaAprilTagProcessor
 import org.firstinspires.ftc.teamcode.modules.LuaHardwaremap
 import org.firstinspires.ftc.teamcode.modules.LuaLog
 import org.firstinspires.ftc.teamcode.modules.LuaTelemetry
@@ -24,6 +26,8 @@ open class OpmodeloaderAutoBase(private val name: String) : LinearOpMode()
 		LuaFollower.init(builder, follower);
 		LuaPath.init(builder, follower);
 		LuaLog.init(builder);
+		builder.addClassAsGlobal(ApriltagDistance::class.java)
+		LuaAprilTagProcessor.build(builder, hardwareMap)
 
 		opmodeloader.init();
 		opmodeloader.loadOpmode(name);

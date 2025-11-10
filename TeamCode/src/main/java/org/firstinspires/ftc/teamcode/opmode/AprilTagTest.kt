@@ -28,7 +28,7 @@ class AprilTagTest : LinearOpMode()
 		frontRight.direction = DcMotorSimple.Direction.REVERSE;
 		backRight.direction = DcMotorSimple.Direction.REVERSE;
 
-		val localizer = TwoWheelLocalizer(hardwareMap, Constants.localizerConstants);
+		//val localizer = TwoWheelLocalizer(hardwareMap, Constants.localizerConstants);
 
 		telemetry.setDisplayFormat(Telemetry.DisplayFormat.MONOSPACE);
 		val processor = AprilTagProcessor.Builder().build();
@@ -72,6 +72,7 @@ class AprilTagTest : LinearOpMode()
 				telemetry.addLine("  turning: $a");
 				angle = a;
 			}
+			/*
 			if (gamepad1.crossWasPressed())
 			{
 				targetAngle = Math.toDegrees(localizer.pose.heading) + angle;
@@ -97,7 +98,7 @@ class AprilTagTest : LinearOpMode()
 				backLeft.power = -pwr;
 				backRight.power = pwr;
 			}
-
+*/
 			telemetry.update();
 		}
 	}
