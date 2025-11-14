@@ -9,7 +9,7 @@ local a;
 
 ---@param num integer
 function genPath(num)
-	require("modules.telemetry");
+  require("modules.telemetry");
 	--aprilTagProcessor.init(1920, 1080, 2, 255, 1.0);
 	--shooter:init();
 	--intake:init();

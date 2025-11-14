@@ -1,5 +1,4 @@
-package.path = package.path .. ";./lua/?.lua";
-
+require("test.testBase");
 require("modules.action.seqAction");
 require("modules.action.parallelAction");
 

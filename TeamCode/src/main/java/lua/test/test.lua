@@ -1,13 +1,4 @@
-package.path = package.path .. ";./lua/?.lua";
-
-local opmodes = {};
-
-function addOpmode(opmode)
-	table.insert(opmodes, opmode);
-end
-
-DATADIR = "."
-
+require("test.testBase");
 require("opmode.blueFront");
 
 path = {
