@@ -21,3 +21,7 @@ function aprilTagProcessor.init(width, height, exposureMS, gain) end
 ---@param id integer
 ---@return AprilTag
 function aprilTagProcessor.getTag(id) end
+
+---@param dist number
+---@return number
+function apirlDis(dist) end

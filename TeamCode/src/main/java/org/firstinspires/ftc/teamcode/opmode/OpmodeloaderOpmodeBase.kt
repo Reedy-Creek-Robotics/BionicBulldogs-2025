@@ -9,7 +9,7 @@ import org.firstinspires.ftc.teamcode.modules.LuaHardwaremap
 import org.firstinspires.ftc.teamcode.modules.LuaLog
 import org.firstinspires.ftc.teamcode.modules.LuaTelemetry
 
-abstract class OpmodeloaderOpmodeBase(private val name: String) : LinearOpMode()
+open class OpmodeloaderOpmodeBase(private val name: String) : LinearOpMode()
 {
 	override fun runOpMode()
 	{

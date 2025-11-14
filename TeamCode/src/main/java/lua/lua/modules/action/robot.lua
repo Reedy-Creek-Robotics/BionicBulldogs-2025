@@ -1,14 +1,12 @@
 require("modules.shooter")
 require("modules.intake")
 
-
-
 ---@class ShootAction : Action
 ---@field n number
 ShootAction = {
 	mt = {
 		__tostring = function (self)
-			return "Shoot";
+			return ("Shoot(%d)"):format(self.n);
 		end
 	},
 	t = -1
@@ -35,13 +33,13 @@ function ShootAction:update(dt, et)
 			self.t = et;
 		end
 	end
-	if (self.t > 0 and self.t + 0.1 <= et) then
+	if (self.t > 0 and self.t + 0.5 <= et) then
 		shooter:shoot(et);
-		actionPane:addData("shoot", et);
+		--actionPane:addData("shoot", et);
 		self.t = -2;
 	end
 	if (shooter:update(et)) then
-		actionPane:addData("shoot reset", et);
+		--actionPane:addData("shoot reset", et);
 		self.n = self.n - 1;
 		if (self.n == 0) then
 			return ActionState.Done;
@@ -52,17 +50,20 @@ function ShootAction:update(dt, et)
 end
 
 ---@class ShooterEnableAction : Action
----@field vel number
+---@field vel number?
 ShooterEnableAction = {
 	mt = {
 		__tostring = function (self)
+			if (self.vel == nil) then
+				return ("ShooterEnable(april tag)");
+			end
 			return ("ShooterEnable(%d)"):format(self.vel);
 		end
 	}
 };
 
 ---@return ShooterEnableAction
----@param vel number
+---@param vel number?
 function ShooterEnableAction.new(vel)
 	local a = new(ShooterEnableAction);
 	a.vel = vel;
@@ -70,7 +71,25 @@ function ShooterEnableAction.new(vel)
 end
 
 function ShooterEnableAction:start(et)
-	shooter:start(self.vel);
+	if (self.vel == nil) then
+		local tag = aprilTagProcessor.getTag(20);
+		local attempts = 0;
+		while (not tag:valid()) do
+			attempts = attempts + 1;
+			tag = aprilTagProcessor.getTag(20);
+			if (attempts > 10) then
+				break
+			end
+		end
+		local dist = tag:getDist();
+		local vel = apirlDis(dist);
+		shooter:start(vel);
+		telemetry.addDataf("vel", vel);
+		telemetry.addDataf("dist", dist);
+		telemetry.update();
+	else
+		shooter:start(self.vel);
+	end
 end
 
 ---@param dt number
@@ -106,17 +125,45 @@ function ShooterDisableAction:update(dt, et)
 	return ActionState.Done;
 end
 
+---@class IntakeStopAction : Action
+IntakeStopAction = {
+	mt = {
+		__tostring = function (self)
+			return ("IntakeStop"):format(self.delay);
+		end
+	}
+};
+---@return IntakeStopAction
+function IntakeStopAction.new(time)
+	local a = new(IntakeStopAction);
+	return a;
+end
+
+function IntakeStopAction:start(et)
+	intake:stop();
+end
+
+---@param dt number
+---@param et number
+---@return ActionState
+function IntakeStopAction:update(dt, et)
+	return ActionState.Done;
+end
+
 ---@class IntakeAction : Action
----@field delay number
+---@field delay number?
 ---@field startTime number
 IntakeAction = {
 	mt = {
 		__tostring = function (self)
+			if (self.delay == nil) then
+				return "Intake(inf)";
+			end
 			return ("Intake(%.2fs)"):format(self.delay);
 		end
 	}
 };
----@param time number
+---@param time number?
 ---@return IntakeAction
 function IntakeAction.new(time)
 	local a = new(IntakeAction);
@@ -134,6 +181,9 @@ end
 ---@param et number
 ---@return ActionState
 function IntakeAction:update(dt, et)
+	if (self.delay == nil) then
+		return ActionState.Done;
+	end
 	if (self.startTime + self.delay <= et) then
 		intake:stop();
 		return ActionState.Done;
