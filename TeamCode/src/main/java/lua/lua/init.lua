@@ -7,9 +7,8 @@ for i, file in ipairs(files) do
 		local name = file.name:sub(1, ind);
 		local ext = file.name:sub(ind + 1);
 		if(ext == "lua") then
-			print("requiring file");
+			require("opmode." .. name);
 		end
-		--require("opmode." .. name);
 	end
 end
 
