@@ -15,6 +15,8 @@ import org.firstinspires.ftc.vision.apriltag.AprilTagProcessor
 import java.io.File
 import java.util.concurrent.TimeUnit
 import android.R.attr.data
+import com.qualcomm.robotcore.hardware.DcMotor
+import com.qualcomm.robotcore.hardware.DcMotorSimple
 import kotlin.time.Duration.Companion.minutes
 import kotlin.time.Duration.Companion.seconds
 
@@ -26,7 +28,7 @@ class autoAim : LinearOpMode()
 		telemetry.setDisplayFormat(Telemetry.DisplayFormat.MONOSPACE);
 		val processor = AprilTagProcessor.Builder().build();
 
-		processor.setDecimation(1.0f);
+		processor.setDecimation(3.0f);
 		val camera = hardwareMap.get(WebcamName::class.java, "Webcam 1");
 		val motor = hardwareMap.dcMotor.get("turetM") as DcMotorEx
 		val visionPortal = VisionPortal.Builder()
@@ -37,49 +39,55 @@ class autoAim : LinearOpMode()
 			.build();
 
 		setManualExposure(2, 255, visionPortal);
+		//tpr = ticks per rev
+		val tpr = 384.5
+		//tpd = tick per degrees
+		val tpd = tpr/360
 
 		val cameravalues = "cameravalues" + System.nanoTime()
 		val file = File("/sdcard/FIRST/java/src/Datalog/camera_values" + System.nanoTime())
 		if(!file.exists())
+		{
+			file.parentFile.mkdirs();
 			file.createNewFile();
+		}
+		val writer = file.bufferedWriter();
+
 		waitForStart();
 
 		while (opModeIsActive())
 		{
-			val detections = processor.detections;
-			telemetry.addLine("found ${detections.size}");
-			var foundTag = false;
-			for (detection in detections)
+				val detections = processor.freshDetections;
+				if(detections != null)
+				{
+				telemetry.addLine("found ${detections.size}");
+				var foundTag = false;
+				for(detection in detections)
+				{
+					if(detection.metadata == null)
+						continue;
+					if(detection.id != 24)
+						continue;
+					foundTag = true;
+					val pos = detection.ftcPose;
+					telemetry.addLine("tag ${detection.id}")
+					telemetry.addLine("  bearing:    ${pos.bearing}");
+					val tagc = pos.bearing
+					writer.write("bearing${pos.bearing} ,range${pos.range},${time.minutes}:${time.seconds}\n")
 
-			{
-				if (detection.metadata == null)
-					continue;
-				if (detection.id != 20)
-					continue;
-				foundTag = true;
-				val pos = detection.ftcPose;
-				telemetry.addLine("tag ${detection.id}")
-				telemetry.addLine("  bearing:    ${pos.bearing}");
-				val tagc = pos.bearing
-				file.writeText("bearing${pos.bearing} ,range${pos.range},detection id$detection.id,detection meta data${detection.metadata},${time.minutes}:${time.seconds}\n")
-
-				if (tagc > 10 )
-				{
-					motor.power = (0.2)
-						file.writeText("bearing > 10,${time.minutes}:${time.seconds}\n")
+					motor.power = 0.0;
+					motor.mode = DcMotor.RunMode.RUN_WITHOUT_ENCODER;
+					motor.targetPosition = (pos.bearing * tpd).toInt() + motor.currentPosition;
+					motor.mode = DcMotor.RunMode.RUN_TO_POSITION;
+					if (tagc < 10  && tagc > -10)
+					{
+						motor.power = 0.0
+					}
+					else
+					motor.power = 0.2;
 				}
-				else if (tagc < -10 )
-				{
-					motor.power = (-0.2)
-					file.writeText("bearing < -10,${time.minutes}:${time.seconds}\n")
-				}
-				else
-				{
-					motor.power = (0.0)
-					file.writeText("bearing is within 10,${time.minutes}:${time.seconds}\n")
-				}
+				telemetry.update();
 			}
-			telemetry.update();
 		}
 	}
 
