@@ -30,23 +30,52 @@ class LuaHardwaremap(private val hardwareMap: HardwareMap)
 	}
 
 	@OpmodeLoaderFunction
-	fun dcmotorGet(name: String) = LuaDcMotor(hardwareMap.dcMotor.get(name));
+	fun dcmotorGet(name: String): LuaDcMotor
+	{
+		if (hardwareMap.dcMotor.contains(name))
+			return LuaDcMotor(hardwareMap.dcMotor.get(name));
+		error("cannot find dcmotor with the name '$name'");
+	}
 
 	@OpmodeLoaderFunction
-	fun dcmotorexGet(name: String) = LuaDcMotorEx(hardwareMap.get(DcMotorEx::class.java, name));
+	fun dcmotorexGet(name: String): LuaDcMotorEx
+	{
+		if (hardwareMap.dcMotor.contains(name))
+			return LuaDcMotorEx(hardwareMap.dcMotor.get(name) as DcMotorEx);
+		error("cannot find dcmotorex with the name '$name'");
+	}
 
 	@OpmodeLoaderFunction
-	fun crservoGet(name: String) = LuaCrServo(hardwareMap.crservo.get(name));
+	fun crservoGet(name: String): LuaCrServo
+	{
+		if (hardwareMap.crservo.contains(name))
+			return LuaCrServo(hardwareMap.crservo.get(name));
+		error("cannot find crservo with the name '$name'");
+	}
 
 	@OpmodeLoaderFunction
-	fun servoGet(name: String) = LuaServo(hardwareMap.servo.get(name));
+	fun servoGet(name: String): LuaServo
+	{
+		if (hardwareMap.servo.contains(name))
+			return LuaServo(hardwareMap.servo.get(name));
+		error("cannot find servo with the name '$name'");
+	}
 
 	@OpmodeLoaderFunction
-	fun imuGet(): LuaImu = LuaImu(hardwareMap.get(IMU::class.java, "imu"));
+	fun imuGet(): LuaImu
+	{
+		if (hardwareMap.i2cDevice.contains("imu"))
+			return LuaImu(hardwareMap.get(IMU::class.java, "imu"));
+		error("cannot find imu with the name 'imu'");
+	}
 
 	@OpmodeLoaderFunction
-	fun spimuGet(): LuaSparkFunImu =
-		LuaSparkFunImu(hardwareMap.get(SparkFunOTOS::class.java, "imu2"));
+	fun spimuGet(): LuaSparkFunImu
+	{
+		if (hardwareMap.i2cDevice.contains("imu2"))
+			return LuaSparkFunImu(hardwareMap.get(SparkFunOTOS::class.java, "imu2"));
+		error("cannot find imu2 with the name 'imu2'");
+	}
 }
 
 class LuaCrServo(private val m: CRServo)
