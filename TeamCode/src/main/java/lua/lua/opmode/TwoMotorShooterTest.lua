@@ -9,6 +9,9 @@ local shooterVelocity = { 1200, 1300, 1600 }
 ---@type string[]
 local shooterLabel = { "Close", "Moderate", "Far" }
 
+---@type number
+local id = 1;
+
 ---@type DcMotorEx
 local motorA;
 

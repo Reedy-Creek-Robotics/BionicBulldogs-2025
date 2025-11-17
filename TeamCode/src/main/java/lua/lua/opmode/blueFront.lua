@@ -10,10 +10,10 @@ local a;
 ---@param num integer
 function genPath(num)
   require("modules.telemetry");
-	--aprilTagProcessor.init(1920, 1080, 2, 255, 1.0);
-	--shooter:init();
-	--intake:init();
-	--follower.setPosition(55, 133, 180);
+	aprilTagProcessor.init(1920, 1080, 2, 255, 1.0);
+	shooter:init();
+	intake:init();
+	follower.setPosition(55, 133, 180);
 	local first = SeqAction.newl(
 		"preload",
 		ShooterEnableAction.new(),
