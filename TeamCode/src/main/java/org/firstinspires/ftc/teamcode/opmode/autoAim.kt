@@ -5,7 +5,6 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp
 import com.qualcomm.robotcore.hardware.DcMotorEx
 import com.qualcomm.robotcore.util.ElapsedTime
-import com.qualcomm.robotcore.util.RobotLog
 import org.firstinspires.ftc.robotcore.external.Telemetry
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName
 import org.firstinspires.ftc.robotcore.external.hardware.camera.controls.ExposureControl
@@ -14,15 +13,37 @@ import org.firstinspires.ftc.vision.VisionPortal
 import org.firstinspires.ftc.vision.apriltag.AprilTagProcessor
 import java.io.File
 import java.util.concurrent.TimeUnit
-import android.R.attr.data
 import com.qualcomm.robotcore.hardware.DcMotor
-import com.qualcomm.robotcore.hardware.DcMotorSimple
-import kotlin.time.Duration.Companion.minutes
-import kotlin.time.Duration.Companion.seconds
+
+fun clampf(min: Float, max: Float, num: Float): Float
+{
+	if (num < min)
+		return min;
+	if (num > max)
+		return max;
+	return num;
+}
+
+fun clampi(min: Int, max: Int, num: Int): Int
+{
+	if (num < min)
+		return min;
+	if (num > max)
+		return max;
+	return num;
+}
 
 @TeleOp
 class autoAim : LinearOpMode()
 {
+	enum class State
+	{
+		Tracking, Waiting
+	}
+
+	var targetPosition = 0;
+	lateinit var motor: DcMotor;
+
 	override fun runOpMode()
 	{
 		telemetry.setDisplayFormat(Telemetry.DisplayFormat.MONOSPACE);
@@ -30,7 +51,9 @@ class autoAim : LinearOpMode()
 
 		processor.setDecimation(3.0f);
 		val camera = hardwareMap.get(WebcamName::class.java, "Webcam 1");
-		val motor = hardwareMap.dcMotor.get("turetM") as DcMotorEx
+		motor = hardwareMap.dcMotor.get("turetM") as DcMotorEx
+		motor.mode = DcMotor.RunMode.STOP_AND_RESET_ENCODER;
+		motor.mode = DcMotor.RunMode.RUN_WITHOUT_ENCODER;
 		val visionPortal = VisionPortal.Builder()
 			.setCamera(camera)
 			.addProcessor(processor)
@@ -40,54 +63,117 @@ class autoAim : LinearOpMode()
 
 		setManualExposure(2, 255, visionPortal);
 		//tpr = ticks per rev
-		val tpr = 384.5
+		val ticksPerRev = 384.5;
 		//tpd = tick per degrees
-		val tpd = tpr/360
+		val ticksPerDeg = ticksPerRev / 360;
 
-		val cameravalues = "cameravalues" + System.nanoTime()
-		val file = File("/sdcard/FIRST/java/src/Datalog/camera_values" + System.nanoTime())
-		if(!file.exists())
+		var timeBetweenDetection: Double = 0.0;
+
+		val limit = (ticksPerDeg * 90).toInt();
+
+		val file = File("/sdcard/FIRST/java/src/Datalog/camera_values${System.nanoTime()}.txt")
+		if (!file.exists())
 		{
-			file.parentFile.mkdirs();
+			file.parentFile?.mkdirs();
 			file.createNewFile();
 		}
 		val writer = file.bufferedWriter();
 
+		val timer = ElapsedTime();
+		val timer2 = ElapsedTime();
+		val timer3 = ElapsedTime();
+
+		timer2.reset();
+
+		var state = State.Waiting;
+
 		waitForStart();
+
+		timer3.reset();
 
 		while (opModeIsActive())
 		{
-				val detections = processor.freshDetections;
-				if(detections != null)
+			val detections = processor.freshDetections;
+			if (detections != null)
+			{
+				for (tag in detections)
 				{
-				telemetry.addLine("found ${detections.size}");
-				var foundTag = false;
-				for(detection in detections)
-				{
-					if(detection.metadata == null)
+					if (tag.metadata == null)
 						continue;
-					if(detection.id != 24)
+					if (tag.id != 24)
 						continue;
-					foundTag = true;
-					val pos = detection.ftcPose;
-					telemetry.addLine("tag ${detection.id}")
+					timeBetweenDetection = timer2.seconds();
+					timer2.reset();
+					val pos = tag.ftcPose;
+					telemetry.addLine("tag ${tag.id}");
 					telemetry.addLine("  bearing:    ${pos.bearing}");
-					val tagc = pos.bearing
-					writer.write("bearing${pos.bearing} ,range${pos.range},${time.minutes}:${time.seconds}\n")
 
-					motor.power = 0.0;
-					motor.mode = DcMotor.RunMode.RUN_WITHOUT_ENCODER;
-					motor.targetPosition = (pos.bearing * tpd).toInt() + motor.currentPosition;
-					motor.mode = DcMotor.RunMode.RUN_TO_POSITION;
-					if (tagc < 10  && tagc > -10)
+					if (tag.ftcPose.bearing > 10 || tag.ftcPose.bearing < -10)
 					{
-						motor.power = 0.0
+						writer.write("[%10f] moving to target".format(timer3.milliseconds()));
+						val newpos = motor.currentPosition + (pos.bearing * ticksPerDeg).toInt();
+						targetPosition = clampi(-limit, limit, newpos);
+						/*
+						motor.power = 0.0;
+						motor.mode = DcMotor.RunMode.RUN_WITHOUT_ENCODER;
+						motor.targetPosition = clampi(-limit, limit, newpos);
+						motor.mode = DcMotor.RunMode.RUN_TO_POSITION;
+						motor.power = 0.5;
+						*/
 					}
 					else
-					motor.power = 0.2;
+						writer.write("[%10f] within +- 10 deg of target".format(timer3.milliseconds()));
+					state = State.Tracking;
+					timer.reset();
 				}
-				telemetry.update();
 			}
+			if (state == State.Tracking)
+			{
+				if (timer.seconds() >= 0.5)
+				{
+					writer.write("[%10f] target lost, resetting".format(timer3.milliseconds()));
+					state = State.Waiting;
+					targetPosition = 0;
+					/*
+					motor.power = 0.0;
+					motor.mode = DcMotor.RunMode.RUN_WITHOUT_ENCODER;
+					motor.targetPosition = 0;
+					motor.mode = DcMotor.RunMode.RUN_TO_POSITION;
+					motor.power = 0.5;
+					*/
+				}
+			}
+			telemetry.addLine("t:$timeBetweenDetection");
+			telemetry.addData("targetPos", targetPosition);
+			telemetry.addData("curPos", motor.currentPosition);
+			updateRunToPosition();
+			telemetry.update();
+		}
+	}
+
+	fun updateRunToPosition()
+	{
+		val curPos = motor.currentPosition;
+		val dif = targetPosition - curPos;
+
+		if (dif > -1 && dif < 1)
+		{
+			motor.power = 0.0;
+			return;
+		}
+		if (dif > 0)
+		{
+			if (dif > 5)
+				motor.power = 0.2;
+			else
+				motor.power = 0.1;
+		}
+		else
+		{
+			if (dif < -5)
+				motor.power = -0.2;
+			else
+				motor.power = -0.1;
 		}
 	}
 
