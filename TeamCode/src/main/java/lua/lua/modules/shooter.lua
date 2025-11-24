@@ -1,7 +1,8 @@
 require("modules.utils")
 
 ---@class shooter
----@field motor DcMotorEx
+---@field motorL DcMotorEx
+---@field motorR DcMotorEx
 ---@field gate Servo
 ---@field gateClosed number
 ---@field gateOpen number
@@ -13,21 +14,26 @@ shooter = {
 }
 
 function shooter:init()
-	self.gate = hardwareMap.servoGet("transfer");
-	self.motor = hardwareMap.dcmotorexGet("shooter");
-	self.motor:setMode(DcMotorRunMode.RunUsingEncoder);
-	self.motor:setDirection(Direction.Reverse);
+	self.gate = hardwareMap.servoGet("gate");
+	self.motorL = hardwareMap.dcmotorexGet("flywheelLeft");
+	self.motorR = hardwareMap.dcmotorexGet("flywheelRight");
+	self.motorL:setMode(DcMotorRunMode.RunUsingEncoder);
+	self.motorR:setMode(DcMotorRunMode.RunUsingEncoder);
+	self.motorR:setDirection(Direction.Reverse);
 end
 
 ---@param vel number
 function shooter:start(vel)
 	self.vel = vel;
-	self.motor:setPower(1);
-	self.motor:setVelocity(vel);
+	self.motorL:setPower(1);
+	self.motorR:setPower(1);
+	self.motorL:setVelocity(vel);
+	self.motorR:setVelocity(vel);
 end
 
 function shooter:stop()
-	self.motor:setPower(0);
+	self.motorL:setPower(0);
+	self.motorR:setPower(0);
 end
 
 ---@param et number
@@ -50,7 +56,7 @@ function shooter:update(et)
 end
 
 function shooter:ready()
-	local vel = self.motor:getVelocity();
+	local vel = self.motorL:getVelocity();
 	local dif = vel - (self.prevVel or 40);
 	local c = vel > self.vel - 10 and vel < self.vel + 10 and dif < 20;
 	self.prevVel = vel;
@@ -62,7 +68,8 @@ function shooter:close()
 end
 
 function shooter:telem()
-	robotPane:addData("shooterPwr2", 1);
-	robotPane:addData("shooterCur", shooter.motor:getCurrent());
-	robotPane:addData("shooterVel", shooter.motor:getVelocity());
+	robotPane:addData("shooterCurL", shooter.motorL:getCurrent());
+	robotPane:addData("shooterVelL", shooter.motorL:getVelocity());
+	robotPane:addData("shooterCurR", shooter.motorR:getCurrent());
+	robotPane:addData("shooterVelR", shooter.motorR:getVelocity());
 end
