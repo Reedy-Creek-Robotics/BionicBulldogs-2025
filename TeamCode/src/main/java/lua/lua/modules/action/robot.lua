@@ -1,9 +1,9 @@
 require("modules.shooter")
 require("modules.intake")
 
----@class ShootAction : Action
+---@class Shoot : Action
 ---@field n number
-ShootAction = {
+local Shoot = {
 	mt = {
 		__tostring = function (self)
 			return ("Shoot(%d)"):format(self.n);
@@ -12,22 +12,22 @@ ShootAction = {
 	t = -1
 };
 
----@return ShootAction
+---@return Shoot
 ---@param n number
-function ShootAction.new(n)
-	local a = new(ShootAction);
+function Shoot.new(n)
+	local a = new(Shoot);
 	a.n = n;
 	return a;
 end
 
-function ShootAction:start(et)
+function Shoot:start(et)
 	intake:forward();
 end
 
 ---@param dt number
 ---@param et number
 ---@return ActionState
-function ShootAction:update(dt, et)
+function Shoot:update(dt, et)
 	if (self.t == -1) then
 		if (shooter:ready()) then
 			self.t = et;
@@ -49,9 +49,9 @@ function ShootAction:update(dt, et)
 	return ActionState.Running;
 end
 
----@class ShooterEnableAction : Action
+---@class ShooterEnable : Action
 ---@field vel number?
-ShooterEnableAction = {
+local ShooterEnable = {
 	mt = {
 		__tostring = function (self)
 			if (self.vel == nil) then
@@ -62,15 +62,15 @@ ShooterEnableAction = {
 	}
 };
 
----@return ShooterEnableAction
+---@return ShooterEnable
 ---@param vel number?
-function ShooterEnableAction.new(vel)
-	local a = new(ShooterEnableAction);
+function ShooterEnable.new(vel)
+	local a = new(ShooterEnable);
 	a.vel = vel;
 	return a;
 end
 
-function ShooterEnableAction:start(et)
+function ShooterEnable:start(et)
 	if (self.vel == nil) then
 		local tag = aprilTagProcessor.getTag(20);
 		local attempts = 0;
@@ -95,12 +95,12 @@ end
 ---@param dt number
 ---@param et number
 ---@return ActionState
-function ShooterEnableAction:update(dt, et)
+function ShooterEnable:update(dt, et)
 	return ActionState.Done;
 end
 
----@class ShooterDisableAction : Action
-ShooterDisableAction = {
+---@class ShooterDisable : Action
+local ShooterDisable = {
 	mt = {
 		__tostring = function (self)
 			return ("ShooterDisable"):format(self.vel);
@@ -108,52 +108,52 @@ ShooterDisableAction = {
 	}
 };
 
----@return ShooterDisableAction
-function ShooterDisableAction.new()
-	local a = new(ShooterDisableAction);
+---@return ShooterDisable
+function ShooterDisable.new()
+	local a = new(ShooterDisable);
 	return a;
 end
 
-function ShooterDisableAction:start(et)
+function ShooterDisable:start(et)
 	shooter:stop();
 end
 
 ---@param dt number
 ---@param et number
 ---@return ActionState
-function ShooterDisableAction:update(dt, et)
+function ShooterDisable:update(dt, et)
 	return ActionState.Done;
 end
 
----@class IntakeStopAction : Action
-IntakeStopAction = {
+---@class IntakeStop : Action
+local IntakeStop = {
 	mt = {
 		__tostring = function (self)
 			return ("IntakeStop"):format(self.delay);
 		end
 	}
 };
----@return IntakeStopAction
-function IntakeStopAction.new(time)
-	local a = new(IntakeStopAction);
+---@return IntakeStop
+function IntakeStop.new(time)
+	local a = new(IntakeStop);
 	return a;
 end
 
-function IntakeStopAction:start(et)
+function IntakeStop:start(et)
 	intake:stop();
 end
 
 ---@param dt number
 ---@param et number
 ---@return ActionState
-function IntakeStopAction:update(dt, et)
+function IntakeStop:update(dt, et)
 	return ActionState.Done;
 end
 
----@class IntakeAction : Action
+---@class Intake : Action
 ---@field delay number?
 ---@field startTime number
-IntakeAction = {
+local Intake = {
 	mt = {
 		__tostring = function (self)
 			if (self.delay == nil) then
@@ -164,15 +164,15 @@ IntakeAction = {
 	}
 };
 ---@param time number?
----@return IntakeAction
-function IntakeAction.new(time)
-	local a = new(IntakeAction);
+---@return Intake
+function Intake.new(time)
+	local a = new(Intake);
 	a.delay = time;
 	a.startTime = -1;
 	return a;
 end
 
-function IntakeAction:start(et)
+function Intake:start(et)
 	self.startTime = et;
 	intake:forward();
 end
@@ -180,7 +180,7 @@ end
 ---@param dt number
 ---@param et number
 ---@return ActionState
-function IntakeAction:update(dt, et)
+function Intake:update(dt, et)
 	if (self.delay == nil) then
 		return ActionState.Done;
 	end
@@ -190,3 +190,13 @@ function IntakeAction:update(dt, et)
 	end
 	return ActionState.Running;
 end
+
+RobotActions = {
+	Shoot = Shoot,
+	ShooterDisable = ShooterDisable,
+	ShooterStart = ShooterEnable,
+	Intake = Intake,
+	IntakeStop = IntakeStop
+};
+
+Delay = SleepAction;

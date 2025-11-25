@@ -64,6 +64,8 @@ local c = ParallelAction.new(a, b);
 
 c:start(t);
 
+local d = SeqAction.new({});
+
 while (true) do
 	local s = c:update(0, t);
 	t = os.time();
