@@ -14,6 +14,7 @@ import org.firstinspires.ftc.vision.apriltag.AprilTagProcessor
 import java.io.File
 import java.util.concurrent.TimeUnit
 import com.qualcomm.robotcore.hardware.DcMotor
+import kotlin.math.abs
 
 fun clampf(min: Float, max: Float, num: Float): Float
 {
@@ -62,14 +63,19 @@ class autoAim : LinearOpMode()
 			.build();
 
 		setManualExposure(2, 255, visionPortal);
+
 		//tpr = ticks per rev
-		val ticksPerRev = 384.5;
+    val ticksPerRev = 537.7;
+
 		//tpd = tick per degrees
-		val ticksPerDeg = ticksPerRev / 360;
+  
+    val gearRatio = 208.0 / 114;
 
-		var timeBetweenDetection: Double = 0.0;
+		val ticksPerDeg = -ticksPerRev / 360 * gearRatio;
 
-		val limit = (ticksPerDeg * 90).toInt();
+		var timeBetweenDetection = 0.0;
+
+		val limit = abs((ticksPerDeg * 90).toInt());
 
 		val file = File("/sdcard/FIRST/java/src/Datalog/camera_values${System.nanoTime()}.txt")
 		if (!file.exists())
@@ -113,13 +119,11 @@ class autoAim : LinearOpMode()
 						writer.write("[%10f] moving to target".format(timer3.milliseconds()));
 						val newpos = motor.currentPosition + (pos.bearing * ticksPerDeg).toInt();
 						targetPosition = clampi(-limit, limit, newpos);
-						/*
 						motor.power = 0.0;
 						motor.mode = DcMotor.RunMode.RUN_WITHOUT_ENCODER;
 						motor.targetPosition = clampi(-limit, limit, newpos);
 						motor.mode = DcMotor.RunMode.RUN_TO_POSITION;
-						motor.power = 0.5;
-						*/
+						motor.power = 1.0;
 					}
 					else
 						writer.write("[%10f] within +- 10 deg of target".format(timer3.milliseconds()));
@@ -134,19 +138,17 @@ class autoAim : LinearOpMode()
 					writer.write("[%10f] target lost, resetting".format(timer3.milliseconds()));
 					state = State.Waiting;
 					targetPosition = 0;
-					/*
 					motor.power = 0.0;
 					motor.mode = DcMotor.RunMode.RUN_WITHOUT_ENCODER;
 					motor.targetPosition = 0;
 					motor.mode = DcMotor.RunMode.RUN_TO_POSITION;
-					motor.power = 0.5;
-					*/
+					motor.power = 1.0;
 				}
 			}
 			telemetry.addLine("t:$timeBetweenDetection");
 			telemetry.addData("targetPos", targetPosition);
 			telemetry.addData("curPos", motor.currentPosition);
-			updateRunToPosition();
+			//updateRunToPosition();
 			telemetry.update();
 		}
 	}
