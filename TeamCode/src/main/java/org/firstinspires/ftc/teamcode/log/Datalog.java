@@ -8,14 +8,17 @@ public class Datalog {
 
     // These are all of the fields that we want in the datalog.
     // Note that order here is NOT important. The order is important in the setFields() call below
-    public Datalogger.GenericField current = new Datalogger.GenericField("Current");
-    public Datalogger.GenericField ticks = new Datalogger.GenericField("Ticks");
-    public Datalogger.GenericField motorPower = new Datalogger.GenericField("Set Power");
-    public Datalogger.GenericField velocity = new Datalogger.GenericField("Velocity");
-    public Datalogger.GenericField running = new Datalogger.GenericField("Running");
-    public Datalogger.GenericField motorType = new Datalogger.GenericField("Motor Type");
+    public Datalogger.GenericField leftCurrent = new Datalogger.GenericField("leftCurrent");
+    public Datalogger.GenericField rightCurrent = new Datalogger.GenericField("rightCurrent");
+    public Datalogger.GenericField leftTicks = new Datalogger.GenericField("leftTicks");
+    public Datalogger.GenericField rightTicks = new Datalogger.GenericField("rightTicks");
+    public Datalogger.GenericField leftPower = new Datalogger.GenericField("leftPower");
+    public Datalogger.GenericField rightPower = new Datalogger.GenericField("rightPower");
+    public Datalogger.GenericField leftVelocity = new Datalogger.GenericField("leftVelocity");
+    public Datalogger.GenericField rightVelocity = new Datalogger.GenericField("rightVelocity");
+    public Datalogger.GenericField leftPIDF = new Datalogger.GenericField("leftPIDF");
+    public Datalogger.GenericField rightPIDF = new Datalogger.GenericField("rightPIDF");
     public Datalogger.GenericField batteryVoltage = new Datalogger.GenericField("Battery Voltage");
-    public Datalogger.GenericField pidfValues = new Datalogger.GenericField("PIDF");
 
     public Datalog(String name)
     {
@@ -31,7 +34,11 @@ public class Datalog {
             // Tell it about the fields we care to log.
             // Note that order *IS* important here! The order in which we list
             // the fields is the order in which they will appear in the log.
-            .setFields(motorPower, current, batteryVoltage, running, ticks, velocity, pidfValues).build();
+            .setFields(
+                leftCurrent, leftTicks, leftPower, leftVelocity, leftPIDF,
+                rightCurrent, rightTicks, rightPower, rightVelocity, rightPIDF,
+                batteryVoltage
+            ).build();
     }
 
     // Tell the datalogger to gather the values of the fields

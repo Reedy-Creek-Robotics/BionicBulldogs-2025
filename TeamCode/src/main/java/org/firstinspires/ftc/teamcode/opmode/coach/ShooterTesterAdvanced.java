@@ -1,8 +1,9 @@
-package org.firstinspires.ftc.teamcode.opmode;
+package org.firstinspires.ftc.teamcode.opmode.coach;
 
 import android.os.Environment;
 
-import com.acmerobotics.dashboard.config.Config;
+import com.acmerobotics.dashboard.FtcDashboard;
+import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -14,6 +15,7 @@ import com.qualcomm.robotcore.util.RobotLog;
 
 import org.firstinspires.ftc.robotcore.external.navigation.CurrentUnit;
 import org.firstinspires.ftc.teamcode.log.Datalog;
+import org.firstinspires.ftc.teamcode.opmode.TuningConfig;
 import org.firstinspires.ftc.teamcode.utils.NanoFileServer;
 
 import java.io.File;
@@ -52,17 +54,23 @@ public class ShooterTesterAdvanced extends LinearOpMode {
     public void runOpMode() throws InterruptedException {
         serveFiles();
 
-        DcMotorEx motor = hardwareMap.get(DcMotorEx.class, "shooter");
-        motor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        motor.setDirection(DcMotorSimple.Direction.REVERSE);
+        telemetry = new MultipleTelemetry(telemetry, FtcDashboard.getInstance().getTelemetry());
 
-        PIDFCoefficients defaultPID = motor.getPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER);
+        DcMotorEx flywheelLeft = hardwareMap.get(DcMotorEx.class, "flywheelLeft");
+        flywheelLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        flywheelLeft.setDirection(DcMotorSimple.Direction.REVERSE);
+
+        DcMotorEx flywheelRight = hardwareMap.get(DcMotorEx.class, "flywheelRight");
+        flywheelRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
+        // P - I - D values
+        PIDFCoefficients defaultPID = flywheelRight.getPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER);
         TuningConfig.P = defaultPID.p;
         TuningConfig.I = defaultPID.i;
         TuningConfig.D = defaultPID.d;
 
-
-        // P - I - D values
+        DcMotorEx transfer = hardwareMap.get(DcMotorEx.class, "transfer");
+        transfer.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
         // current power setting
         double motorVelocity = 0.0;
@@ -79,8 +87,8 @@ public class ShooterTesterAdvanced extends LinearOpMode {
         boolean isRunning = false;
         boolean loggingEnabled = false;
         while(opModeIsActive()) {
-            PIDFCoefficients newPID = new PIDFCoefficients(TuningConfig.P, TuningConfig.I, TuningConfig.D, defaultPID.f);
-            motor.setPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER, newPID);
+            //PIDFCoefficients newPID = new PIDFCoefficients(TuningConfig.P, TuningConfig.I, TuningConfig.D, defaultPID.f);
+            //flywheelLeft.setPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER, newPID);
 
             // controls
             if( gamepad1.dpadDownWasPressed() ) {
@@ -94,47 +102,77 @@ public class ShooterTesterAdvanced extends LinearOpMode {
             // start the test
             if( gamepad1.squareWasPressed() ) {
                 isRunning = true;
-                motor.setVelocity(motorVelocity);
+                flywheelLeft.setVelocity(motorVelocity);
+                flywheelRight.setVelocity(motorVelocity);
             }
 
             // stop the test
             if( gamepad1.triangleWasPressed() ) {
                 isRunning = false;
-                motor.setVelocity(0);
+                flywheelLeft.setVelocity(0);
+                flywheelRight.setVelocity(0);
             }
 
             if( gamepad1.circleWasPressed()) {
                 loggingEnabled = !loggingEnabled;
             }
 
+            if( gamepad1.crossWasPressed() ) {
+                if( transfer.getPower() == 0 ) {
+                    transfer.setPower(1.0);
+                }
+                else {
+                    transfer.setPower(0);
+                }
+            }
+
             // collect data
             // double actualPower = motor.getPower();
-            double current = motor.getCurrent(CurrentUnit.AMPS);
-            double velocity = motor.getVelocity();
-            double ticks = motor.getCurrentPosition();
-            PIDFCoefficients pidf = motor.getPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER);
+            double leftCurrent = flywheelLeft.getCurrent(CurrentUnit.AMPS);
+            double rightCurrent = flywheelRight.getCurrent(CurrentUnit.AMPS);
+            double leftVelocity = flywheelLeft.getVelocity();
+            double rightVelocity = flywheelRight.getVelocity();
+            double leftTicks = flywheelLeft.getCurrentPosition();
+            double rightTicks = flywheelRight.getCurrentPosition();
+            PIDFCoefficients leftPIDF = flywheelLeft.getPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER);
+            PIDFCoefficients rightPIDF = flywheelRight.getPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER);
 
             // log - only when logging is enabled
             if( loggingEnabled ) {
-                log.current.set(current);
-                log.running.set(isRunning);
-                log.ticks.set(ticks);
-                //log.motorPower.set(motorVelocity);
-                log.velocity.set(velocity);
+                log.leftCurrent.set(leftCurrent);
+                log.leftVelocity.set(leftVelocity);
+                log.leftTicks.set(leftTicks);
+                log.leftPIDF.set("P="+leftPIDF.p+" I="+leftPIDF.i + " D="+ leftPIDF.d);
+                log.leftPower.set(flywheelLeft.getPower());
+
+                log.rightCurrent.set(rightCurrent);
+                log.rightVelocity.set(rightVelocity);
+                log.rightTicks.set(rightTicks);
+                log.rightPIDF.set("P="+rightPIDF.p+" I="+rightPIDF.i + " D="+ rightPIDF.d);
+                log.rightPower.set(flywheelRight.getPower());
+
                 log.batteryVoltage.set(getBatteryVoltage());
-                log.pidfValues.set(pidf.toString());
+
                 log.writeLine();
             }
 
             // telemetry
             telemetry.addData("IS_LOGGING", loggingEnabled + ", " + timeStamp);
+            telemetry.addData("VELOCITY", motorVelocity);
             telemetry.addLine("");
-            telemetry.addData("set velocity", motorVelocity);
-            telemetry.addData("motor power", motor.getPower());
-            telemetry.addData("current", current);
-            telemetry.addData("ticks", ticks );
-            telemetry.addData("actual velocity",velocity);
-            telemetry.addData("PID: ", pidf);
+            telemetry.addData("leftVelocity", leftVelocity);
+            telemetry.addData("leftTicks", leftTicks);
+            telemetry.addData("leftPower", flywheelLeft.getPower());
+            telemetry.addData("leftCurrent", leftCurrent);
+            telemetry.addData("leftPIDF", leftPIDF.toString());
+
+            telemetry.addData("rightVelocity", rightVelocity);
+            telemetry.addData("rightTicks", rightTicks);
+            telemetry.addData("rightPower", flywheelRight.getPower());
+            telemetry.addData("rightCurrent", rightCurrent);
+            telemetry.addData("rightPIDF", rightPIDF.toString());
+
+            telemetry.addData("transfer power", transfer.getPower());
             telemetry.update();
         }
 
