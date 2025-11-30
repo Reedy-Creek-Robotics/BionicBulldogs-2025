@@ -8,7 +8,7 @@ require("modules.utils");
 ---@field backRight DcMotor
 ---@field imu Imu?
 HDrive = {
-	maxPower = 1,
+	maxPower = 1
 };
 
 ---@return HDrive
@@ -17,6 +17,7 @@ function HDrive.new()
 	local m = new(HDrive);
 	for _, name in pairs(motorNames) do
 		m[name] = hardwareMap.dcmotorGet(name);
+		m[name]:setZeroPowerBehavior(DcMotorZeroPowerBehavior.Brake);
 	end
 	m.frontRight:setDirection(Direction.Reverse);
 	m.backRight:setDirection(Direction.Reverse);

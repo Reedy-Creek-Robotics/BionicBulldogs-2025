@@ -37,8 +37,8 @@ TelemPaneSplitDir = {
 ---@field lines TelemPaneLine[]
 ---@field rootPane TelemPane | TelemPaneContainer
 TelemPaneManager = {
-	w = 15,
-	h = 15,
+	w = 37,
+	h = 19,
 	lines = {}
 };
 

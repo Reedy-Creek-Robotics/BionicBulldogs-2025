@@ -7,4 +7,4 @@ actionPane = TelemPaneManager.rootPane;
 actionPane.autoReset = false;
 robotPane = actionPane:vsplit("robot", 5);
 drivePane = robotPane:hsplit("drive");
-otherPane = drivePane:vsplit("other");
+aprilTagPane = drivePane:vsplit("aprilTag");

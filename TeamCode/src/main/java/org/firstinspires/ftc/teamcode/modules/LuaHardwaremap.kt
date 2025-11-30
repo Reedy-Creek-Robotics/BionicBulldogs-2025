@@ -4,6 +4,7 @@ import com.minerkid08.dynamicopmodeloader.FunctionBuilder
 import com.minerkid08.dynamicopmodeloader.OpmodeLoaderFunction
 import com.qualcomm.hardware.sparkfun.SparkFunOTOS
 import com.qualcomm.robotcore.hardware.CRServo
+import com.qualcomm.robotcore.hardware.DcMotorEx
 import com.qualcomm.robotcore.hardware.DcMotorSimple
 import com.qualcomm.robotcore.hardware.HardwareMap
 import com.qualcomm.robotcore.hardware.IMU
@@ -16,6 +17,7 @@ class LuaHardwaremap(private val hardwareMap: HardwareMap)
 		fun init(builder: FunctionBuilder, hardwareMap: HardwareMap)
 		{
 			builder.addClassAsClass(LuaDcMotor::class.java)
+			builder.addClassAsClass(LuaDcMotorEx::class.java)
 			builder.addClassAsClass(LuaServo::class.java)
 			builder.addClassAsClass(LuaCrServo::class.java)
 			builder.addClassAsClass(LuaImu::class.java)
@@ -29,6 +31,9 @@ class LuaHardwaremap(private val hardwareMap: HardwareMap)
 
 	@OpmodeLoaderFunction
 	fun dcmotorGet(name: String) = LuaDcMotor(hardwareMap.dcMotor.get(name));
+
+	@OpmodeLoaderFunction
+	fun dcmotorexGet(name: String) = LuaDcMotorEx(hardwareMap.get(DcMotorEx::class.java, name));
 
 	@OpmodeLoaderFunction
 	fun crservoGet(name: String) = LuaCrServo(hardwareMap.crservo.get(name));
@@ -63,7 +68,7 @@ class LuaCrServo(private val m: CRServo)
 class LuaServo(private val m: Servo)
 {
 	@OpmodeLoaderFunction
-	fun setPos(power: Double)
+	fun setPosition(power: Double)
 	{
 		m.position = power;
 	}

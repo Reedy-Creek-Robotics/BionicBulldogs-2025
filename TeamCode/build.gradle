@@ -11,6 +11,8 @@
 
 // Custom definitions may go here
 
+import org.gradle.internal.os.OperatingSystem
+
 // Include common definitions from above.
 apply from: '../build.common.gradle'
 apply from: '../build.dependencies.gradle'
@@ -50,13 +52,32 @@ file.eachLine {
 }
 
 tasks.register('uploadAdb', Exec) {
-    def adb = "$sdkDir/platform-tools/adb"
-    ignoreExitValue = true
+    def adb= "";
+    def os = OperatingSystem.current();
+    if(os.isLinux()) {
+        adb = "$sdkDir/platform-tools/adb"
+    }
+    if(os.isMacOsX()) {
+        adb = "$sdkDir/platform-tools/adb"
+    }
+    if(os.isWindows()) {
+        adb = "$sdkDir/platform-tools/adb.exe"
+    }
     commandLine adb, "push", "$quickStartDir/lua", "/sdcard"
 }
 
 tasks.register('upload', Exec) {
-    def prgm = "$quickStartDir/pack"
+    def prgm = ""
+    def os = OperatingSystem.current();
+    if(os.isLinux()) {
+        prgm = "$quickStartDir/pack"
+    }
+    if(os.isMacOsX()) {
+        prgm = "$quickStartDir/pack.mac"
+    }
+    if(os.isWindows()) {
+        prgm = "$quickStartDir/pack.exe"
+    }
     workingDir = quickStartDir
     commandLine prgm
 }

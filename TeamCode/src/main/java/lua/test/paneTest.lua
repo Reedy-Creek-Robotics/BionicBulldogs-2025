@@ -1,5 +1,4 @@
-package.path = package.path .. ";./lua/?.lua";
-
+require("test.testBase");
 require("modules.telemPanes");
 
 TelemPaneManager.h = 20;
@@ -23,11 +22,6 @@ drivePane:addData("h", 45);
 robotPane:addData("pos", -300);
 robotPane:addData("target pos", 500);
 robotPane:addData("slide state", "reset");
-otherPane:addLine("no path running");
+aprilTagPane:addLine("no path running");
 
-TelemPaneManager:update();
-actionPane:addLine("error: 'path' action failed2");
-actionPane:addLine("error: 'path' action failed3");
-actionPane:addLine("error: 'path' action failed4");
-actionPane:addLine("error: 'path' action failed5");
 TelemPaneManager:update();

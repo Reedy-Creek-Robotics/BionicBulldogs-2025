@@ -59,4 +59,16 @@ class LuaFollower(private val follower: Follower)
 	{
 		Debug.drawDebug(follower);
 	}
+
+	@OpmodeLoaderFunction
+	fun initTelem()
+	{
+		Debug.init();
+	}
+
+	@OpmodeLoaderFunction
+	fun stop()
+	{
+		follower.breakFollowing();
+	}
 }

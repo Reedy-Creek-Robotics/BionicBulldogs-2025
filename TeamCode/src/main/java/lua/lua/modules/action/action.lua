@@ -13,6 +13,8 @@ ActionState = {
 ---@field update fun(self: Action, dt: number, et: number): ActionState
 ---@field finish fun(self: Action)?
 ---@field error fun(self: Action)?
+---@field genProfileStr fun(self: Action, file: file*, indent: string?)?
+---@field dontLog boolean?
 
 ---@class SleepAction : Action
 ---@field delay number
@@ -20,7 +22,7 @@ ActionState = {
 SleepAction = {
 	mt = {
 		__tostring = function (self)
-			return ("SleepAction(%.2fs): %s"):format(self.delay, self.__id);
+			return ("SleepAction(%.2fs)"):format(self.delay);
 		end
 	}
 };
@@ -53,7 +55,7 @@ end
 PathAction = {
 	mt = {
 		__tostring = function (self)
-			return "PathAction: " .. self.__id;
+			return "PathAction";
 		end
 	}
 };
@@ -70,6 +72,10 @@ function PathAction:start()
 	follower.followPathc(self.path);
 end
 
+function PathAction:error()
+	follower.stop();
+end
+
 ---@param dt number
 ---@param et number
 ---@return ActionState
@@ -78,6 +84,7 @@ function PathAction:update(dt, et)
 	if (follower.isBusy()) then
 		return ActionState.Running;
 	end
+	--follower.stop();
 	return ActionState.Done;
 end
 
@@ -85,7 +92,7 @@ end
 CallbackAction = {
 	mt = {
 		__tostring = function (self)
-			return "CallbackAction: " .. self.__id;
+			return "CallbackAction";
 		end
 	}
 };
@@ -103,4 +110,29 @@ end
 ---@return ActionState
 function CallbackAction:update(dt, et)
 	return ActionState.Done;
+end
+
+---@class ErrorAction : Action
+---@field msg string?
+ErrorAction = {
+	mt = {
+		__tostring = function (self)
+			return "ErrorAction - " .. tostring(self.msg);
+		end
+	}
+};
+
+---@param msg string 
+---@return ErrorAction 
+function ErrorAction.new(msg)
+	local a = new(ErrorAction);
+	a.msg = msg;
+	return a;
+end
+
+---@param dt number
+---@param et number
+---@return ActionState
+function ErrorAction:update(dt, et)
+	return ActionState.Error;
 end
