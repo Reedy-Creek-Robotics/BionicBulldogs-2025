@@ -19,10 +19,12 @@ path = {
 	end
 };
 
-require("opmode.auto.blueBack");
+DISABLE_ROBOT = true;
+
 require("opmode.auto.blueFront");
-require("opmode.auto.redBack");
-require("opmode.auto.redFront");
+
+opmodes[5].init();
+profiler.genString("test", action);
 
 for k, v in ipairs(opmodes) do
 	print("opmode " .. tostring(k) .. ": " .. v.name);

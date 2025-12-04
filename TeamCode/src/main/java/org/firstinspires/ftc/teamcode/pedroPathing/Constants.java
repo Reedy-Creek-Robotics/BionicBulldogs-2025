@@ -17,8 +17,8 @@ public class Constants
 {
 	public static FollowerConstants followerConstants = new FollowerConstants()
 					.mass(13)
-					.forwardZeroPowerAcceleration(-32.247 / 2)
-					.lateralZeroPowerAcceleration(-63.754 / 2)
+					.forwardZeroPowerAcceleration(-32.247)
+					.lateralZeroPowerAcceleration(-63.754)
 					.centripetalScaling(0.0005)
 					.drivePIDFCoefficients(new FilteredPIDFCoefficients(0.015, 0, 0.00001, 0.6, 0.01))
 					.translationalPIDFCoefficients(new PIDFCoefficients(0.2, 0.0, 0.0, 0.0))

@@ -2,9 +2,9 @@ SCRIPTDIR = SCRIPTDIR or "/sdcard/lua";
 
 IMPORTDIR = { "opmode" };
 
-require("opmode.auto");
-
 DISABLE_ROBOT = true;
+
+require("opmode.auto");
 
 for j, dir in pairs(IMPORTDIR) do
 	local files = io.list(SCRIPTDIR .. '/' .. dir);
