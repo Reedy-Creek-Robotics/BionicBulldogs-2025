@@ -4,13 +4,15 @@ require("modules.intake");
 require("modules.shooter");
 
 ---@type Opmode
-local opmode = { name = "mainTelop" };
+local opmode = { name = "t_mainTelop" };
 
 ---@type HDrive
 local drive;
 
 ---@type number[]
 local shooterVelocity = {}
+
+local turretMotor = hardwareMap.dcmotorGet("turret");
 
 -- Find where I found my distance values here: https://www.desmos.com/calculator/u0kuzoiwb1
 -- Distances = { 39.9530975019, 73.8935044507, 139.256956738 }
@@ -35,6 +37,11 @@ end
 
 function opmode.start()
 	shooter:close();
+	turretMotor:setMode(DcMotorRunMode.StopAndResetEncoder);
+	turretMotor:setMode(DcMotorRunMode.RunWithoutEncoder);
+	turretMotor:setTargetPosition(0);
+	turretMotor:setMode(DcMotorRunMode.RunToPosition);
+	turretMotor:setPower(1);
 end
 
 function opmode.update(dt, et)

@@ -4,13 +4,10 @@ import android.content.Context
 import android.util.Log
 import com.minerkid08.dynamicopmodeloader.FileServer
 import com.minerkid08.dynamicopmodeloader.OpmodeLoader
-import com.qualcomm.robotcore.eventloop.opmode.Autonomous
 import com.qualcomm.robotcore.eventloop.opmode.OpModeManager
 import com.qualcomm.robotcore.eventloop.opmode.OpModeRegistrar
 import org.firstinspires.ftc.ftccommon.external.OnCreate
-import org.firstinspires.ftc.robotcontroller.internal.FtcOpModeRegister
 import org.firstinspires.ftc.robotcore.internal.opmode.OpModeMeta
-import org.firstinspires.ftc.teamcode.opmode.FRHdriveTest
 import org.firstinspires.ftc.teamcode.opmode.OpmodeloaderAutoBase
 import org.firstinspires.ftc.teamcode.opmode.OpmodeloaderOpmodeBase
 

@@ -14,6 +14,7 @@ import org.firstinspires.ftc.vision.apriltag.AprilTagProcessor
 import java.io.File
 import java.util.concurrent.TimeUnit
 import com.qualcomm.robotcore.hardware.DcMotor
+import org.firstinspires.ftc.teamcode.modules.cameraSetExposure
 import kotlin.math.abs
 
 fun clampf(min: Float, max: Float, num: Float): Float
@@ -62,7 +63,7 @@ class autoAim : LinearOpMode()
 			.setCameraResolution(Size(1920, 1080))
 			.build();
 
-		setManualExposure(2, 255, visionPortal);
+		cameraSetExposure(2, 255, visionPortal, telemetry);
 
 		//tpr = ticks per rev
     val ticksPerRev = 537.7;
@@ -176,41 +177,6 @@ class autoAim : LinearOpMode()
 				motor.power = -0.2;
 			else
 				motor.power = -0.1;
-		}
-	}
-
-	fun delay(ms: Float)
-	{
-		val elapsedTime = ElapsedTime();
-		elapsedTime.reset();
-		while (elapsedTime.milliseconds() < ms);
-	}
-
-	fun setManualExposure(exposureMS: Int, gain: Int, visionPortal: VisionPortal)
-	{
-		if (visionPortal.cameraState != VisionPortal.CameraState.STREAMING)
-		{
-			telemetry.addData("Camera", "Waiting");
-			telemetry.update();
-			while (!isStopRequested && (visionPortal.cameraState != VisionPortal.CameraState.STREAMING));
-
-			telemetry.addData("Camera", "Ready");
-			telemetry.update();
-		}
-
-		if (!isStopRequested)
-		{
-			val exposureControl = visionPortal.getCameraControl(ExposureControl::class.java);
-			if (exposureControl.mode != ExposureControl.Mode.Manual)
-			{
-				exposureControl.mode = ExposureControl.Mode.Manual;
-				delay(50.0f);
-			}
-			exposureControl.setExposure(exposureMS.toLong(), TimeUnit.MILLISECONDS);
-			delay(20.0f);
-			val gainControl = visionPortal.getCameraControl(GainControl::class.java);
-			gainControl.gain = gain;
-			delay(20.0f);
 		}
 	}
 }
