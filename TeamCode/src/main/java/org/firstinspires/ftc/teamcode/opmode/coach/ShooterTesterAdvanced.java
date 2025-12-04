@@ -3,19 +3,20 @@ package org.firstinspires.ftc.teamcode.opmode.coach;
 import android.os.Environment;
 
 import com.acmerobotics.dashboard.FtcDashboard;
+import com.acmerobotics.dashboard.config.Config;
 import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
+import com.qualcomm.robotcore.hardware.MotorControlAlgorithm;
 import com.qualcomm.robotcore.hardware.PIDFCoefficients;
 import com.qualcomm.robotcore.hardware.VoltageSensor;
 import com.qualcomm.robotcore.util.RobotLog;
 
 import org.firstinspires.ftc.robotcore.external.navigation.CurrentUnit;
 import org.firstinspires.ftc.teamcode.log.Datalog;
-import org.firstinspires.ftc.teamcode.opmode.TuningConfig;
 import org.firstinspires.ftc.teamcode.utils.NanoFileServer;
 
 import java.io.File;
@@ -24,8 +25,11 @@ import java.net.NetworkInterface;
 import java.text.SimpleDateFormat;
 import java.util.Collections;
 
+@Config
 @TeleOp
 public class ShooterTesterAdvanced extends LinearOpMode {
+    public static PIDFCoefficients SHOOTER_PIDF_VALUES = new PIDFCoefficients(10, 3, 0, 0, MotorControlAlgorithm.LegacyPID);
+
     private NanoFileServer server;
     private static final int PORT = 8888;
 
@@ -63,14 +67,10 @@ public class ShooterTesterAdvanced extends LinearOpMode {
         DcMotorEx flywheelRight = hardwareMap.get(DcMotorEx.class, "flywheelRight");
         flywheelRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
-        // P - I - D values
-        PIDFCoefficients defaultPID = flywheelRight.getPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER);
-        TuningConfig.P = defaultPID.p;
-        TuningConfig.I = defaultPID.i;
-        TuningConfig.D = defaultPID.d;
-
         DcMotorEx transfer = hardwareMap.get(DcMotorEx.class, "transfer");
         transfer.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+
+        ShooterMotorSim motorSim = new ShooterMotorSim();
 
         // current power setting
         double motorVelocity = 0.0;
@@ -84,11 +84,20 @@ public class ShooterTesterAdvanced extends LinearOpMode {
         // WAIT FOR INIT
         waitForStart();
 
+        // start the simulator
+        motorSim.start();
+
         boolean isRunning = false;
         boolean loggingEnabled = false;
         while(opModeIsActive()) {
-            //PIDFCoefficients newPID = new PIDFCoefficients(TuningConfig.P, TuningConfig.I, TuningConfig.D, defaultPID.f);
-            //flywheelLeft.setPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER, newPID);
+            double targetVelocity = motorSim.update();
+
+            flywheelLeft.setPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER, SHOOTER_PIDF_VALUES);
+            flywheelRight.setPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER, SHOOTER_PIDF_VALUES);
+            if( isRunning ) {
+                flywheelLeft.setVelocity(targetVelocity);
+                flywheelRight.setVelocity(targetVelocity);
+            }
 
             // controls
             if( gamepad1.dpadDownWasPressed() ) {
@@ -102,8 +111,8 @@ public class ShooterTesterAdvanced extends LinearOpMode {
             // start the test
             if( gamepad1.squareWasPressed() ) {
                 isRunning = true;
-                flywheelLeft.setVelocity(motorVelocity);
-                flywheelRight.setVelocity(motorVelocity);
+                //flywheelLeft.setVelocity(targetVelocity);
+                //flywheelRight.setVelocity(targetVelocity);
             }
 
             // stop the test
@@ -142,13 +151,13 @@ public class ShooterTesterAdvanced extends LinearOpMode {
                 log.leftCurrent.set(leftCurrent);
                 log.leftVelocity.set(leftVelocity);
                 log.leftTicks.set(leftTicks);
-                log.leftPIDF.set("P="+leftPIDF.p+" I="+leftPIDF.i + " D="+ leftPIDF.d);
+                log.leftPIDF.set("P="+leftPIDF.p+" I="+leftPIDF.i + " D="+ leftPIDF.d + " F="+ leftPIDF.f);
                 log.leftPower.set(flywheelLeft.getPower());
 
                 log.rightCurrent.set(rightCurrent);
                 log.rightVelocity.set(rightVelocity);
                 log.rightTicks.set(rightTicks);
-                log.rightPIDF.set("P="+rightPIDF.p+" I="+rightPIDF.i + " D="+ rightPIDF.d);
+                log.rightPIDF.set("P="+rightPIDF.p+" I="+rightPIDF.i + " D="+ rightPIDF.d + " F="+ rightPIDF.f);
                 log.rightPower.set(flywheelRight.getPower());
 
                 log.batteryVoltage.set(getBatteryVoltage());
@@ -159,6 +168,8 @@ public class ShooterTesterAdvanced extends LinearOpMode {
             // telemetry
             telemetry.addData("IS_LOGGING", loggingEnabled + ", " + timeStamp);
             telemetry.addData("VELOCITY", motorVelocity);
+            telemetry.addData("TARGET VELO", targetVelocity);
+            telemetry.addData("STATE", motorSim.getCurrentState());
             telemetry.addLine("");
             telemetry.addData("leftVelocity", leftVelocity);
             telemetry.addData("leftTicks", leftTicks);
