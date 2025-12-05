@@ -10,9 +10,10 @@ local opmode = { name = "t_mainTelop" };
 local drive;
 
 ---@type number[]
-local shooterVelocity = {}
+local shooterVelocity = { 1200, 1300, 1600 }
 
-local turretMotor = hardwareMap.dcmotorGet("turret");
+---@type DcMotor
+local turretMotor;
 
 -- Find where I found my distance values here: https://www.desmos.com/calculator/u0kuzoiwb1
 -- Distances = { 39.9530975019, 73.8935044507, 139.256956738 }
@@ -27,9 +28,10 @@ local shooterLabel = { "Close", "Moderate", "Far" }
 
 function opmode.init()
 	require("modules.telemetry");
+	turretMotor = hardwareMap.dcmotorGet("turret");
 	drive = HDrive.new();
-	drive.imu = hardwareMap.spimuGet();
-	aprilTagProcessor.init(1920, 1080, 2, 255, 1.0)
+	drive.imu = hardwareMap.imuGet();
+	--aprilTagProcessor.init(1920, 1080, 2, 255, 1.0)
 
 	intake:init();
 	shooter:init();
@@ -46,18 +48,18 @@ end
 
 function opmode.update(dt, et)
 	--Drive the bot
-	local forward = gamepad.getLeftStickY();
+	local forward = -gamepad.getLeftStickY();
 	local right = gamepad.getLeftStickX();
 	local rotate = gamepad.getRightStickX();
 	drive:driveFr(forward, right, rotate);
 
 	--Obtain the blue goal april tag
-	local bTag = aprilTagProcessor.getTag(20)
-	local dist = 0;
+	--local bTag = aprilTagProcessor.getTag(20)
+	--local dist = 0;
 
-	if (bTag:valid()) then
-		dist = bTag:getDist()
-	end
+	--if (bTag:valid()) then
+	--	dist = bTag:getDist()
+	--end
 
 	--Forward/stop intake
 	if (gamepad.getRightBumper2()) then
@@ -77,6 +79,14 @@ function opmode.update(dt, et)
 		end
 	end
 
+	if (gamepad.getDpadUp2()) then
+		if (id == 3) then
+			id = 1;
+		else
+			id = id + 1;
+		end
+	end
+
 	--Run/don't run specifically the shooter
 	if (gamepad.getCircle2()) then
 		shooter:start(shooterVelocity[id]);
@@ -91,8 +101,6 @@ function opmode.update(dt, et)
 		shooter:shoot(et);
 	end
 
-	follower.turn()
-
 	--Automatically updates
 	shooter:update(et);
 
@@ -100,14 +108,14 @@ function opmode.update(dt, et)
 	robotPane:addData("shooterVel", shooter.motor:getVelocity());
 	robotPane:addLine(shooterLabel[id]);
 	robotPane:addData("setVel", shooterVelocity[id]);
-	if bTag:valid() then
-		aprilTagPane:addData("tag distance", bTag:getDist())
-		--positive error means tag is to the right, and vice versa
-		aprilTagPane:addData("angle error", bTag:bearing())
-	else
-		aprilTagPane:addLine("tag distance: -1")
-		aprilTagPane:addLine("angle error: -1")
-	end
+	--if bTag:valid() then
+	--	aprilTagPane:addData("tag distance", bTag:getDist())
+	--	--positive error means tag is to the right, and vice versa
+	--	aprilTagPane:addData("angle error", bTag:bearing())
+	--else
+	--	aprilTagPane:addLine("tag distance: -1")
+	--	aprilTagPane:addLine("angle error: -1")
+	--end
 	TelemPaneManager:update();
 
 	return false;

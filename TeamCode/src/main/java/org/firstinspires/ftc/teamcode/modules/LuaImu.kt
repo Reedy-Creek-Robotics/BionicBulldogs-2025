@@ -13,8 +13,8 @@ class LuaImu(private val imu: IMU)
 		imu.initialize(
 			IMU.Parameters(
 				RevHubOrientationOnRobot(
-					RevHubOrientationOnRobot.LogoFacingDirection.UP,
-					RevHubOrientationOnRobot.UsbFacingDirection.LEFT
+					RevHubOrientationOnRobot.LogoFacingDirection.LEFT,
+					RevHubOrientationOnRobot.UsbFacingDirection.UP
 				)
 			)
 		);

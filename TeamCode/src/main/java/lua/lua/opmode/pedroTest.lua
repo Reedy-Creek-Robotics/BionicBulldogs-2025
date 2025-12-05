@@ -4,7 +4,7 @@ require("modules.action.seqAction");
 require("modules.action.parallelAction");
 
 ---@type Opmode
-local opmode = { name = "t_pedroTest" };
+local opmode = { name = "a_pedroTest" };
 
 ---@type Action
 local a;

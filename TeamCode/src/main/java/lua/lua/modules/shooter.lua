@@ -7,8 +7,9 @@ require("modules.utils")
 ---@field gateOpen number
 ---@field time number
 shooter = {
-	gateOpen = 0.85,
-	gateClosed = 1
+	gateOpen = 0.3,
+	gateClosed = 0,
+	transferDelay = 0.2
 }
 
 function shooter:init()
@@ -29,20 +30,20 @@ end
 
 ---@param et number
 function shooter:shoot(et)
-	self.gate:setPosition(self.gateOpen);
+	--self.gate:setPosition(self.gateOpen);
 	self.time = et;
 end
 
 ---@param et number
 function shooter:update(et)
 	if (self.time ~= nil) then
-		if (self.time + 0.2 <= et) then
-			self.gate:setPosition(self.gateClosed);
+		if (self.time + self.transferDelay <= et) then
+			--self.gate:setPosition(self.gateClosed);
 			self.time = nil;
 		end
 	end
 end
 
 function shooter:close()
-	self.gate:setPosition(self.gateClosed);
+	--self.gate:setPosition(self.gateClosed);
 end

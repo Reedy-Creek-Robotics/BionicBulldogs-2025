@@ -8,6 +8,7 @@ import org.firstinspires.ftc.teamcode.modules.LuaGamepad
 import org.firstinspires.ftc.teamcode.modules.LuaHardwaremap
 import org.firstinspires.ftc.teamcode.modules.LuaLog
 import org.firstinspires.ftc.teamcode.modules.LuaTelemetry
+import org.firstinspires.ftc.teamcode.modules.Turret
 
 open class OpmodeloaderOpmodeBase(private val name: String) : LinearOpMode()
 {
@@ -21,6 +22,7 @@ open class OpmodeloaderOpmodeBase(private val name: String) : LinearOpMode()
 		LuaTelemetry.init(builder, telemetry);
 		LuaAprilTagProcessor.build(builder, hardwareMap)
 		LuaLog.init(builder);
+		Turret.init(builder, hardwareMap);
 
 		opmodeloader.init();
 		opmodeloader.loadOpmode(name);
