@@ -12,7 +12,7 @@ import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
-public class Constants
+public class ConstantsOld
 {
 	public static FollowerConstants followerConstants = new FollowerConstants()
 					.mass(13)
@@ -51,7 +51,6 @@ public class Constants
 													RevHubOrientationOnRobot.UsbFacingDirection.RIGHT
 									)
 					);
-
 	public static PathConstraints pathConstraints = new PathConstraints(0.995, 0.1, 0.1, 0.007, 500, 1, 10, 1);
 
 	public static Follower createFollower(HardwareMap hardwareMap)

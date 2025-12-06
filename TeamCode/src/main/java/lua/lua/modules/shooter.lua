@@ -30,7 +30,7 @@ end
 
 ---@param et number
 function shooter:shoot(et)
-	--self.gate:setPosition(self.gateOpen);
+	self.gate:setPosition(self.gateOpen);
 	self.time = et;
 end
 
@@ -38,12 +38,12 @@ end
 function shooter:update(et)
 	if (self.time ~= nil) then
 		if (self.time + self.transferDelay <= et) then
-			--self.gate:setPosition(self.gateClosed);
+			self.gate:setPosition(self.gateClosed);
 			self.time = nil;
 		end
 	end
 end
 
 function shooter:close()
-	--self.gate:setPosition(self.gateClosed);
+	self.gate:setPosition(self.gateClosed);
 end

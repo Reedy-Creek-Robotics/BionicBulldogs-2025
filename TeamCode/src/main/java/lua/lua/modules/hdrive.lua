@@ -32,8 +32,8 @@ function HDrive:driveFr(forward, right, rotate)
 		error("imu must not be nil");
 	end
 	local heading = self.imu:getHeading()
-	local f = forward * math.cos(heading) - right * math.sin(heading);
-	local r = forward * math.sin(heading) + right * math.cos(heading);
+	local f = forward * math.cos(-heading) - right * math.sin(-heading);
+	local r = forward * math.sin(-heading) + right * math.cos(-heading);
 	self:drive(f, r, rotate);
 end
 

@@ -48,7 +48,7 @@ end
 
 function opmode.update(dt, et)
 	--Drive the bot
-	local forward = -gamepad.getLeftStickY();
+	local forward = gamepad.getLeftStickY();
 	local right = gamepad.getLeftStickX();
 	local rotate = gamepad.getRightStickX();
 	drive:driveFr(forward, right, rotate);
