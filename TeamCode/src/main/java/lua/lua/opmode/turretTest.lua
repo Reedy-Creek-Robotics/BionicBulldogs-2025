@@ -11,17 +11,17 @@ end
 function opmode.update()
 	telemetry.addLine("turret state: " .. turretStateLabels[turret.getState()]);
 
-	if (gamepad:getCircle2()) then
+	if (gamepad.getCircle2()) then
 		turret.startManual();
 	end
-	if (gamepad:getCross2()) then
+	if (gamepad.getCross2()) then
 		turret.startAutomatic();
 	end
-	if (gamepad:getSquare2()) then
+	if (gamepad.getSquare2()) then
 		turret.resetHeading();
 	end
 
-	turret.update(gamepad:getLeftStickX());
+	turret.update(gamepad.getLeftStickX());
 
 	return false;
 end
