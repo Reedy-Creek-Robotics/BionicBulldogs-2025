@@ -31,20 +31,22 @@ class Turret(val hardwaremap: HardwareMap)
 
 	lateinit var motor: DcMotor;
 	var state = State.Manual;
-	lateinit var processor: AprilTagProcessor;
+	private lateinit var processor: AprilTagProcessor;
 
-	val ticksPerRev = 537.7;
-	val gearRatio = 208.0 / 114.0;
-	val ticksPerDeg = -ticksPerRev / 360 * gearRatio;
-	val limit = abs(ticksPerDeg * 90).toInt();
+	private val ticksPerRev = 537.7;
+	private val gearRatio = 208.0 / 114.0;
+	private val ticksPerDeg = -ticksPerRev / 360 * gearRatio;
+	private val limit = abs(ticksPerDeg * 90).toInt();
 
-	val timer = ElapsedTime();
+	private val timer = ElapsedTime();
 
 	@OpmodeLoaderFunction
 	fun init()
 	{
 		motor = hardwaremap.dcMotor.get("turret");
-		processor = AprilTagProcessor.Builder().build();
+		processor = AprilTagProcessor.Builder()
+			.setLensIntrinsics(596.507, 596.507, 960.585, 536.890)
+			.build();
 		val camera = hardwaremap.get(WebcamName::class.java, "Webcam 1");
 		motor.mode = DcMotor.RunMode.STOP_AND_RESET_ENCODER;
 		motor.mode = DcMotor.RunMode.RUN_WITHOUT_ENCODER;
@@ -55,6 +57,7 @@ class Turret(val hardwaremap: HardwareMap)
 			.setStreamFormat(VisionPortal.StreamFormat.MJPEG)
 			.setCameraResolution(Size(1920, 1080))
 			.build();
+
 
 		cameraSetExposure(2, 255, visionPortal);
 	}

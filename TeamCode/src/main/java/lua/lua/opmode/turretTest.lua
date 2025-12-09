@@ -1,7 +1,7 @@
 ---@type Opmode
 local opmode = { name = "t_turretTest" };
 
-local turretStateLabels = { "waiting", "tracking", "manual" };
+local turretStateLabels = { "tracking", "waiting", "manual" };
 
 function opmode.init()
 	turret.init();
