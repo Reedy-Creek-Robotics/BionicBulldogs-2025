@@ -34,8 +34,8 @@ class Turret(val hardwaremap: HardwareMap)
 	private lateinit var processor: AprilTagProcessor;
 
 	private val ticksPerRev = 537.7;
-	private val gearRatio = 208.0 / 114.0;
-	private val ticksPerDeg = -ticksPerRev / 360 * gearRatio;
+	private val gearRatio = 208.0 / 50.0;
+	private val ticksPerDeg = ticksPerRev / 360 * gearRatio;
 	private val limit = abs(ticksPerDeg * 90).toInt();
 
 	private val timer = ElapsedTime();
@@ -54,12 +54,12 @@ class Turret(val hardwaremap: HardwareMap)
 		val visionPortal = VisionPortal.Builder()
 			.setCamera(camera)
 			.addProcessor(processor)
-			.setStreamFormat(VisionPortal.StreamFormat.MJPEG)
+			.setStreamFormat(VisionPortal.StreamFormat.YUY2)
 			.setCameraResolution(Size(1920, 1080))
 			.build();
 
 
-		cameraSetExposure(2, 255, visionPortal);
+		cameraSetExposure(8, 255, visionPortal);
 	}
 
 	@OpmodeLoaderFunction
@@ -67,9 +67,9 @@ class Turret(val hardwaremap: HardwareMap)
 	{
 		return when (state)
 		{
-			State.Tracking -> 0;
-			State.Waiting  -> 1;
-			State.Manual   -> 2;
+			State.Tracking -> 1;
+			State.Waiting  -> 2;
+			State.Manual   -> 3;
 		}
 	}
 
@@ -85,8 +85,8 @@ class Turret(val hardwaremap: HardwareMap)
 	{
 		state = State.Waiting;
 		motor.power = 0.0;
-		motor.mode = DcMotor.RunMode.RUN_WITHOUT_ENCODER;
-		motor.targetPosition = 0;
+		//motor.mode = DcMotor.RunMode.RUN_WITHOUT_ENCODER;
+		//motor.targetPosition = 0;
 		motor.mode = DcMotor.RunMode.RUN_TO_POSITION;
 		motor.power = 1.0;
 	}
@@ -119,14 +119,14 @@ class Turret(val hardwaremap: HardwareMap)
 						continue;
 					val pos = tag.ftcPose;
 
-					if (tag.ftcPose.bearing > 10 || tag.ftcPose.bearing < -10)
+					if (tag.ftcPose.bearing > 20 || tag.ftcPose.bearing < -20)
 					{
 						val newpos = motor.currentPosition + (pos.bearing * ticksPerDeg).toInt();
-						motor.power = 0.0;
-						motor.mode = DcMotor.RunMode.RUN_WITHOUT_ENCODER;
+						//motor.power = 0.0;
+						//motor.mode = DcMotor.RunMode.RUN_WITHOUT_ENCODER;
 						motor.targetPosition = clampi(-limit, limit, newpos);
-						motor.mode = DcMotor.RunMode.RUN_TO_POSITION;
-						motor.power = 1.0;
+						//motor.mode = DcMotor.RunMode.RUN_TO_POSITION;
+						//motor.power = 1.0;
 					}
 					state = State.Tracking;
 					timer.reset();
@@ -137,11 +137,11 @@ class Turret(val hardwaremap: HardwareMap)
 				if (timer.seconds() >= 0.5)
 				{
 					state = State.Waiting;
-					motor.power = 0.0;
-					motor.mode = DcMotor.RunMode.RUN_WITHOUT_ENCODER;
+					//motor.power = 0.0;
+					//motor.mode = DcMotor.RunMode.RUN_WITHOUT_ENCODER;
 					motor.targetPosition = 0;
-					motor.mode = DcMotor.RunMode.RUN_TO_POSITION;
-					motor.power = 1.0;
+					//motor.mode = DcMotor.RunMode.RUN_TO_POSITION;
+					//motor.power = 1.0;
 				}
 			}
 		}

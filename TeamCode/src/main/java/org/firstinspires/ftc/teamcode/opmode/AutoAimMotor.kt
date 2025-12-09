@@ -53,7 +53,7 @@ class autoAim : LinearOpMode()
 
 		processor.setDecimation(3.0f);
 		val camera = hardwareMap.get(WebcamName::class.java, "Webcam 1");
-		motor = hardwareMap.dcMotor.get("turetM") as DcMotorEx
+		motor = hardwareMap.dcMotor.get("turret") as DcMotorEx
 		motor.mode = DcMotor.RunMode.STOP_AND_RESET_ENCODER;
 		motor.mode = DcMotor.RunMode.RUN_WITHOUT_ENCODER;
 		val visionPortal = VisionPortal.Builder()
@@ -63,7 +63,7 @@ class autoAim : LinearOpMode()
 			.setCameraResolution(Size(1920, 1080))
 			.build();
 
-		cameraSetExposure(2, 255, visionPortal, telemetry);
+		cameraSetExposure(8, 255, visionPortal, telemetry);
 
 		//tpr = ticks per rev
     val ticksPerRev = 537.7;

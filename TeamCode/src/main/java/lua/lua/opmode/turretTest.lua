@@ -22,6 +22,7 @@ function opmode.update()
 	end
 
 	turret.update(gamepad.getLeftStickX());
+	telemetry.update();
 
 	return false;
 end
