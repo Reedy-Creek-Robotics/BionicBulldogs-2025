@@ -4,8 +4,8 @@ import com.minerkid08.dynamicopmodeloader.OpmodeLoader
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode
 import com.qualcomm.robotcore.util.ElapsedTime
 import org.firstinspires.ftc.teamcode.modules.ApriltagDistance
-import org.firstinspires.ftc.teamcode.modules.LuaAprilTagProcessor
-import org.firstinspires.ftc.teamcode.modules.LuaHardwaremap
+import org.firstinspires.ftc.teamcode.modules.luaHardware.LuaAprilTagProcessor
+import org.firstinspires.ftc.teamcode.modules.luaHardware.LuaHardwaremap
 import org.firstinspires.ftc.teamcode.modules.LuaLog
 import org.firstinspires.ftc.teamcode.modules.LuaTelemetry
 import org.firstinspires.ftc.teamcode.modules.pathing.LuaFollower

@@ -5,10 +5,14 @@ turret = {
 turret.State= {Waiting = 0, Tracking = 1, Manual = 2}
 
 function turret.init() end
+---@param tag number
+function turret.setTargetTag(tag) end
 ---@return turret.State
 function turret.getState() end
 function turret.startManual() end
 function turret.startAutomatic() end
+function turret.reset() end
+function turret.lockOnTag() end
 function turret.resetHeading() end
 ---@param power number
 function turret.update(power) end

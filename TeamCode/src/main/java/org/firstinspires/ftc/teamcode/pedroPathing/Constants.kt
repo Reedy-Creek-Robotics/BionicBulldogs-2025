@@ -4,12 +4,12 @@ import com.pedropathing.follower.Follower
 import com.pedropathing.follower.FollowerConstants
 import com.pedropathing.ftc.FollowerBuilder
 import com.pedropathing.ftc.drivetrains.MecanumConstants
-import com.pedropathing.ftc.localization.Encoder
-import com.pedropathing.ftc.localization.constants.TwoWheelConstants
+import com.pedropathing.ftc.localization.constants.PinpointConstants
 import com.pedropathing.paths.PathConstraints
-import com.qualcomm.hardware.rev.RevHubOrientationOnRobot
+import com.qualcomm.hardware.gobilda.GoBildaPinpointDriver
 import com.qualcomm.robotcore.hardware.DcMotorSimple
 import com.qualcomm.robotcore.hardware.HardwareMap
+import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit
 
 object Constants
 {
@@ -32,22 +32,31 @@ object Constants
 		.yVelocity(57.4);
 
 
-	val localizerConstants: TwoWheelConstants = TwoWheelConstants()
-		.forwardEncoder_HardwareMapName("backLeft")
-		.strafeEncoder_HardwareMapName("frontLeft")
-		.forwardEncoderDirection(Encoder.REVERSE)
-		.strafeEncoderDirection(Encoder.FORWARD)
-		.IMU_HardwareMapName("imu")
-		.IMU_Orientation(
-			RevHubOrientationOnRobot(
-				RevHubOrientationOnRobot.LogoFacingDirection.LEFT,
-				RevHubOrientationOnRobot.UsbFacingDirection.UP
-			)
-		)
-		.forwardPodY(6.75)
+	val localizerConstants: PinpointConstants = PinpointConstants()
+		.forwardPodY(-6.75)
 		.strafePodX(0.0)
-		.forwardTicksToInches(0.0020127)
-		.strafeTicksToInches(0.002023);
+		.distanceUnit(DistanceUnit.INCH)
+		.hardwareMapName("pinpoint")
+		.encoderResolution(GoBildaPinpointDriver.GoBildaOdometryPods.goBILDA_4_BAR_POD)
+		.forwardEncoderDirection(GoBildaPinpointDriver.EncoderDirection.REVERSED)
+		.strafeEncoderDirection(GoBildaPinpointDriver.EncoderDirection.FORWARD);
+
+	//val localizerConstants: TwoWheelConstants = TwoWheelConstants()
+	//	.forwardEncoder_HardwareMapName("backLeft")
+	//	.strafeEncoder_HardwareMapName("frontLeft")
+	//	.forwardEncoderDirection(Encoder.REVERSE)
+	//	.strafeEncoderDirection(Encoder.FORWARD)
+	//	.IMU_HardwareMapName("imu")
+	//	.IMU_Orientation(
+	//		RevHubOrientationOnRobot(
+	//			RevHubOrientationOnRobot.LogoFacingDirection.LEFT,
+	//			RevHubOrientationOnRobot.UsbFacingDirection.UP
+	//		)
+	//	)
+	//	.forwardPodY(6.75)
+	//	.strafePodX(0.0)
+	//	.forwardTicksToInches(0.0020127)
+	//	.strafeTicksToInches(0.002023);
 
 	val pathConstraints = PathConstraints(0.99, 100.0, 1.0, 1.0);
 
@@ -56,6 +65,6 @@ object Constants
 		FollowerBuilder(followerConstants, hardwaremap)
 			.pathConstraints(pathConstraints)
 			.mecanumDrivetrain(mecanumConstants)
-			.twoWheelLocalizer(localizerConstants)
+			.pinpointLocalizer(localizerConstants)
 			.build();
 };

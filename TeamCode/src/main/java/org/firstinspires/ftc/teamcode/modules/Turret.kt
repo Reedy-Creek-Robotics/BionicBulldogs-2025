@@ -7,6 +7,7 @@ import com.qualcomm.robotcore.hardware.DcMotor
 import com.qualcomm.robotcore.hardware.HardwareMap
 import com.qualcomm.robotcore.util.ElapsedTime
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName
+import org.firstinspires.ftc.teamcode.modules.luaHardware.LuaAprilTag
 import org.firstinspires.ftc.teamcode.opmode.clampi
 import org.firstinspires.ftc.vision.VisionPortal
 import org.firstinspires.ftc.vision.apriltag.AprilTagProcessor
@@ -33,12 +34,16 @@ class Turret(val hardwaremap: HardwareMap)
 	var state = State.Manual;
 	private lateinit var processor: AprilTagProcessor;
 
-	private val ticksPerRev = 537.7;
+	private val ticksPerRev = 145.1;
 	private val gearRatio = 208.0 / 50.0;
 	private val ticksPerDeg = ticksPerRev / 360 * gearRatio;
 	private val limit = abs(ticksPerDeg * 90).toInt();
 
 	private val timer = ElapsedTime();
+
+	var tagId = 24;
+
+	var luaTag = LuaAprilTag(null);
 
 	@OpmodeLoaderFunction
 	fun init()
@@ -59,7 +64,13 @@ class Turret(val hardwaremap: HardwareMap)
 			.build();
 
 
-		cameraSetExposure(8, 255, visionPortal);
+		cameraSetExposure(2, 255, visionPortal);
+	}
+
+	@OpmodeLoaderFunction
+	fun setTargetTag(t: Int)
+	{
+		tagId = t;
 	}
 
 	@OpmodeLoaderFunction
@@ -100,6 +111,35 @@ class Turret(val hardwaremap: HardwareMap)
 	}
 
 	@OpmodeLoaderFunction
+	fun lockOnTag()
+	{
+		val detections = processor.detections;
+		if (detections != null)
+		{
+			for (tag in detections)
+			{
+				if (tag.metadata == null)
+					continue;
+				if (tag.id != tagId)
+					continue;
+				luaTag = LuaAprilTag(tag);
+				val pos = tag.ftcPose;
+
+				if (tag.ftcPose.bearing > 5 || tag.ftcPose.bearing < -5)
+					turnAngle(pos.bearing + 2.5);
+			}
+		}
+	}
+	@OpmodeLoaderFunction
+	fun getTag() = luaTag;
+
+	@OpmodeLoaderFunction
+	fun reset()
+	{
+		motor.targetPosition = 0;
+	}
+
+	@OpmodeLoaderFunction
 	fun update(power: Double)
 	{
 		if (state == State.Manual)
@@ -115,19 +155,12 @@ class Turret(val hardwaremap: HardwareMap)
 				{
 					if (tag.metadata == null)
 						continue;
-					if (tag.id != 24)
+					if (tag.id != tagId)
 						continue;
 					val pos = tag.ftcPose;
 
 					if (tag.ftcPose.bearing > 20 || tag.ftcPose.bearing < -20)
-					{
-						val newpos = motor.currentPosition + (pos.bearing * ticksPerDeg).toInt();
-						//motor.power = 0.0;
-						//motor.mode = DcMotor.RunMode.RUN_WITHOUT_ENCODER;
-						motor.targetPosition = clampi(-limit, limit, newpos);
-						//motor.mode = DcMotor.RunMode.RUN_TO_POSITION;
-						//motor.power = 1.0;
-					}
+						turnAngle(pos.bearing);
 					state = State.Tracking;
 					timer.reset();
 				}
@@ -145,5 +178,15 @@ class Turret(val hardwaremap: HardwareMap)
 				}
 			}
 		}
+	}
+
+	fun turnAngle(angle: Double)
+	{
+		val newpos = motor.currentPosition + (angle * ticksPerDeg).toInt();
+		//motor.power = 0.0;
+		//motor.mode = DcMotor.RunMode.RUN_WITHOUT_ENCODER;
+		motor.targetPosition = clampi(-limit, limit, newpos);
+		//motor.mode = DcMotor.RunMode.RUN_TO_POSITION;
+		//motor.power = 1.0;
 	}
 }

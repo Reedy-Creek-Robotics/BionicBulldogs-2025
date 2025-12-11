@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.modules
+package org.firstinspires.ftc.teamcode.modules.luaHardware
 
 import android.util.Size
 import com.minerkid08.dynamicopmodeloader.FunctionBuilder

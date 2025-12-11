@@ -1,7 +1,8 @@
-package org.firstinspires.ftc.teamcode.modules
+package org.firstinspires.ftc.teamcode.modules.luaHardware
 
 import com.minerkid08.dynamicopmodeloader.FunctionBuilder
 import com.minerkid08.dynamicopmodeloader.OpmodeLoaderFunction
+import com.qualcomm.hardware.gobilda.GoBildaPinpointDriver
 import com.qualcomm.hardware.sparkfun.SparkFunOTOS
 import com.qualcomm.robotcore.hardware.CRServo
 import com.qualcomm.robotcore.hardware.DcMotorEx
@@ -16,12 +17,13 @@ class LuaHardwaremap(private val hardwareMap: HardwareMap)
 	{
 		fun init(builder: FunctionBuilder, hardwareMap: HardwareMap)
 		{
-			builder.addClassAsClass(LuaDcMotor::class.java)
-			builder.addClassAsClass(LuaDcMotorEx::class.java)
-			builder.addClassAsClass(LuaServo::class.java)
-			builder.addClassAsClass(LuaCrServo::class.java)
-			builder.addClassAsClass(LuaImu::class.java)
-			builder.addClassAsClass(LuaSparkFunImu::class.java)
+			builder.addClassAsClass(LuaDcMotor::class.java);
+			builder.addClassAsClass(LuaDcMotorEx::class.java);
+			builder.addClassAsClass(LuaServo::class.java);
+			builder.addClassAsClass(LuaCrServo::class.java);
+			builder.addClassAsClass(LuaImu::class.java);
+			builder.addClassAsClass(LuaSparkFunImu::class.java);
+			builder.addClassAsClass(LuaPinpoint::class.java);
 
 			builder.pushTable("hardwareMap");
 			builder.addObjectAsGlobal(LuaHardwaremap(hardwareMap));
@@ -47,6 +49,10 @@ class LuaHardwaremap(private val hardwareMap: HardwareMap)
 	@OpmodeLoaderFunction
 	fun spimuGet(): LuaSparkFunImu =
 		LuaSparkFunImu(hardwareMap.get(SparkFunOTOS::class.java, "imu2"));
+
+	@OpmodeLoaderFunction
+	fun pinpointGet(): LuaPinpoint=
+		LuaPinpoint(hardwareMap.get(GoBildaPinpointDriver::class.java, "pinpoint"));
 }
 
 class LuaCrServo(private val m: CRServo)

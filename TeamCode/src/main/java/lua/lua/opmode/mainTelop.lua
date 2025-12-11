@@ -10,14 +10,7 @@ local opmode = { name = "t_mainTelop" };
 local drive;
 
 ---@type number[]
-local shooterVelocity = { 1200, 1300, 1600 }
-
----@type DcMotor
-local turretMotor;
-
--- Find where I found my distance values here: https://www.desmos.com/calculator/u0kuzoiwb1
--- Distances = { 39.9530975019, 73.8935044507, 139.256956738 }
--- Regression function: 4.10351x+1020.46204
+local shooterVelocity = { 1000, 1250 }
 
 ---@type number
 local id = 1
@@ -28,9 +21,10 @@ local shooterLabel = { "Close", "Moderate", "Far" }
 
 function opmode.init()
 	require("modules.telemetry");
-	turretMotor = hardwareMap.dcmotorGet("turret");
+	turret.init();
 	drive = HDrive.new();
-	drive.imu = hardwareMap.imuGet();
+	drive.localizerMode = LocalizerMode.pinpoint;
+	drive.pinpoint = hardwareMap.pinpointGet();
 	--aprilTagProcessor.init(1920, 1080, 2, 255, 1.0)
 
 	intake:init();
@@ -38,15 +32,13 @@ function opmode.init()
 end
 
 function opmode.start()
+	turret.setTargetTag(20);
+	turret.startAutomatic();
 	shooter:close();
-	turretMotor:setMode(DcMotorRunMode.StopAndResetEncoder);
-	turretMotor:setMode(DcMotorRunMode.RunWithoutEncoder);
-	turretMotor:setTargetPosition(0);
-	turretMotor:setMode(DcMotorRunMode.RunToPosition);
-	turretMotor:setPower(1);
 end
 
 function opmode.update(dt, et)
+	drive.pinpoint:update();
 	--Drive the bot
 	local forward = gamepad.getLeftStickY();
 	local right = gamepad.getLeftStickX();
@@ -80,7 +72,7 @@ function opmode.update(dt, et)
 	end
 
 	if (gamepad.getDpadUp2()) then
-		if (id == 3) then
+		if (id == 2) then
 			id = 1;
 		else
 			id = id + 1;
@@ -101,11 +93,28 @@ function opmode.update(dt, et)
 		shooter:shoot(et);
 	end
 
+	if (gamepad.getSquare2()) then
+		turret.lockOnTag();
+	end
+
 	--Automatically updates
 	shooter:update(et);
 
-	robotPane:addData("shooterCur", shooter.motor:getCurrent());
-	robotPane:addData("shooterVel", shooter.motor:getVelocity());
+	---@type AprilTag
+	local tag = turret.getTag();
+
+	if (tag:valid()) then
+		aprilTagPane:addData("x", tag:x());
+		aprilTagPane:addData("y", tag:y());
+		aprilTagPane:addData("d", tag:getDist());
+	else
+		aprilTagPane:addLine("no tag found");
+	end
+
+	drivePane:addData("x", drive.pinpoint:getX());
+	drivePane:addData("y", drive.pinpoint:getY());
+	drivePane:addData("h", drive.pinpoint:getHeading());
+	shooter:telem();
 	robotPane:addLine(shooterLabel[id]);
 	robotPane:addData("setVel", shooterVelocity[id]);
 	--if bTag:valid() then
