@@ -162,9 +162,9 @@ internal class LocalizationTest : OpMode()
 	override fun loop()
 	{
 		Tuning.follower!!.setTeleOpDrive(
-			gamepad1.left_stick_y.toDouble(),
-			gamepad1.left_stick_x.toDouble(),
-			gamepad1.right_stick_x.toDouble(),
+			-gamepad1.left_stick_y.toDouble(),
+			-gamepad1.left_stick_x.toDouble(),
+			-gamepad1.right_stick_x.toDouble(),
 			true
 		)
 		Tuning.follower!!.update()

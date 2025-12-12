@@ -24,11 +24,11 @@ object Constants
 		.rightFrontMotorName("frontRight")
 		.leftRearMotorName("backLeft")
 		.rightRearMotorName("backRight")
-		.leftFrontMotorDirection(DcMotorSimple.Direction.FORWARD)
-		.rightFrontMotorDirection(DcMotorSimple.Direction.REVERSE)
-		.leftRearMotorDirection(DcMotorSimple.Direction.FORWARD)
-		.rightRearMotorDirection(DcMotorSimple.Direction.REVERSE)
-		.xVelocity(72.0)
+		.leftFrontMotorDirection(DcMotorSimple.Direction.REVERSE)
+		.rightFrontMotorDirection(DcMotorSimple.Direction.FORWARD)
+		.leftRearMotorDirection(DcMotorSimple.Direction.REVERSE)
+		.rightRearMotorDirection(DcMotorSimple.Direction.FORWARD)
+		.xVelocity(76.9)
 		.yVelocity(57.4);
 
 
