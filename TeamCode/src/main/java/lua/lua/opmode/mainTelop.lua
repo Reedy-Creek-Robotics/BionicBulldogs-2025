@@ -67,7 +67,7 @@ function opmode.update(dt, et)
 		if (intake.state == IntakeState.Reverse) then
 			intake:stop();
 		else
-			intake:reverse()
+			intake:reverse();
 		end
 	end
 

@@ -1,5 +1,4 @@
-package.path = package.path .. ";./lua/?.lua";
-
+require("test.testBase");
 require("modules.telemPanes");
 
 TelemPaneManager.h = 20;

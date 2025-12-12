@@ -6,11 +6,15 @@ require("modules.class");
 ---@field times number[]
 ---@field startTime number
 ---@field initTime number
+---@field label string?
 SeqAction = {
 	dontLog = true,
 	mt = {
 		__tostring = function (self)
-			return "SeqAction";
+			if (self.label == nil) then
+				return "SeqAction";
+			end
+			return ("SeqAction(%s)"):format(self.label);
 		end
 	}
 }
@@ -19,6 +23,17 @@ SeqAction = {
 ---@return SeqAction
 function SeqAction.new(...)
 	local a = new(SeqAction);
+	a.actions = { ... };
+	a.times = {};
+	return a;
+end
+
+---@param label string
+---@param ... Action
+---@return SeqAction
+function SeqAction.newl(label, ...)
+	local a = new(SeqAction);
+	a.label = label;
 	a.actions = { ... };
 	a.times = {};
 	return a;

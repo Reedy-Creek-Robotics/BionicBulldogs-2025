@@ -1,5 +1,4 @@
-package.path = package.path .. ";./lua/?.lua";
-
+require("test.testBase");
 require("modules.action.seqAction");
 require("modules.action.parallelAction");
 
@@ -64,6 +63,8 @@ local b = SeqAction.new(
 local c = ParallelAction.new(a, b);
 
 c:start(t);
+
+local d = SeqAction.new({});
 
 while (true) do
 	local s = c:update(0, t);

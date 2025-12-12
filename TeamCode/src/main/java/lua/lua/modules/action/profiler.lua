@@ -9,11 +9,11 @@ profiler = {};
 ---@param action Action
 function profiler.genString(filename, action)
 	if (action.genProfileStr == nil) then
-		error("'getProfileStr' is nil on root action");
+		error("error: 'getProfileStr' is nil on the root action");
 	end
 	local file = io.open(DATADIR .. filename, "wb");
 	if (file == nil) then
-		error("cant open file");
+		error("error: failed to open file '" .. DATADIR .. filename .. '\'');
 	end
 	action:genProfileStr(file);
 	file:close();

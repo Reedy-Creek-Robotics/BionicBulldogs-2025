@@ -34,9 +34,9 @@ class LuaFollower(private val follower: Follower)
 	}
 
 	@OpmodeLoaderFunction
-	fun followPathc(path: PathChain)
+	fun followPathc(path: PathChain, maxPower: Double)
 	{
-		follower.followPath(path);
+		follower.followPath(path, maxPower, true);
 	}
 
 	@OpmodeLoaderFunction

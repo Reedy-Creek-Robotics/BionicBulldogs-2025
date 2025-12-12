@@ -10,11 +10,10 @@ function AprilTag:valid() end
 ---@return number
 function AprilTag:getDist() end
 ---@return number
-function AprilTag:y() end
----@return number
 function AprilTag:x() end
 ---@return number
-function AprilTag:bearing() end
+function AprilTag:y() end
+---@return number
 
 aprilTagProcessor = {}
 
@@ -29,3 +28,6 @@ function aprilTagProcessor.init(width, height, exposureMS, gain, decimation) end
 ---@return AprilTag
 function aprilTagProcessor.getTag(id) end
 
+---@param dist number
+---@return number
+function apirlDis(dist) end

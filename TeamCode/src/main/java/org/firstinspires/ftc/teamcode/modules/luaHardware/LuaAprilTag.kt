@@ -107,7 +107,31 @@ class LuaAprilTag(private val tag: AprilTagDetection?)
 	{
 		if (tag != null)
 			return tag.ftcPose.range;
-		return -1.0;
+		error("attempted to call 'getDist' on a nil tag");
+	}
+
+	@OpmodeLoaderFunction
+	fun x(): Double
+	{
+		if(tag != null)
+			return tag.ftcPose.x;
+		error("attempted to call 'x' on a nil tag");
+	}
+
+	@OpmodeLoaderFunction
+	fun y(): Double
+	{
+		if(tag != null)
+			return tag.ftcPose.y;
+		error("attempted to call 'y' on a nil tag");
+	}
+
+	@OpmodeLoaderFunction
+	fun bearing(): Double
+	{
+		if(tag != null)
+			return tag.ftcPose.bearing;
+		error("attempted to call 'bearing' on a nil tag");
 	}
 
 	@OpmodeLoaderFunction

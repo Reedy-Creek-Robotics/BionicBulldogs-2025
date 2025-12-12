@@ -52,24 +52,30 @@ end
 
 ---@class PathAction : Action
 ---@field path PathChain
+---@field maxPower number
 PathAction = {
 	mt = {
 		__tostring = function (self)
-			return "PathAction";
+			if (self.maxPower == nil) then
+				return "PathAction";
+			end
+			return ("PathAction(%.2f%%)"):format(self.maxPower * 100);
 		end
 	}
 };
 
 ---@param path PathChain
+---@param maxPower number?
 ---@return PathAction
-function PathAction.new(path)
+function PathAction.new(path, maxPower)
 	local a = new(PathAction);
 	a.path = path;
+	a.maxPower = maxPower or 1.0;
 	return a;
 end
 
 function PathAction:start()
-	follower.followPathc(self.path);
+	follower.followPathc(self.path, self.maxPower);
 end
 
 function PathAction:error()
@@ -84,7 +90,7 @@ function PathAction:update(dt, et)
 	if (follower.isBusy()) then
 		return ActionState.Running;
 	end
-	follower.stop();
+	--follower.stop();
 	return ActionState.Done;
 end
 
@@ -122,8 +128,8 @@ ErrorAction = {
 	}
 };
 
----@param msg string 
----@return ErrorAction 
+---@param msg string
+---@return ErrorAction
 function ErrorAction.new(msg)
 	local a = new(ErrorAction);
 	a.msg = msg;

@@ -22,7 +22,8 @@ function follower.setPosition(x, y, h) end
 function follower.followPath(path) end
 
 ---@param path PathChain
-function follower.followPathc(path) end
+---@param maxPower number
+function follower.followPathc(path, maxPower) end
 
 ---@return boolean
 function follower.isBusy() end
