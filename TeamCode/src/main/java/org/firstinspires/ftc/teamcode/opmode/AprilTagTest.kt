@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode.opmode
 
 import android.util.Size
+import com.pedropathing.ftc.localization.localizers.PinpointLocalizer
 import com.pedropathing.ftc.localization.localizers.TwoWheelLocalizer
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp
@@ -29,7 +30,7 @@ class AprilTagTest : LinearOpMode()
 		frontRight.direction = DcMotorSimple.Direction.REVERSE;
 		backRight.direction = DcMotorSimple.Direction.REVERSE;
 
-		val localizer = TwoWheelLocalizer(hardwareMap, Constants.localizerConstants);
+		val localizer = PinpointLocalizer(hardwareMap, Constants.localizerConstants);
 
 		telemetry.setDisplayFormat(Telemetry.DisplayFormat.MONOSPACE);
 		val processor = AprilTagProcessor.Builder().build();
