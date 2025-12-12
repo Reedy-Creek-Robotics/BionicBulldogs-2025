@@ -14,7 +14,6 @@ function AprilTag:x() end
 ---@return number
 function AprilTag:y() end
 ---@return number
-function AprilTag:bearing() end
 
 aprilTagProcessor = {}
 
@@ -22,7 +21,7 @@ aprilTagProcessor = {}
 ---@param height integer
 ---@param exposureMS integer
 ---@param gain integer
----@param decimation integer
+---@param decimation number
 function aprilTagProcessor.init(width, height, exposureMS, gain, decimation) end
 
 ---@param id integer

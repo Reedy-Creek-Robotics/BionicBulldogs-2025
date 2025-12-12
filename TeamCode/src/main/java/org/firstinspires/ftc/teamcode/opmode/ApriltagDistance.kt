@@ -1,40 +1,26 @@
 package org.firstinspires.ftc.teamcode.opmode
 
 import android.util.Size
-import com.pedropathing.ftc.localization.localizers.PinpointLocalizer
-import com.pedropathing.ftc.localization.localizers.TwoWheelLocalizer
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp
+import com.qualcomm.robotcore.hardware.DcMotorEx
 import com.qualcomm.robotcore.hardware.DcMotorSimple
 import com.qualcomm.robotcore.util.ElapsedTime
 import org.firstinspires.ftc.robotcore.external.Telemetry
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName
 import org.firstinspires.ftc.robotcore.external.hardware.camera.controls.ExposureControl
 import org.firstinspires.ftc.robotcore.external.hardware.camera.controls.GainControl
-import org.firstinspires.ftc.teamcode.pedroPathing.Constants
 import org.firstinspires.ftc.vision.VisionPortal
 import org.firstinspires.ftc.vision.apriltag.AprilTagProcessor
-import java.io.File
 import java.util.concurrent.TimeUnit
 
 @TeleOp
-class AprilTagTest : LinearOpMode()
+class ApriltagDistance: LinearOpMode()
 {
 	override fun runOpMode()
 	{
-		val frontLeft = hardwareMap.dcMotor.get("frontLeft");
-		val frontRight = hardwareMap.dcMotor.get("frontRight");
-		val backLeft = hardwareMap.dcMotor.get("backLeft");
-		val backRight = hardwareMap.dcMotor.get("backRight");
 
-		frontRight.direction = DcMotorSimple.Direction.REVERSE;
-		backRight.direction = DcMotorSimple.Direction.REVERSE;
-
-<<<<<<< HEAD
 		//val localizer = TwoWheelLocalizer(hardwareMap, Constants.localizerConstants);
-=======
-		val localizer = PinpointLocalizer(hardwareMap, Constants.localizerConstants);
->>>>>>> auto
 
 		telemetry.setDisplayFormat(Telemetry.DisplayFormat.MONOSPACE);
 		val processor = AprilTagProcessor.Builder().build();
@@ -51,14 +37,22 @@ class AprilTagTest : LinearOpMode()
 		setManualExposure(2, 255, visionPortal);
 
 		waitForStart();
+		//the transfer
+		val servo = hardwareMap.servo.get("transfer")
+		// to keep gate shut
+		servo.position = 1.0
+		//the intake motor
+		val motori = hardwareMap.dcMotor.get("intake") as DcMotorEx
+		//the motor for shooting
+		val motor = hardwareMap.dcMotor.get("shooter") as DcMotorEx
+		//velocitym is what the velocity of the motor is being set to
+		var velocitym = 0
+		motor.direction = DcMotorSimple.Direction.REVERSE
 
-		var angle = 0.0;
-		var targetAngle = 0.0;
-
-		var str = "";
-
-		while (opModeIsActive())
+			while (opModeIsActive())
 		{
+			//velocityreal is what the velocity is
+			var velocityreal = motor.velocity
 			val detections = processor.detections;
 			telemetry.addLine("found ${detections.size}");
 			for (detection in detections)
@@ -70,41 +64,38 @@ class AprilTagTest : LinearOpMode()
 				val pos = detection.ftcPose;
 				telemetry.addLine("tag ${detection.id}");
 				telemetry.addLine("  dist:    ${pos.range}");
-				telemetry.addLine("  strafe:  ${pos.bearing}");
-				telemetry.addLine("  pitch:   ${pos.pitch}");
-				telemetry.addLine("  yaw:     ${pos.yaw}");
-				telemetry.addLine("  roll:    ${pos.roll}");
-				val a = pos.bearing * if (pos.bearing < 0.0) 1.5 else 1.3;
-				telemetry.addLine("  turning: $a");
-				angle = a;
+
+				if (pos.range >= 126)
+				{
+					telemetry.addLine("big distance is working")
+					velocitym = 1600
+				}
+					else if (pos.range >= 45)
+				{
+					telemetry.addLine("medium distance is working")
+					velocitym = 1300
+				}
+						else
+				{
+					telemetry.addLine("small distance is working")
+					velocitym = 1200
+				}
+				telemetry.addLine("velocity:${velocitym}")
+				motor.velocity = velocitym.toDouble()
+				telemetry.addLine("current velocity:${velocityreal}")
+
+
 			}
-			/*
 			if (gamepad1.crossWasPressed())
 			{
-				targetAngle = Math.toDegrees(localizer.pose.heading) + angle;
-				str = "turning $angle degreese";
+				servo.position = 0.85
+				motori.power = 1.0
 			}
-			localizer.update();
-			telemetry.addLine(str);
-
-			if (targetAngle != 0.0)
+			if (gamepad1.triangleWasPressed())
 			{
-				val curAngle = Math.toDegrees(localizer.pose.heading);
-				val offset = curAngle - targetAngle;
-
-				val pwr = -offset / 360;
-
-				telemetry.addLine("target angle: $targetAngle");
-				telemetry.addLine("currentAngle: $curAngle");
-				telemetry.addLine("offset angle: $offset");
-				telemetry.addLine("power:        $pwr");
-
-				frontLeft.power = -pwr;
-				frontRight.power = pwr;
-				backLeft.power = -pwr;
-				backRight.power = pwr;
+				servo.position = 1.0
 			}
-*/
+
 			telemetry.update();
 		}
 	}
@@ -116,6 +107,7 @@ class AprilTagTest : LinearOpMode()
 		while (elapsedTime.milliseconds() < ms);
 	}
 
+	//the following code sets up the camera
 	fun setManualExposure(exposureMS: Int, gain: Int, visionPortal: VisionPortal)
 	{
 		if (visionPortal.cameraState != VisionPortal.CameraState.STREAMING)
@@ -142,5 +134,7 @@ class AprilTagTest : LinearOpMode()
 			gainControl.gain = gain;
 			delay(20.0f);
 		}
+
 	}
+
 }

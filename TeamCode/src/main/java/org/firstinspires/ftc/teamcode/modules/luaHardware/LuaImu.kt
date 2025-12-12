@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.modules
+package org.firstinspires.ftc.teamcode.modules.luaHardware
 
 import com.minerkid08.dynamicopmodeloader.OpmodeLoaderFunction
 import com.qualcomm.hardware.rev.RevHubOrientationOnRobot
@@ -13,8 +13,8 @@ class LuaImu(private val imu: IMU)
 		imu.initialize(
 			IMU.Parameters(
 				RevHubOrientationOnRobot(
-					RevHubOrientationOnRobot.LogoFacingDirection.UP,
-					RevHubOrientationOnRobot.UsbFacingDirection.LEFT
+					RevHubOrientationOnRobot.LogoFacingDirection.LEFT,
+					RevHubOrientationOnRobot.UsbFacingDirection.UP
 				)
 			)
 		);

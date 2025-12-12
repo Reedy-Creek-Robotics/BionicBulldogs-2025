@@ -3,12 +3,17 @@ package org.firstinspires.ftc.teamcode.opmode
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode
 import com.minerkid08.dynamicopmodeloader.OpmodeLoader
 import com.qualcomm.robotcore.util.ElapsedTime
+<<<<<<< HEAD
+import org.firstinspires.ftc.teamcode.modules.luaHardware.LuaAprilTagProcessor
+=======
 import org.firstinspires.ftc.teamcode.modules.LuaAprilTagProcessor
 import org.firstinspires.ftc.teamcode.modules.LuaDashboard
+>>>>>>> auto
 import org.firstinspires.ftc.teamcode.modules.LuaGamepad
-import org.firstinspires.ftc.teamcode.modules.LuaHardwaremap
+import org.firstinspires.ftc.teamcode.modules.luaHardware.LuaHardwaremap
 import org.firstinspires.ftc.teamcode.modules.LuaLog
 import org.firstinspires.ftc.teamcode.modules.LuaTelemetry
+import org.firstinspires.ftc.teamcode.modules.Turret
 
 open class OpmodeloaderOpmodeBase(private val name: String) : LinearOpMode()
 {
@@ -23,6 +28,7 @@ open class OpmodeloaderOpmodeBase(private val name: String) : LinearOpMode()
 		LuaDashboard.init(builder);
 		LuaAprilTagProcessor.build(builder, hardwareMap)
 		LuaLog.init(builder);
+		Turret.init(builder, hardwareMap);
 
 		opmodeloader.init();
 		opmodeloader.loadOpmode(name);

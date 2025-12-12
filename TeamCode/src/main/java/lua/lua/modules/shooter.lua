@@ -9,17 +9,18 @@ require("modules.utils")
 ---@field time number
 ---@field vel number
 shooter = {
-	gateOpen = 0.85,
-	gateClosed = 1
+	gateOpen = 0.3,
+	gateClosed = 0,
+	transferDelay = 0.9
 }
 
 function shooter:init()
-	self.gate = hardwareMap.servoGet("gate");
+	self.gate = hardwareMap.servoGet("transfer");
 	self.motorL = hardwareMap.dcmotorexGet("flywheelLeft");
 	self.motorR = hardwareMap.dcmotorexGet("flywheelRight");
 	self.motorL:setMode(DcMotorRunMode.RunUsingEncoder);
 	self.motorR:setMode(DcMotorRunMode.RunUsingEncoder);
-	self.motorR:setDirection(Direction.Reverse);
+	self.motorL:setDirection(Direction.Reverse);
 end
 
 ---@param vel number
@@ -46,9 +47,10 @@ end
 ---@return boolean
 function shooter:update(et)
 	if (self.time ~= nil) then
-		if (self.time + 0.2 <= et) then
+		if (self.time + self.transferDelay <= et) then
 			self.gate:setPosition(self.gateClosed);
 			self.time = nil;
+			turret.reset();
 			return true;
 		end
 	end

@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.modules
+package org.firstinspires.ftc.teamcode.modules.luaHardware
 
 import android.util.Size
 import com.minerkid08.dynamicopmodeloader.FunctionBuilder
@@ -33,6 +33,7 @@ object LuaAprilTagProcessor
 	{
 		processor = AprilTagProcessor.Builder()
 			.setLensIntrinsics(596.507, 596.507, 960.585, 536.89)
+			.setDrawAxes(true)
 			.build();
 
 		processor?.setDecimation(decimation)
@@ -104,7 +105,7 @@ class LuaAprilTag(private val tag: AprilTagDetection?)
 	@OpmodeLoaderFunction
 	fun getDist(): Double
 	{
-		if(tag != null)
+		if (tag != null)
 			return tag.ftcPose.range;
 		error("attempted to call 'getDist' on a nil tag");
 	}
@@ -131,5 +132,29 @@ class LuaAprilTag(private val tag: AprilTagDetection?)
 		if(tag != null)
 			return tag.ftcPose.bearing;
 		error("attempted to call 'bearing' on a nil tag");
+	}
+
+	@OpmodeLoaderFunction
+	fun x(): Double
+	{
+		if (tag != null)
+			return tag.ftcPose.x;
+		return -1.0
+	}
+
+	@OpmodeLoaderFunction
+	fun y(): Double
+	{
+		if (tag != null)
+			return tag.ftcPose.y;
+		return -1.0
+	}
+
+	@OpmodeLoaderFunction
+	fun bearing(): Double
+	{
+		if (tag != null)
+			return tag.ftcPose.bearing
+		return -1.0
 	}
 }

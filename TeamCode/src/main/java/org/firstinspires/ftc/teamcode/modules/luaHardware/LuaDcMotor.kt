@@ -1,10 +1,11 @@
-package org.firstinspires.ftc.teamcode.modules
+package org.firstinspires.ftc.teamcode.modules.luaHardware
 
 import com.minerkid08.dynamicopmodeloader.OpmodeLoaderFunction
 import com.qualcomm.robotcore.hardware.DcMotor
 import com.qualcomm.robotcore.hardware.DcMotorEx
 import com.qualcomm.robotcore.hardware.DcMotorSimple
 import org.firstinspires.ftc.robotcore.external.navigation.CurrentUnit
+import org.firstinspires.ftc.teamcode.modules.LuaDefines
 
 class LuaDcMotor(private val m: DcMotor)
 {

@@ -1,42 +1,48 @@
 --Uses silver bot instead of main bot for ONLY HDrive (no imu) and camera
+--Please use this opmode rather than main telop for turret and distance
 require("modules.hdrive");
 require("modules.telemPanes");
 
 ---@type Opmode
-local opmode = { name = "AprilTelop" };
+local opmode = { name = "t_aprilTelop" };
 
 ---@type HDrive
 local drive;
 
+---@integer
+--Use nums between 20 (Blue goal) and 24 (Red goal)
+local id = 20
+
 function opmode.init()
-	require("modules.telemetry");
-  aprilTagProcessor.init(1280, 720, 2, 255)
+    require("modules.telemetry");
+    --For accurate distances, the camera resolution MUST be exact to the resolution calibrated at
+    aprilTagProcessor.init(1920, 1080, 2, 255, 1.0)
+
+    drive = HDrive.new();
+    drive.imu = hardwareMap.imuGet()
 end
 
 --[[function opmode.start()
 
-end]]--
+end]] --
 
 function opmode.update()
     --Drive the bot
-  drive = HDrive.new();
-	drive.imu = hardwareMap.imuGet()
-	local forward = gamepad.getLeftStickY();
-	local right = gamepad.getLeftStickX();
-	local rotate = gamepad.getRightStickX();
-	drive:driveFr(forward, right, rotate);
+    local forward = gamepad.getLeftStickY();
+    local right = gamepad.getLeftStickX();
+    local rotate = gamepad.getRightStickX();
+    drive:driveFr(forward, right, rotate);
 
---Obtain the blue goal april tag
-	local bTag = aprilTagProcessor.getTag(20)
+    --Obtain the blue goal april tag
+    local tag = aprilTagProcessor.getTag(id)
 
-	--Calculate power to distance (const may be a function for regression)
-	local const = 0.5
-	--local dist = bTag:getDist * const
-	local maxVelocity = 2600
-
-	if bTag:valid() then aprilTagPane:addData("tag distance", bTag:getDist()) else aprilTagPane:addLine("tag distance: -1") end
-	TelemPaneManager:update();
-	return false;
+    aprilTagPane:addData("is valid", tag:valid())
+    aprilTagPane:addData("target id", id)
+    --get distance is exact to the pythagorean theorem; if its inaccurate, then the x/y is inaccurate
+		--aprilTagPane:addData("distance", tag:getDist())
+    aprilTagPane:addData("angle", tag:bearing())
+    TelemPaneManager:update();
+    return false;
 end
 
 addOpmode(opmode);

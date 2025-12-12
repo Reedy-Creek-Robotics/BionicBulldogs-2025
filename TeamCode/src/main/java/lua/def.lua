@@ -62,6 +62,23 @@ function Imu:getHeading() end
 
 function Imu:resetHeading() end
 
+---@class Pinpoint
+Pinpoint = {};
+
+function Pinpoint:update() end
+---@return number
+function Pinpoint:getX() end
+---@return number
+function Pinpoint:getY() end
+---@return number
+function Pinpoint:getHeading() end
+---@param x number
+function Pinpoint:setX(x) end
+---@param y number
+function Pinpoint:setY(y) end
+---@param h number
+function Pinpoint:setH(h) end
+
 hardwareMap = {};
 
 ---@param name string
@@ -85,6 +102,9 @@ function hardwareMap.imuGet() end
 
 ---@return Imu
 function hardwareMap.spimuGet() end
+
+---@return Pinpoint
+function hardwareMap.pinpointGet() end
 
 gamepad = {};
 

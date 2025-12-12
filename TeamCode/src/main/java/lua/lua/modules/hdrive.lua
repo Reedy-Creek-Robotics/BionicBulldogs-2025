@@ -1,14 +1,23 @@
 require("modules.class");
 require("modules.utils");
 
+---@enum LocalizerMode
+LocalizerMode = {
+	imu = 0,
+	pinpoint = 1
+};
+
 ---@class HDrive
 ---@field frontLeft DcMotor
 ---@field frontRight DcMotor
 ---@field backLeft DcMotor
 ---@field backRight DcMotor
 ---@field imu Imu?
+---@field pinpoint Pinpoint?
+---@field localizerMode LocalizerMode
 HDrive = {
-	maxPower = 1
+	maxPower = 1,
+	localizerMode = LocalizerMode.imu
 };
 
 ---@return HDrive
@@ -28,10 +37,18 @@ end
 ---@param right number
 ---@param rotate number
 function HDrive:driveFr(forward, right, rotate)
-	if (self.imu == nil) then
-		error("imu must not be nil");
+	local heading = 0;
+	if (self.localizerMode == LocalizerMode.imu) then
+		if (self.imu == nil) then
+			error("imu must not be nil");
+		end
+		heading = self.imu:getHeading();
+	else
+		if (self.pinpoint == nil) then
+			error("pinpoint must not be nil");
+		end
+		heading = self.pinpoint:getHeading();
 	end
-	local heading = self.imu:getHeading()
 	local f = forward * math.cos(-heading) - right * math.sin(-heading);
 	local r = forward * math.sin(-heading) + right * math.cos(-heading);
 	self:drive(f, r, rotate);
