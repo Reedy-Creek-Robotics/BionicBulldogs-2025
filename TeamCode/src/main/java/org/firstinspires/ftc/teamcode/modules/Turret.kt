@@ -97,7 +97,7 @@ class Turret(val hardwaremap: HardwareMap)
 		state = State.Waiting;
 		motor.power = 0.0;
 		//motor.mode = DcMotor.RunMode.RUN_WITHOUT_ENCODER;
-		//motor.targetPosition = 0;
+		motor.targetPosition = 0;
 		motor.mode = DcMotor.RunMode.RUN_TO_POSITION;
 		motor.power = 1.0;
 	}
@@ -180,13 +180,17 @@ class Turret(val hardwaremap: HardwareMap)
 		}
 	}
 
+	@OpmodeLoaderFunction
 	fun turnAngle(angle: Double)
 	{
 		val newpos = motor.currentPosition + (angle * ticksPerDeg).toInt();
-		//motor.power = 0.0;
-		//motor.mode = DcMotor.RunMode.RUN_WITHOUT_ENCODER;
 		motor.targetPosition = clampi(-limit, limit, newpos);
-		//motor.mode = DcMotor.RunMode.RUN_TO_POSITION;
-		//motor.power = 1.0;
+	}
+
+	@OpmodeLoaderFunction
+	fun turnTo(angle: Double)
+	{
+		val newpos = (angle * ticksPerDeg).toInt();
+		motor.targetPosition = clampi(-limit, limit, newpos);
 	}
 }

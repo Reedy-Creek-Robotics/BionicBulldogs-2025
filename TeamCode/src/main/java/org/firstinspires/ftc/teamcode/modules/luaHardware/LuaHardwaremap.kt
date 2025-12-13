@@ -72,21 +72,18 @@ class LuaHardwaremap(private val hardwareMap: HardwareMap)
 	}
 
 	@OpmodeLoaderFunction
-<<<<<<< HEAD:TeamCode/src/main/java/org/firstinspires/ftc/teamcode/modules/luaHardware/LuaHardwaremap.kt
-	fun spimuGet(): LuaSparkFunImu =
-		LuaSparkFunImu(hardwareMap.get(SparkFunOTOS::class.java, "imu2"));
+	fun pinpointGet(): LuaPinpoint
+	{
+		return LuaPinpoint(hardwareMap.get(GoBildaPinpointDriver::class.java, "pinpoint"));
+	}
 
 	@OpmodeLoaderFunction
-	fun pinpointGet(): LuaPinpoint=
-		LuaPinpoint(hardwareMap.get(GoBildaPinpointDriver::class.java, "pinpoint"));
-=======
 	fun spimuGet(): LuaSparkFunImu
 	{
 		if (hardwareMap.i2cDevice.contains("imu2"))
 			return LuaSparkFunImu(hardwareMap.get(SparkFunOTOS::class.java, "imu2"));
 		error("cannot find imu2 with the name 'imu2'");
 	}
->>>>>>> auto:TeamCode/src/main/java/org/firstinspires/ftc/teamcode/modules/LuaHardwaremap.kt
 }
 
 class LuaCrServo(private val m: CRServo)

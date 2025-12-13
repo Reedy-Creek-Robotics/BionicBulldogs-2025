@@ -133,28 +133,4 @@ class LuaAprilTag(private val tag: AprilTagDetection?)
 			return tag.ftcPose.bearing;
 		error("attempted to call 'bearing' on a nil tag");
 	}
-
-	@OpmodeLoaderFunction
-	fun x(): Double
-	{
-		if (tag != null)
-			return tag.ftcPose.x;
-		return -1.0
-	}
-
-	@OpmodeLoaderFunction
-	fun y(): Double
-	{
-		if (tag != null)
-			return tag.ftcPose.y;
-		return -1.0
-	}
-
-	@OpmodeLoaderFunction
-	fun bearing(): Double
-	{
-		if (tag != null)
-			return tag.ftcPose.bearing
-		return -1.0
-	}
 }

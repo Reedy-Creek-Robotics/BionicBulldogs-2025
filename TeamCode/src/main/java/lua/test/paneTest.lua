@@ -15,9 +15,13 @@ function telemetry.update()
 end
 
 actionPane:addLine("error: 'path' action failed");
-drivePane:addData("x", 3.2);
-drivePane:addData("y", 4.8);
-drivePane:addData("h", 45);
+	currentPane:addData("fl", 100);
+	currentPane:addData("fr", 100);
+	currentPane:addData("bl", 100);
+	currentPane:addData("br", 100);
+	currentPane:addData("sl", 100);
+	currentPane:addData("sr", 100);
+	currentPane:addData("in", 100);
 
 robotPane:addData("pos", -300);
 robotPane:addData("target pos", 500);

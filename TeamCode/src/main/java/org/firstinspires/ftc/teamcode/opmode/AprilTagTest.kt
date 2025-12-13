@@ -30,12 +30,6 @@ class AprilTagTest : LinearOpMode()
 		frontRight.direction = DcMotorSimple.Direction.REVERSE;
 		backRight.direction = DcMotorSimple.Direction.REVERSE;
 
-<<<<<<< HEAD
-		//val localizer = TwoWheelLocalizer(hardwareMap, Constants.localizerConstants);
-=======
-		val localizer = PinpointLocalizer(hardwareMap, Constants.localizerConstants);
->>>>>>> auto
-
 		telemetry.setDisplayFormat(Telemetry.DisplayFormat.MONOSPACE);
 		val processor = AprilTagProcessor.Builder().build();
 

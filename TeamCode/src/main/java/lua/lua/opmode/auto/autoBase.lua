@@ -42,9 +42,15 @@ profileFileName = "unammed auto";
 local logFile = nil;
 
 function autoUpdate(dt, et)
-	drivePane:addData("x", follower.getPositionX());
-	drivePane:addData("y", follower.getPositionY());
-	drivePane:addData("h", follower.getPositionH());
+	--currentPane:addData("fl", drive.frontLeft:getCurrent());
+	--currentPane:addData("fr", drive.frontRight:getCurrent());
+	--currentPane:addData("bl", drive.backLeft:getCurrent());
+	--currentPane:addData("br", drive.backRight:getCurrent());
+	currentPane:addData("sl", shooter.motorL:getCurrent());
+	currentPane:addData("sr", shooter.motorR:getCurrent());
+	currentPane:addData("in", intake.motor:getCurrent());
+
+	shooter:telem();
 	TelemPaneManager:update();
 	follower.telem();
 
@@ -67,6 +73,8 @@ end
 
 function autoStart()
 	logFile = io.open(DATADIR .. "/log.txt", "wb");
+	follower.setPosition(startPosition.x, startPosition.y, startPosition.z);
+	turret.startAutomatic();
 	action:start(0);
 end
 
@@ -95,9 +103,13 @@ function addConfig(name, prefix, startPos, a)
 	addOpmode({
 		name = "a_" .. name .. tostring(prefix),
 		init = function ()
+			--drive = HDrive.new(false);
 			require("modules.telemetry");
 			action = a;
-			follower.setPosition(startPos.x, startPos.y, startPos.z);
+			startPosition = startPos;
+			shooter:init();
+			intake:init();
+			turret.init();
 		end,
 		start = autoStart,
 		update = autoUpdate

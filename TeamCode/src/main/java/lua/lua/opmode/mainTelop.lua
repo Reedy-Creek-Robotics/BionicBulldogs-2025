@@ -90,7 +90,7 @@ function opmode.update(dt, et)
 	--Start intake and shooter
 	if (gamepad.getCross2()) then
 		intake:forward();
-		shooter:shoot(et);
+		shooter:shootNum(et, 3);
 	end
 
 	if (gamepad.getSquare2()) then
@@ -98,7 +98,9 @@ function opmode.update(dt, et)
 	end
 
 	--Automatically updates
-	shooter:update(et);
+	if (shooter:update(et)) then
+		turret.reset();
+	end
 
 	---@type AprilTag
 	local tag = turret.getTag();
@@ -111,12 +113,16 @@ function opmode.update(dt, et)
 		aprilTagPane:addLine("no tag found");
 	end
 
-	drivePane:addData("x", drive.pinpoint:getX());
-	drivePane:addData("y", drive.pinpoint:getY());
-	drivePane:addData("h", drive.pinpoint:getHeading());
 	shooter:telem();
 	robotPane:addLine(shooterLabel[id]);
 	robotPane:addData("setVel", shooterVelocity[id]);
+	currentPane:addData("fl", drive.frontLeft:getCurrent());
+	currentPane:addData("fr", drive.frontRight:getCurrent());
+	currentPane:addData("bl", drive.backLeft:getCurrent());
+	currentPane:addData("br", drive.backRight:getCurrent());
+	currentPane:addData("sl", shooter.motorL:getCurrent());
+	currentPane:addData("sr", shooter.motorR:getCurrent());
+	currentPane:addData("in", intake.motor:getCurrent());
 	--if bTag:valid() then
 	--	aprilTagPane:addData("tag distance", bTag:getDist())
 	--	--positive error means tag is to the right, and vice versa

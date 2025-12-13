@@ -3,12 +3,8 @@ package org.firstinspires.ftc.teamcode.opmode
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode
 import com.minerkid08.dynamicopmodeloader.OpmodeLoader
 import com.qualcomm.robotcore.util.ElapsedTime
-<<<<<<< HEAD
 import org.firstinspires.ftc.teamcode.modules.luaHardware.LuaAprilTagProcessor
-=======
-import org.firstinspires.ftc.teamcode.modules.LuaAprilTagProcessor
 import org.firstinspires.ftc.teamcode.modules.LuaDashboard
->>>>>>> auto
 import org.firstinspires.ftc.teamcode.modules.LuaGamepad
 import org.firstinspires.ftc.teamcode.modules.luaHardware.LuaHardwaremap
 import org.firstinspires.ftc.teamcode.modules.LuaLog

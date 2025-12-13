@@ -7,5 +7,5 @@ local aPane = TelemPaneManager.rootPane;
 actionPane = aPane;
 actionPane.autoReset = false;
 robotPane = actionPane:vsplit("robot", 5);
-drivePane = robotPane:hsplit("drive");
-aprilTagPane = drivePane:vsplit("aprilTag");
+currentPane = robotPane:hsplit("current");
+aprilTagPane = currentPane:vsplit("aprilTag", 8);

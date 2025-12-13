@@ -5,14 +5,15 @@ local config = {
 	start = { x = 32, y = 136, z = 180 },
 	preload = SeqAction.newl(
 		"preload",
-		RobotActions.ShooterStart.new(1400),
+		RobotActions.ShooterStart.new(1000),
+		RobotActions.TurretTurnTo.new(-45),
 		PathAction.new(
 			path.chain()
 			:add(path.line(32.00, 136.00, 54.00, 90.00))
 			:constantHeading(180.00)
 			:build()
 		),
-		RobotActions.Shoot.new(3)
+		RobotActions.Shoot.new(4)
 	),
 	line1 = {
 		noGate = SeqAction.newl(
@@ -165,8 +166,7 @@ local config = {
 	),
 	park = PathAction.new(
 		path.chain()
-		--:add(path.line(54.00, 90.00, 60.00, 118.00))
-		:add(path.line(54.00, 90.00, 24.00, 71.00))
+		:add(path.line(54.00, 90.00, 48.00, 71.00))
 		:constantHeading(180.00)
 		:build()
 	)

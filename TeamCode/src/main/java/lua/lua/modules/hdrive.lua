@@ -8,10 +8,10 @@ LocalizerMode = {
 };
 
 ---@class HDrive
----@field frontLeft DcMotor
----@field frontRight DcMotor
----@field backLeft DcMotor
----@field backRight DcMotor
+---@field frontLeft DcMotorEx
+---@field frontRight DcMotorEx
+---@field backLeft DcMotorEx
+---@field backRight DcMotorEx
 ---@field imu Imu?
 ---@field pinpoint Pinpoint?
 ---@field localizerMode LocalizerMode
@@ -20,16 +20,21 @@ HDrive = {
 	localizerMode = LocalizerMode.imu
 };
 
+---@param disable boolean?
 ---@return HDrive
-function HDrive.new()
+function HDrive.new(disable)
 	local motorNames = { "frontLeft", "frontRight", "backLeft", "backRight" };
 	local m = new(HDrive);
 	for _, name in pairs(motorNames) do
-		m[name] = hardwareMap.dcmotorGet(name);
-		m[name]:setZeroPowerBehavior(DcMotorZeroPowerBehavior.Brake);
+		m[name] = hardwareMap.dcmotorexGet(name);
+		if (disable ~= true) then
+			m[name]:setZeroPowerBehavior(DcMotorZeroPowerBehavior.Brake);
+		end
 	end
-	m.frontRight:setDirection(Direction.Reverse);
-	m.backRight:setDirection(Direction.Reverse);
+	if (disable ~= true) then
+		m.frontRight:setDirection(Direction.Reverse);
+		m.backRight:setDirection(Direction.Reverse);
+	end
 	return m;
 end
 

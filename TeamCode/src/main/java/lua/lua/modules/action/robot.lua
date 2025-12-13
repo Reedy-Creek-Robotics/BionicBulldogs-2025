@@ -9,7 +9,7 @@ local Shoot = {
 			return ("Shoot(%d)"):format(self.n);
 		end
 	},
-	t = -1
+	waiting = true
 };
 
 ---@return Shoot
@@ -28,26 +28,26 @@ end
 ---@param et number
 ---@return ActionState
 function Shoot:update(dt, et)
-	if (self.t == -1) then
+	if (self.waiting == true) then
 		if (shooter:ready()) then
-			self.t = et;
+			self.waiting = false;
+			shooter:shootNum(et, self.n);
+			actionPane:addData("start shoot", et);
 		end
-	end
-	if (self.t > 0 and self.t + 0.5 <= et) then
-		shooter:shoot(et);
-		--actionPane:addData("shoot", et);
-		self.t = -2;
-	end
-	if (shooter:update(et)) then
-		--actionPane:addData("shoot reset", et);
-		self.n = self.n - 1;
-		if (self.n == 0) then
+	else
+		if (shooter:update(et)) then
 			return ActionState.Done;
 		end
-		self.t = -1;
 	end
 	return ActionState.Running;
 end
+
+--function Shoot:update(dt, et)
+--	if (shooter:update(et)) then
+--		return ActionState.Done;
+--	end
+--	return ActionState.Running;
+--end
 
 ---@class ShooterEnable : Action
 ---@field vel number?
@@ -191,12 +191,70 @@ function Intake:update(dt, et)
 	return ActionState.Running;
 end
 
+---@class TurretTurnTo: Action
+---@field angle number
+local TurretTurnTo = {
+	mt = {
+		__tostring = function (self)
+			return ("TurretTurnTo(%d)"):format(self.angle);
+		end
+	}
+};
+
+---@return TurretTurnTo
+function TurretTurnTo.new(angle)
+	local a = new(TurretTurnTo);
+	a.angle = angle;
+	return a;
+end
+
+function TurretTurnTo:start(et)
+	turret.turnTo(self.angle)
+end
+
+---@param dt number
+---@param et number
+---@return ActionState
+function TurretTurnTo:update(dt, et)
+	return ActionState.Done;
+end
+
+---@class TurretTurnAngle: Action
+---@field angle number
+local TurretTurnAngle = {
+	mt = {
+		__tostring = function (self)
+			return ("TurretTurnAngle(%d)"):format(self.angle);
+		end
+	}
+};
+
+---@return TurretTurnAngle
+function TurretTurnAngle.new(angle)
+	local a = new(TurretTurnAngle);
+	a.angle = angle;
+	return a;
+end
+
+function TurretTurnAngle:start(et)
+	turret.turnAngle(self.angle)
+end
+
+---@param dt number
+---@param et number
+---@return ActionState
+function TurretTurnAngle:update(dt, et)
+	return ActionState.Done;
+end
+
 RobotActions = {
 	Shoot = Shoot,
 	ShooterDisable = ShooterDisable,
 	ShooterStart = ShooterEnable,
 	Intake = Intake,
-	IntakeStop = IntakeStop
+	IntakeStop = IntakeStop,
+	TurretTurnTo = TurretTurnTo,
+	TurretTurnAngle = TurretTurnAngle
 };
 
 Delay = SleepAction;

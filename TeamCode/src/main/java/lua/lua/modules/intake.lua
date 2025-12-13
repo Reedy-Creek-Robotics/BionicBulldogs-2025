@@ -6,7 +6,7 @@ IntakeState = {
 }
 
 ---@class intake
----@field motor DcMotor
+---@field motor DcMotorEx
 ---@field state IntakeState
 ---@field speed number
 intake = {
@@ -14,7 +14,7 @@ intake = {
 }
 
 function intake:init()
-	self.motor = hardwareMap.dcmotorGet("intake");
+	self.motor = hardwareMap.dcmotorexGet("intake");
 	self.state = IntakeState.Stopped;
 end
 
