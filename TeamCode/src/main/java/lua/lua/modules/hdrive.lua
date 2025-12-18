@@ -15,6 +15,7 @@ LocalizerMode = {
 ---@field imu Imu?
 ---@field pinpoint Pinpoint?
 ---@field localizerMode LocalizerMode
+---@field offset number?
 HDrive = {
 	maxPower = 1,
 	localizerMode = LocalizerMode.imu
@@ -52,7 +53,10 @@ function HDrive:driveFr(forward, right, rotate)
 		if (self.pinpoint == nil) then
 			error("pinpoint must not be nil");
 		end
-		heading = self.pinpoint:getHeading();
+		heading = self.pinpoint:getHeading() - math.pi2;
+	end
+	if(self.offset ~= nil) then
+		heading = heading - self.offset;
 	end
 	local f = forward * math.cos(-heading) - right * math.sin(-heading);
 	local r = forward * math.sin(-heading) + right * math.cos(-heading);

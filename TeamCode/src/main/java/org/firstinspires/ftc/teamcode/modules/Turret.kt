@@ -8,6 +8,7 @@ import com.qualcomm.robotcore.hardware.HardwareMap
 import com.qualcomm.robotcore.util.ElapsedTime
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName
 import org.firstinspires.ftc.teamcode.modules.luaHardware.LuaAprilTag
+import org.firstinspires.ftc.teamcode.modules.luaHardware.LuaDcMotor
 import org.firstinspires.ftc.teamcode.opmode.clampi
 import org.firstinspires.ftc.vision.VisionPortal
 import org.firstinspires.ftc.vision.apriltag.AprilTagProcessor
@@ -34,7 +35,10 @@ class Turret(val hardwaremap: HardwareMap)
 	var state = State.Manual;
 	private lateinit var processor: AprilTagProcessor;
 
-	private val ticksPerRev = 145.1;
+	//145.1 for 1150
+	//384.5 for 435
+
+	private val ticksPerRev = 384.5;
 	private val gearRatio = 208.0 / 50.0;
 	private val ticksPerDeg = ticksPerRev / 360 * gearRatio;
 	private val limit = abs(ticksPerDeg * 90).toInt();
@@ -44,6 +48,8 @@ class Turret(val hardwaremap: HardwareMap)
 	var tagId = 24;
 
 	var luaTag = LuaAprilTag(null);
+
+	var targetPosition = 0;
 
 	@OpmodeLoaderFunction
 	fun init()
@@ -66,6 +72,9 @@ class Turret(val hardwaremap: HardwareMap)
 
 		cameraSetExposure(2, 255, visionPortal);
 	}
+
+	@OpmodeLoaderFunction
+	fun getMotor() = LuaDcMotor(motor);
 
 	@OpmodeLoaderFunction
 	fun setTargetTag(t: Int)
@@ -130,6 +139,7 @@ class Turret(val hardwaremap: HardwareMap)
 			}
 		}
 	}
+
 	@OpmodeLoaderFunction
 	fun getTag() = luaTag;
 
@@ -181,16 +191,31 @@ class Turret(val hardwaremap: HardwareMap)
 	}
 
 	@OpmodeLoaderFunction
+	fun updateMotor()
+	{
+		val dir = if(motor.currentPosition < targetPosition) 1 else -1;
+		val dif = abs(motor.currentPosition - targetPosition);
+		if (dif <= 3)
+			motor.power = 0.0;
+		else if(dif <= 25)
+			motor.power = dir * 0.2;
+		else
+			motor.power = dir.toDouble();
+	}
+
+	@OpmodeLoaderFunction
 	fun turnAngle(angle: Double)
 	{
 		val newpos = motor.currentPosition + (angle * ticksPerDeg).toInt();
-		motor.targetPosition = clampi(-limit, limit, newpos);
+		targetPosition = clampi(-limit, limit, newpos);
+		motor.targetPosition = targetPosition;
 	}
 
 	@OpmodeLoaderFunction
 	fun turnTo(angle: Double)
 	{
 		val newpos = (angle * ticksPerDeg).toInt();
-		motor.targetPosition = clampi(-limit, limit, newpos);
+		targetPosition = clampi(-limit, limit, newpos);
+		motor.targetPosition = targetPosition;
 	}
 }

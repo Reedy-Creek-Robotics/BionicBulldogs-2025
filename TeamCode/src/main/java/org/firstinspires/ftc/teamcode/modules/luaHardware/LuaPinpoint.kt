@@ -10,11 +10,11 @@ class LuaPinpoint(val pinpoint: GoBildaPinpointDriver)
 {
 	init
 	{
-		pinpoint.setOffsets(-6.75, 0.0, DistanceUnit.INCH);
+		pinpoint.setOffsets(-6.7, 0.0, DistanceUnit.INCH);
 		pinpoint.setEncoderResolution(GoBildaPinpointDriver.GoBildaOdometryPods.goBILDA_4_BAR_POD);
 		pinpoint.setEncoderDirections(
 			GoBildaPinpointDriver.EncoderDirection.REVERSED,
-			GoBildaPinpointDriver.EncoderDirection.REVERSED
+			GoBildaPinpointDriver.EncoderDirection.FORWARD
 		);
 		pinpoint.resetPosAndIMU();
 	}

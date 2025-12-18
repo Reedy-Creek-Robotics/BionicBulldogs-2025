@@ -5,14 +5,15 @@ local config = {
 	start = { x = -32, y = 136, z = 0 },
 	preload = SeqAction.newl(
 		"preload",
-		RobotActions.ShooterStart.new(1400),
+		RobotActions.ShooterStart.new(1000),
+		RobotActions.TurretTurnTo.new(45),
 		PathAction.new(
 			path.chain()
 			:add(path.line(-32.00, 136.00, -54.00, 90.00))
 			:constantHeading(0)
 			:build()
 		),
-		RobotActions.Shoot.new(3)
+		RobotActions.Shoot.new(4)
 	),
 	line1 = {
 		noGate = SeqAction.newl(
@@ -42,26 +43,26 @@ local config = {
 				path.chain()
 				:add(path.line(-54.00, 90.00, -38.00, 84.00))
 				:constantHeading(0)
-				:add(path.line(-38.00, 84.00, -24.00, 84.00))
+				:add(path.line(-38.00, 84.00, -23.25, 84.00))
 				:constantHeading(0)
-				:add(path.line(-24.00, 84.00, -24.00, 72.00))
+				:add(path.line(-23.25, 84.00, -23.25, 75.00))
 				:constantHeading(0)
 				:build()
 			),
 			WaitForFirstAction.new(
 				PathAction.new(
 					path.chain()
-					:add(path.line(-24.00, 72.00, -17.00, 72.00))
+					:add(path.line(-23.25, 75.00, -17.00, 75.00))
 					:constantHeading(0)
 					:build()
 				),
 				Delay.new(2.0)
 			),
-			Delay.new(2.0),
+			Delay.new(1.0),
 			RobotActions.IntakeStop.new(),
 			PathAction.new(
 				path.chain()
-				:add(path.line(-17.00, 72.00, -54.00, 90.00))
+				:add(path.line(-17.00, 75.00, -54.00, 90.00))
 				:constantHeading(0)
 				:build()
 			),
@@ -80,9 +81,9 @@ local config = {
 			RobotActions.Intake.new(1.0),
 			PathAction.new(
 				path.chain()
-				:add(path.line(-38.00, 60.00, -24.00, 60.00))
+				:add(path.line(-38.00, 60.00, -23.25, 60.00))
 				:constantHeading(0)
-				:add(path.line(-24.00, 60.00, -54.00, 90.00))
+				:add(path.line(-23.25, 60.00, -54.00, 90.00))
 				:constantHeading(0)
 				:build()
 			),
@@ -103,7 +104,7 @@ local config = {
 				:add(path.line(-38.00, 60.00, -24.00, 60.00))
 				:constantHeading(0)
 				:add(path.line(-24.00, 60.00, -24.00, 71.00))
-				:constantHeading(0)
+				:constantHeading(-180)
 				:build()
 			),
 			WaitForFirstAction.new(
@@ -130,7 +131,7 @@ local config = {
 		PathAction.new(
 			path.chain()
 			:add(path.line(-54.00, 90.00, -36.00, 36.00))
-			:constantHeading(0)
+			:constantHeading(180.00)
 			:build()
 		),
 		RobotActions.Intake.new(1.0),
@@ -165,10 +166,10 @@ local config = {
 	),
 	park = PathAction.new(
 		path.chain()
-		:add(path.line(-54.00, 90.00, -60.00, 118.00))
+		:add(path.line(-54.00, 90.00, -48.00, 71.00))
 		:constantHeading(0)
 		:build()
 	)
-}
+};
 
 loadOpmodeConfigs("redFront", config);

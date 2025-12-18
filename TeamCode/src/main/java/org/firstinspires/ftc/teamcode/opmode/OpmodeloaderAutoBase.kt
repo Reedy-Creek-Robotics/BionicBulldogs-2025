@@ -33,9 +33,10 @@ open class OpmodeloaderAutoBase(private val name: String) : LinearOpMode()
 		LuaAprilTagProcessor.build(builder, hardwareMap)
 
 		opmodeloader.init();
-		opmodeloader.loadOpmode(name);
 
 		LuaFollower.init(builder, follower);
+
+		opmodeloader.loadOpmode(name);
 
 		telemetry.addLine("initalised");
 		telemetry.update();

@@ -19,10 +19,10 @@ function DcMotor:setDirection(dir) end
 function DcMotor:setTargetPosition(target) end
 
 ---@return integer
-function DcMotor:getPosition() end
+function DcMotor:getCurrentPosition() end
 
 ---@return integer
-function DcMotor:getTargetPositon() end
+function DcMotor:getTargetPosition() end
 
 ---@param mode integer
 function DcMotor:setMode(mode) end

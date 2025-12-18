@@ -73,7 +73,6 @@ end
 
 function autoStart()
 	logFile = io.open(DATADIR .. "/log.txt", "wb");
-	follower.setPosition(startPosition.x, startPosition.y, startPosition.z);
 	turret.startAutomatic();
 	action:start(0);
 end
@@ -87,6 +86,9 @@ function loadOpmodes(name, genFun, count)
 		addOpmode({
 			name = "a_" .. name .. tostring((i + 1) * 3),
 			init = function ()
+				shooter:init();
+				intake:init();
+				turret.init();
 				genFun(i);
 			end,
 			start = autoStart,
@@ -105,8 +107,8 @@ function addConfig(name, prefix, startPos, a)
 		init = function ()
 			--drive = HDrive.new(false);
 			require("modules.telemetry");
+			follower.setPosition(startPos.x, startPos.y, startPos.z);
 			action = a;
-			startPosition = startPos;
 			shooter:init();
 			intake:init();
 			turret.init();

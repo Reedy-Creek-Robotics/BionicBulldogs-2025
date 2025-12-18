@@ -33,7 +33,7 @@ object Constants
 
 
 	val localizerConstants: PinpointConstants = PinpointConstants()
-		.forwardPodY(-6.75)
+		.forwardPodY(-6.7)
 		.strafePodX(0.0)
 		.distanceUnit(DistanceUnit.INCH)
 		.hardwareMapName("pinpoint")

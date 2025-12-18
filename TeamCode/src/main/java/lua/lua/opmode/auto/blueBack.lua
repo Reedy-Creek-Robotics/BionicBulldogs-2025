@@ -9,8 +9,9 @@ local function genPath(num)
 
 	local preload = SeqAction.newl(
 		"preload",
-		RobotActions.ShooterStart.new(1400),
-		RobotActions.Shoot.new(3)
+		RobotActions.ShooterStart.new(1200),
+		RobotActions.TurretTurnTo.new(-70),
+		RobotActions.Shoot.new(4)
 	);
 	local line1 = SeqAction.newl(
 		"line1",
