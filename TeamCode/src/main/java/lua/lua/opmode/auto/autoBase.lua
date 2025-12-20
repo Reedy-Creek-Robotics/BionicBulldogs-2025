@@ -9,6 +9,7 @@ require("modules.telemPanes");
 
 ---@class AutoPaths
 ---@field start vec3
+---@field turretTarget vec2
 ---@field preload Action
 ---@field line1 AutoPathGate
 ---@field line2 AutoPathGate
@@ -41,7 +42,13 @@ profileFileName = "unammed auto";
 ---@type file*
 local logFile = nil;
 
+---@type vec2
+local turretTarget = nil;
+
 function autoUpdate(dt, et)
+	robotPane:addData("x", follower.getPositionX());
+	robotPane:addData("y", follower.getPositionY());
+	robotPane:addData("h", follower.getPositionH());
 	--currentPane:addData("fl", drive.frontLeft:getCurrent());
 	--currentPane:addData("fr", drive.frontRight:getCurrent());
 	--currentPane:addData("bl", drive.backLeft:getCurrent());
@@ -52,7 +59,20 @@ function autoUpdate(dt, et)
 
 	shooter:telem();
 	TelemPaneManager:update();
+	follower.update();
 	follower.telem();
+
+	local dx = turretTarget.x - follower.getPositionX();
+	local dy = turretTarget.y - follower.getPositionY();
+	local angle = math.atan(dy, dx) - follower.getPositionH();
+	angle = math.deg(angle);
+	if(angle > 180) then
+		angle = angle - 360;
+	end
+	if(angle < -180) then
+		angle = angle + 360;
+	end
+	turret.turnTo(angle + 2);
 
 	logFile:write(
 		" x: " .. tostring(follower.getPositionX()) ..
@@ -79,7 +99,7 @@ end
 
 ---@param name string
 ---@param genFun fun(number)
----@param count
+---@param count number
 function loadOpmodes(name, genFun, count)
 	count = count or 3
 	for i = 0, count do
@@ -99,16 +119,17 @@ end
 
 ---@param name string
 ---@param prefix number
----@param startPos vec3
+---@param config AutoPaths
 ---@param a Action
-function addConfig(name, prefix, startPos, a)
+function addConfig(name, prefix, config, a)
 	addOpmode({
 		name = "a_" .. name .. tostring(prefix),
 		init = function ()
 			--drive = HDrive.new(false);
 			require("modules.telemetry");
-			follower.setPosition(startPos.x, startPos.y, startPos.z);
+			follower.setPosition(config.start.x, config.start.y, config.start.z);
 			action = a;
+			turretTarget = config.turretTarget;
 			shooter:init();
 			intake:init();
 			turret.init();
@@ -121,11 +142,11 @@ end
 ---@param name string
 ---@param config AutoPaths
 function loadOpmodeConfigs(name, config)
-	addConfig(name, 3, config.start, SeqAction.new(config.preload, config.park));
-	addConfig(name, 6, config.start, SeqAction.new(config.preload, config.line1.noGate, config.park));
-	addConfig(name, 9, config.start, SeqAction.new(config.preload, config.line1.gate, config.line2.noGate, config.park));
-	addConfig(name, 12, config.start,
+	addConfig(name, 3, config, SeqAction.new(config.preload, config.park));
+	addConfig(name, 6, config, SeqAction.new(config.preload, config.line1.noGate, config.park));
+	addConfig(name, 9, config, SeqAction.new(config.preload, config.line1.noGate, config.line2.noGate, config.park));
+	addConfig(name, 12, config,
 		SeqAction.new(config.preload, config.line1.gate, config.line2.noGate, config.line3, config.park));
-	addConfig(name, 15, config.start,
+	addConfig(name, 15, config,
 		SeqAction.new(config.preload, config.line1.noGate, config.line2.gate, config.line3, config.line4, config.park));
 end

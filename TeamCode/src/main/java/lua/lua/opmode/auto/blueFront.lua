@@ -3,13 +3,13 @@ require("opmode.auto.autoBase");
 ---@type AutoPaths
 local config = {
 	start = { x = 32, y = 136, z = 180 },
+	turretTarget = {x = 6, y = 138},
 	preload = SeqAction.newl(
 		"preload",
-		RobotActions.ShooterStart.new(1000),
-		RobotActions.TurretTurnTo.new(-45),
+		RobotActions.ShooterStart.new(950),
 		PathAction.new(
 			path.chain()
-			:add(path.line(32.00, 136.00, 54.00, 90.00))
+			:add(path.line(32, 136, 54.00, 90.00))
 			:constantHeading(180.00)
 			:build()
 		),
@@ -18,19 +18,17 @@ local config = {
 	line1 = {
 		noGate = SeqAction.newl(
 			"line1",
-			RobotActions.Intake.new(1.0),
 			PathAction.new(
 				path.chain()
-				:add(path.line(54.00, 90.00, 38.00, 84.00))
+				:add(path.line(54.00, 90.00, 38.00, 87.00))
 				:constantHeading(180.00)
-				:add(path.line(38.00, 84.00, 24.00, 84.00))
+				:add(path.line(38.00, 87.00, 20.00, 87.00))
 				:constantHeading(180.00)
 				:build()
 			),
-			RobotActions.IntakeStop.new(),
 			PathAction.new(
 				path.chain()
-				:add(path.line(24.00, 84.00, 54.00, 90.00))
+				:add(path.line(20.00, 87.00, 54.00, 90.00))
 				:constantHeading(180.00)
 				:build()
 			),
@@ -38,31 +36,29 @@ local config = {
 		),
 		gate = SeqAction.newl(
 			"line1",
-			RobotActions.Intake.new(1.0),
 			PathAction.new(
 				path.chain()
-				:add(path.line(54.00, 90.00, 38.00, 84.00))
+				:add(path.line(54.00, 90.00, 38.00, 87.00))
 				:constantHeading(180.00)
-				:add(path.line(38.00, 84.00, 23.25, 84.00))
+				:add(path.line(38.00, 87.00, 23.25, 87.00))
 				:constantHeading(180.00)
-				:add(path.line(23.25, 84.00, 23.25, 75.00))
+				:add(path.line(23.25, 87.00, 23.25, 80.00))
 				:constantHeading(180.00)
 				:build()
 			),
 			WaitForFirstAction.new(
 				PathAction.new(
 					path.chain()
-					:add(path.line(23.25, 75.00, 17.00, 75.00))
+					:add(path.line(23.25, 80.00, 17.00, 80.00))
 					:constantHeading(180.00)
 					:build()
 				),
 				Delay.new(2.0)
 			),
 			Delay.new(1.0),
-			RobotActions.IntakeStop.new(),
 			PathAction.new(
 				path.chain()
-				:add(path.line(17.00, 75.00, 54.00, 90.00))
+				:add(path.line(17.00, 80.00, 54.00, 90.00))
 				:constantHeading(180.00)
 				:build()
 			),
@@ -74,43 +70,40 @@ local config = {
 			"line2",
 			PathAction.new(
 				path.chain()
-				:add(path.line(54.00, 90.00, 38.00, 60.00))
+				:add(path.line(54.00, 90.00, 38.00, 65.00))
 				:constantHeading(180.00)
 				:build()
 			),
-			RobotActions.Intake.new(1.0),
 			PathAction.new(
 				path.chain()
-				:add(path.line(38.00, 60.00, 23.25, 60.00))
+				:add(path.line(38.00, 65.00, 23.25, 65.00))
 				:constantHeading(180.00)
-				:add(path.line(23.25, 60.00, 54.00, 90.00))
+				:add(path.line(23.25, 65.00, 54.00, 90.00))
 				:constantHeading(180.00)
 				:build()
 			),
-			RobotActions.IntakeStop.new(),
 			RobotActions.Shoot.new(3)
 		),
 		gate = SeqAction.newl(
 			"line2",
 			PathAction.new(
 				path.chain()
-				:add(path.line(54.00, 90.00, 38.00, 60.00))
+				:add(path.line(54.00, 90.00, 38.00, 65.00))
 				:constantHeading(180.00)
 				:build()
 			),
-			RobotActions.Intake.new(1.0),
 			PathAction.new(
 				path.chain()
-				:add(path.line(38.00, 60.00, 24.00, 60.00))
+				:add(path.line(38.00, 65.00, 24.00, 65.00))
 				:constantHeading(180.00)
-				:add(path.line(24.00, 60.00, 24.00, 71.00))
+				:add(path.line(24.00, 65.00, 24.00, 77.00))
 				:constantHeading(180)
 				:build()
 			),
 			WaitForFirstAction.new(
 				PathAction.new(
 					path.chain()
-					:add(path.line(24.00, 71.00, 15.00, 71.00))
+					:add(path.line(24.00, 77.00, 15.00, 77.00))
 					:constantHeading(180.00)
 					:build()
 				),
@@ -118,11 +111,10 @@ local config = {
 			),
 			PathAction.new(
 				path.chain()
-				:add(path.line(24.00, 60.00, 54.00, 90.00))
+				:add(path.line(24.00, 65.00, 54.00, 90.00))
 				:constantHeading(180.00)
 				:build()
 			),
-			RobotActions.IntakeStop.new(),
 			RobotActions.Shoot.new(3)
 		)
 	},
@@ -130,20 +122,18 @@ local config = {
 		"line3",
 		PathAction.new(
 			path.chain()
-			:add(path.line(54.00, 90.00, 36.00, 36.00))
+			:add(path.line(54.00, 90.00, 38.00, 39.00))
 			:constantHeading(180.00)
 			:build()
 		),
-		RobotActions.Intake.new(1.0),
 		PathAction.new(
 			path.chain()
-			:add(path.line(36.00, 36.00, 24.00, 36.00))
+			:add(path.line(38.00, 39.00, 24.00, 39.00))
 			:constantHeading(180.00)
-			:add(path.line(24.00, 36.00, 54.00, 90.00))
+			:add(path.line(24.00, 39.00, 54.00, 90.00))
 			:constantHeading(180.00)
 			:build()
 		),
-		RobotActions.IntakeStop.new(),
 		RobotActions.Shoot.new(3)
 	),
 	line4 = SeqAction.newl(
@@ -154,14 +144,12 @@ local config = {
 			:constantHeading(180.00)
 			:build()
 		),
-		RobotActions.Intake.new(1.0),
 		PathAction.new(
 			path.chain()
 			:add(path.curve3(12, 12, 54, 12, 54, 90))
 			:constantHeading(180.00)
 			:build()
 		),
-		RobotActions.IntakeStop.new(),
 		RobotActions.Shoot.new(3)
 	),
 	park = PathAction.new(

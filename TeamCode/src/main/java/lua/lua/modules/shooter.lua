@@ -20,13 +20,15 @@ shooterState = {
 ---@field closeDelay number
 ---@field delay number
 ---@field waitForReady boolean
+---@field velocityDataPoints number[]
 shooter = {
 	gateOpen = 0.3,
 	gateClosed = 0,
 	openDelay = 0.15,
 	closeDelay = 0.3,
 	state = shooterState.Close,
-	waitForReady = false
+	waitForReady = false,
+	velocityDataPoints = {0, 0, 0, 0, 0}
 }
 
 function shooter:init()
@@ -101,7 +103,17 @@ end
 
 function shooter:ready()
 	local vel = self.motorL:getVelocity();
-	return vel >= self.vel - 40 and vel <= self.vel + 40;
+	self.velocityDataPoints[5] = self.velocityDataPoints[4];
+	self.velocityDataPoints[4] = self.velocityDataPoints[3];
+	self.velocityDataPoints[3] = self.velocityDataPoints[2];
+	self.velocityDataPoints[2] = self.velocityDataPoints[1];
+	self.velocityDataPoints[1] = vel;
+	local sum = self.velocityDataPoints[2] - self.velocityDataPoints[1];
+	sum = sum + self.velocityDataPoints[3] - self.velocityDataPoints[2];
+	sum = sum + self.velocityDataPoints[4] - self.velocityDataPoints[3];
+	sum = sum + self.velocityDataPoints[5] - self.velocityDataPoints[4];
+	local slope = sum / 5;
+	return vel >= self.vel - 40 and vel <= self.vel + 40 --and slope >= -40 and slope <= 40;
 end
 
 function shooter:close()

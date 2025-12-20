@@ -1,19 +1,38 @@
 require("opmode.auto.autoBase");
 
----@param num number
-local function genPath(num)
-	profileFileName = "blueBack-" .. tostring(num);
-	require("modules.telemetry");
-
-	follower.setPosition(55.5, 8, 180);
-
-	local preload = SeqAction.newl(
+---@type AutoPaths
+local config = {
+	start = {x = 55.5, y = 8, z = 180},
+	turretTarget = {x = 6, y = 138},
+	preload = SeqAction.newl(
 		"preload",
 		RobotActions.ShooterStart.new(1200),
-		RobotActions.TurretTurnTo.new(-70),
 		RobotActions.Shoot.new(4)
-	);
-	local line1 = SeqAction.newl(
+	),
+	line1 = {
+		noGate = SeqAction.newl(
+		"line1",
+		PathAction.new(
+			path.chain()
+			:add(path.line(55.50, 8.00, 42.00, 58.00))
+			:constantHeading(180)
+			:build()
+		),
+		PathAction.new(
+			path.chain()
+			:add(path.line(42.00, 58.00, 18.00, 58.00))
+			:constantHeading(180)
+			:build()
+		),
+		PathAction.new(
+			path.chain()
+			:add(path.curve3(18.00, 58.00, 60.00, 48.00, 60.00, 12.00))
+			:constantHeading(180)
+			:build()
+		),
+		RobotActions.Shoot.new(3)
+	),
+		gate = SeqAction.newl(
 		"line1",
 		PathAction.new(
 			path.chain()
@@ -48,8 +67,11 @@ local function genPath(num)
 		),
 		RobotActions.IntakeStop.new(),
 		RobotActions.Shoot.new(3)
-	);
-	local line2 = SeqAction.newl(
+	)
+},
+	line2 = {
+		gate = SeqAction.newl("empty", SleepAction.new(10000)),
+		noGate = SeqAction.newl(
 		"line2",
 		PathAction.new(
 			path.chain()
@@ -68,8 +90,9 @@ local function genPath(num)
 		),
 		RobotActions.IntakeStop.new(),
 		RobotActions.Shoot.new(3)
-	);
-	local line3 = SeqAction.newl(
+	)
+},
+	line3 = SeqAction.newl(
 		"line3",
 		PathAction.new(
 			path.chain()
@@ -86,23 +109,13 @@ local function genPath(num)
 		),
 		RobotActions.IntakeStop.new(),
 		RobotActions.Shoot.new(3)
-	);
-	local park = PathAction.new(
+	),
+	park = PathAction.new(
 		path.chain()
 		:add(path.line(60.00, 12.00, 60.00, 42.00))
 		:constantHeading(180)
 		:build()
-	);
+	)
+}
 
-	if (num == 0) then
-		action = SeqAction.new(preload, park);
-	elseif (num == 1) then
-		action = SeqAction.new(preload, line1, park);
-	elseif (num == 2) then
-		action = SeqAction.new(preload, line1, line2, park);
-	elseif (num == 3) then
-		action = SeqAction.new(preload, line1, line2, line3, park);
-	end
-end
-
-loadOpmodes("blueBack", genPath);
+loadOpmodeConfigs("blueBack", config);

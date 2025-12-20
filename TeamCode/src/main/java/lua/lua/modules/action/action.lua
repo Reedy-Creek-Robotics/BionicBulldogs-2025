@@ -86,7 +86,7 @@ end
 ---@param et number
 ---@return ActionState
 function PathAction:update(dt, et)
-	follower.update();
+	---follower.update();
 	if (follower.isBusy()) then
 		return ActionState.Running;
 	end

@@ -41,7 +41,7 @@ local targetPos = nil;
 function telopStartBlue()
 	drive.offset = -math.pi2;
 	turret.setTargetTag(20);
-	--turret.startAutomatic();
+	turret.startAutomatic();
 	shooter:close();
 	initPos = {x = 144 - 15.5 / 2, y = 9, z = math.pi2};
 	--initPos = {x = 72, y = 72, z = math.pi2};

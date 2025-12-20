@@ -38,7 +38,7 @@ class Turret(val hardwaremap: HardwareMap)
 	//145.1 for 1150
 	//384.5 for 435
 
-	private val ticksPerRev = 384.5;
+	private val ticksPerRev = 145.1;
 	private val gearRatio = 208.0 / 50.0;
 	private val ticksPerDeg = ticksPerRev / 360 * gearRatio;
 	private val limit = abs(ticksPerDeg * 90).toInt();

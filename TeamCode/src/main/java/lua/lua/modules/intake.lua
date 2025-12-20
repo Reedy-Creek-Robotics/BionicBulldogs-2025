@@ -29,6 +29,7 @@ function intake:reverse()
 end
 
 function intake:stop()
+	error("stopping intake");
 	self.motor:setPower(0);
 	self.state = IntakeState.Stopped;
 end
