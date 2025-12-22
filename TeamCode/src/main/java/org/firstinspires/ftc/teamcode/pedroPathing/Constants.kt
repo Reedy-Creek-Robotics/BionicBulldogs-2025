@@ -58,7 +58,7 @@ object Constants
 	//	.forwardTicksToInches(0.0020127)
 	//	.strafeTicksToInches(0.002023);
 
-	val pathConstraints = PathConstraints(0.99, 100.0, 1.0, 1.0);
+	val pathConstraints = PathConstraints(0.99, 100.0, 0.4, 1.0);
 
 	@JvmStatic
 	fun createFollower(hardwaremap: HardwareMap): Follower =

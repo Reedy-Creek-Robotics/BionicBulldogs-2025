@@ -68,6 +68,9 @@ end
 function shooter:shootNum(et, count)
 	self.state = shooterState.Open;
 	self.count = count;
+	if(logFile ~= nil) then
+		logFile:write(("%f - %d"):format(et, self.motorL:getVelocity()));
+	end
 	self.gate:setPosition(self.gateOpen);
 	self.time = et;
 	self.delay = self.openDelay;

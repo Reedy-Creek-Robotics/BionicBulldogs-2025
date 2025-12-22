@@ -3,19 +3,21 @@ require("modules.action.robot");
 
 require("modules.telemPanes");
 
+---@alias AutoPathFunc fun(): Action
+
 ---@class AutoPathGate
----@field gate Action
----@field noGate Action
+---@field gate AutoPathFunc
+---@field noGate AutoPathFunc
 
 ---@class AutoPaths
 ---@field start vec3
 ---@field turretTarget vec2
----@field preload Action
+---@field preload AutoPathFunc
 ---@field line1 AutoPathGate
 ---@field line2 AutoPathGate
----@field line3 Action
----@field line4 Action?
----@field park Action
+---@field line3 AutoPathFunc
+---@field line4 AutoPathFunc?
+---@field park AutoPathFunc
 
 if (DISABLE_ROBOT ~= nil) then
 	local tmpAction = {
@@ -40,12 +42,14 @@ action = nil;
 profileFileName = "unammed auto";
 
 ---@type file*
-local logFile = nil;
+logFile = nil;
 
 ---@type vec2
 local turretTarget = nil;
 
 function autoUpdate(dt, et)
+	local tps = 1 / dt;
+	robotPane:addData("tps", tps);
 	robotPane:addData("x", follower.getPositionX());
 	robotPane:addData("y", follower.getPositionY());
 	robotPane:addData("h", follower.getPositionH());
@@ -66,10 +70,10 @@ function autoUpdate(dt, et)
 	local dy = turretTarget.y - follower.getPositionY();
 	local angle = math.atan(dy, dx) - follower.getPositionH();
 	angle = math.deg(angle);
-	if(angle > 180) then
+	if (angle > 180) then
 		angle = angle - 360;
 	end
-	if(angle < -180) then
+	if (angle < -180) then
 		angle = angle + 360;
 	end
 	turret.turnTo(angle + 2);
@@ -83,6 +87,7 @@ function autoUpdate(dt, et)
 	local state = action:update(dt, et);
 	if (state ~= ActionState.Running) then
 		profiler.genString(profileFileName, action);
+		logFile:close();
 		if (state ~= ActionState.Done) then
 			error(("root action '%s' failed"):format(tostring(action)));
 		end
@@ -117,18 +122,46 @@ function loadOpmodes(name, genFun, count)
 	end
 end
 
+local genPathFuncs = {
+	---@param config AutoPaths
+	---@return Action
+	[3] = function (config)
+		return SeqAction.new(config.preload(), config.park());
+	end,
+	---@param config AutoPaths
+	---@return Action
+	[6] = function (config)
+		return SeqAction.new(config.preload(), config.line1.noGate(), config.park());
+	end,
+	---@param config AutoPaths
+	---@return Action
+	[9] = function (config)
+		return SeqAction.new(config.preload(), config.line1.noGate(), config.line2.noGate(), config.park());
+	end,
+	---@param config AutoPaths
+	---@return Action
+	[12] = function (config)
+		return SeqAction.new(config.preload(), config.line1.gate(), config.line2.noGate(), config.line3(), config.park());
+	end,
+	---@param config AutoPaths
+	---@return Action
+	[15] = function (config)
+		return SeqAction.new(config.preload(), config.line1.noGate(), config.line2.gate(), config.line3(), config.line4(),
+			config.park());
+	end
+};
+
 ---@param name string
 ---@param prefix number
 ---@param config AutoPaths
----@param a Action
-function addConfig(name, prefix, config, a)
+function addConfig(name, prefix, config)
 	addOpmode({
 		name = "a_" .. name .. tostring(prefix),
 		init = function ()
 			--drive = HDrive.new(false);
 			require("modules.telemetry");
 			follower.setPosition(config.start.x, config.start.y, config.start.z);
-			action = a;
+			action = genPathFuncs[prefix](config);
 			turretTarget = config.turretTarget;
 			shooter:init();
 			intake:init();
@@ -142,11 +175,9 @@ end
 ---@param name string
 ---@param config AutoPaths
 function loadOpmodeConfigs(name, config)
-	addConfig(name, 3, config, SeqAction.new(config.preload, config.park));
-	addConfig(name, 6, config, SeqAction.new(config.preload, config.line1.noGate, config.park));
-	addConfig(name, 9, config, SeqAction.new(config.preload, config.line1.noGate, config.line2.noGate, config.park));
-	addConfig(name, 12, config,
-		SeqAction.new(config.preload, config.line1.gate, config.line2.noGate, config.line3, config.park));
-	addConfig(name, 15, config,
-		SeqAction.new(config.preload, config.line1.noGate, config.line2.gate, config.line3, config.line4, config.park));
+	addConfig(name, 3, config);
+	addConfig(name, 6, config);
+	addConfig(name, 9, config);
+	addConfig(name, 12, config);
+	addConfig(name, 15, config);
 end
