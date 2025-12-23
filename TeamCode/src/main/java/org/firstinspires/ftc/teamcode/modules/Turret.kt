@@ -1,16 +1,13 @@
 package org.firstinspires.ftc.teamcode.modules;
 
-import android.util.Size
 import com.minerkid08.dynamicopmodeloader.FunctionBuilder
 import com.minerkid08.dynamicopmodeloader.OpmodeLoaderFunction
 import com.qualcomm.robotcore.hardware.DcMotor
 import com.qualcomm.robotcore.hardware.HardwareMap
 import com.qualcomm.robotcore.util.ElapsedTime
-import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName
 import org.firstinspires.ftc.teamcode.modules.luaHardware.LuaAprilTag
 import org.firstinspires.ftc.teamcode.modules.luaHardware.LuaDcMotor
 import org.firstinspires.ftc.teamcode.opmode.clampi
-import org.firstinspires.ftc.vision.VisionPortal
 import org.firstinspires.ftc.vision.apriltag.AprilTagProcessor
 import kotlin.math.abs
 
@@ -55,22 +52,22 @@ class Turret(val hardwaremap: HardwareMap)
 	fun init()
 	{
 		motor = hardwaremap.dcMotor.get("turret");
-		processor = AprilTagProcessor.Builder()
-			.setLensIntrinsics(596.507, 596.507, 960.585, 536.890)
-			.build();
-		val camera = hardwaremap.get(WebcamName::class.java, "Webcam 1");
+		//processor = AprilTagProcessor.Builder()
+		//	.setLensIntrinsics(596.507, 596.507, 960.585, 536.890)
+		//	.build();
+		//val camera = hardwaremap.get(WebcamName::class.java, "Webcam 1");
 		motor.mode = DcMotor.RunMode.STOP_AND_RESET_ENCODER;
 		motor.mode = DcMotor.RunMode.RUN_WITHOUT_ENCODER;
 
-		val visionPortal = VisionPortal.Builder()
-			.setCamera(camera)
-			.addProcessor(processor)
-			.setStreamFormat(VisionPortal.StreamFormat.YUY2)
-			.setCameraResolution(Size(1920, 1080))
-			.build();
+		//val visionPortal = VisionPortal.Builder()
+		//	.setCamera(camera)
+		//	.addProcessor(processor)
+		//	.setStreamFormat(VisionPortal.StreamFormat.YUY2)
+		//	.setCameraResolution(Size(1920, 1080))
+		//	.build();
 
 
-		cameraSetExposure(2, 255, visionPortal);
+		//cameraSetExposure(2, 255, visionPortal);
 	}
 
 	@OpmodeLoaderFunction

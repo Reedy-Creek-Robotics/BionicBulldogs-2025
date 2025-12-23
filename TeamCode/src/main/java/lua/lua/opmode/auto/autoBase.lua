@@ -76,7 +76,7 @@ function autoUpdate(dt, et)
 	if (angle < -180) then
 		angle = angle + 360;
 	end
-	turret.turnTo(angle + 2);
+	turret.turnTo(angle);
 
 	logFile:write(
 		" x: " .. tostring(follower.getPositionX()) ..
