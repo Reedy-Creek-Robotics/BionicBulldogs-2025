@@ -49,14 +49,15 @@ class Turret(val hardwaremap: HardwareMap)
 	var targetPosition = 0;
 
 	@OpmodeLoaderFunction
-	fun init()
+	fun init(reset: Boolean)
 	{
 		motor = hardwaremap.dcMotor.get("turret");
 		//processor = AprilTagProcessor.Builder()
 		//	.setLensIntrinsics(596.507, 596.507, 960.585, 536.890)
 		//	.build();
 		//val camera = hardwaremap.get(WebcamName::class.java, "Webcam 1");
-		motor.mode = DcMotor.RunMode.STOP_AND_RESET_ENCODER;
+		if (reset)
+			motor.mode = DcMotor.RunMode.STOP_AND_RESET_ENCODER;
 		motor.mode = DcMotor.RunMode.RUN_WITHOUT_ENCODER;
 
 		//val visionPortal = VisionPortal.Builder()
@@ -190,11 +191,11 @@ class Turret(val hardwaremap: HardwareMap)
 	@OpmodeLoaderFunction
 	fun updateMotor()
 	{
-		val dir = if(motor.currentPosition < targetPosition) 1 else -1;
+		val dir = if (motor.currentPosition < targetPosition) 1 else -1;
 		val dif = abs(motor.currentPosition - targetPosition);
 		if (dif <= 3)
 			motor.power = 0.0;
-		else if(dif <= 25)
+		else if (dif <= 25)
 			motor.power = dir * 0.2;
 		else
 			motor.power = dir.toDouble();

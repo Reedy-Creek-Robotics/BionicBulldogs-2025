@@ -78,6 +78,9 @@ function autoUpdate(dt, et)
 	end
 	turret.turnTo(angle);
 
+	local dist = dx * dx + dy * dy;
+	shooter:updateVelocity(dist);
+
 	logFile:write(
 		" x: " .. tostring(follower.getPositionX()) ..
 		" y: " .. tostring(follower.getPositionY()) ..
@@ -88,6 +91,10 @@ function autoUpdate(dt, et)
 	if (state ~= ActionState.Running) then
 		profiler.genString(profileFileName, action);
 		logFile:close();
+		save.saved("x", follower.getPositionX());
+		save.saved("y", follower.getPositionY());
+		save.saved("h", follower.getPositionH());
+		save.saveb("resetTurret", false);
 		if (state ~= ActionState.Done) then
 			error(("root action '%s' failed"):format(tostring(action)));
 		end

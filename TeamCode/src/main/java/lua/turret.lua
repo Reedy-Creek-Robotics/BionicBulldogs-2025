@@ -4,7 +4,8 @@ turret = {
 ---@enum turret.State
 turret.State= {Waiting = 0, Tracking = 1, Manual = 2}
 
-function turret.init() end
+---@param reset boolean
+function turret.init(reset) end
 ---@param tag number
 function turret.setTargetTag(tag) end
 ---@return turret.State

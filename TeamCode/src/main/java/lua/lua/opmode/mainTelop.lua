@@ -21,11 +21,27 @@ local turretMotor = {};
 
 function telopInit()
 	require("modules.telemetry");
-	turret.init();
-	turretMotor = turret.getMotor();
+
 	drive = HDrive.new();
 	drive.localizerMode = LocalizerMode.pinpoint;
 	drive.pinpoint = hardwareMap.pinpointGet();
+
+	if (save.containsd("resetTurret")) then
+		local x = save.loadd("x");
+		local y = save.loadd("y");
+		local h = save.loadd("h");
+
+		drive.pinpoint:setX(x);
+		drive.pinpoint:setY(y);
+		drive.pinpoint:setH(h);
+
+		local resetTurret = save.loadb("resetTurret");
+		turret.init(resetTurret);
+	else
+		turret.init(true);
+	end
+
+	turretMotor = turret.getMotor();
 	--aprilTagProcessor.init(1920, 1080, 2, 255, 1.0)
 
 	intake:init();
@@ -39,22 +55,22 @@ local initPos = nil;
 local targetPos = nil;
 
 function telopStartBlue()
-	drive.offset = -math.pi2;
+	drive.offset = math.pi2;
 	turret.setTargetTag(20);
 	turret.startAutomatic();
 	shooter:close();
-	initPos = {x = 144 - 15.5 / 2, y = 9, z = math.pi2};
+	initPos = { x = 144 - 15.5 / 2, y = 9, z = math.pi2 };
 	--initPos = {x = 72, y = 72, z = math.pi2};
-	targetPos = {x = 6, y = 138};
+	targetPos = { x = 7, y = 138 };
 end
 
 function telopStartRed()
-	drive.offset = math.pi2;
+	drive.offset = -math.pi2;
 	turret.setTargetTag(24);
 	turret.startAutomatic();
 	shooter:close();
-	initPos = {x = 15.5 / 2, y = 9, z = math.pi2};
-	targetPos = {x = 138, y = 138};
+	initPos = { x = 15.5 / 2, y = 9, z = math.pi2 };
+	targetPos = { x = 138, y = 138 };
 end
 
 function telopUpdate(dt, et)
@@ -98,19 +114,19 @@ function telopUpdate(dt, et)
 			id = id + 1;
 		end
 	end
-	if(gamepad.getDpadLeft2()) then
-		shooterVelocity[id] = shooterVelocity[id] - 40;
+	if (gamepad.getDpadLeft2()) then
+		shooterVelocity[id] = shooterVelocity[id] - 20;
 	end
-	if(gamepad.getDpadRight2()) then
-		shooterVelocity[id] = shooterVelocity[id] + 40;
+	if (gamepad.getDpadRight2()) then
+		shooterVelocity[id] = shooterVelocity[id] + 20;
 	end
 
 	--Run/don't run specifically the shooter
 	if (gamepad.getCircle2()) then
-		shooter:start(shooterVelocity[id]);
+		shooter.running = true;
 	end
 	if (gamepad.getTriangle2()) then
-		shooter:stop();
+		shooter.running = false;
 	end
 
 	--Start intake and shooter
@@ -127,13 +143,16 @@ function telopUpdate(dt, et)
 	local dy = targetPos.y - drive.pinpoint:getY();
 	local angle = math.atan(dy, dx) - drive.pinpoint:getHeading();
 	angle = math.deg(angle);
-	if(angle > 180) then
+	if (angle > 180) then
 		angle = angle - 360;
 	end
-	if(angle < -180) then
+	if (angle < -180) then
 		angle = angle + 360;
 	end
 	turret.turnTo(angle);
+
+	local dist = dx * dx + dy * dy;
+	shooter:updateVelocity(dist);
 
 	--turret.updateMotor();
 
@@ -147,14 +166,17 @@ function telopUpdate(dt, et)
 	if (shooter:update(et)) then
 		turret.reset();
 	end
+	local tps = 1 / dt;
+	robotPane:addData("tps", tps);
 	robotPane:addData("x", drive.pinpoint:getX());
 	robotPane:addData("y", drive.pinpoint:getY());
 	robotPane:addData("h", math.deg(drive.pinpoint:getHeading()));
+	robotPane:addData("dist", dist);
 	robotPane:addData("tarPos", turretMotor:getTargetPosition());
 	robotPane:addData("curPos", turretMotor:getCurrentPosition());
 	shooter:telem();
 	robotPane:addLine(shooterLabel[id]);
-	robotPane:addData("setVel", shooterVelocity[id]);
+	robotPane:addData("setVel", shooter.vel);
 	currentPane:addData("fl", drive.frontLeft:getCurrent());
 	currentPane:addData("fr", drive.frontRight:getCurrent());
 	currentPane:addData("bl", drive.backLeft:getCurrent());

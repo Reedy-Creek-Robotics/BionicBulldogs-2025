@@ -21,14 +21,16 @@ shooterState = {
 ---@field delay number
 ---@field waitForReady boolean
 ---@field velocityDataPoints number[]
+---@field running boolean
 shooter = {
 	gateOpen = 0.3,
 	gateClosed = 0,
 	openDelay = 0.15,
-	closeDelay = 0.3,
+	closeDelay = 0.35,
 	state = shooterState.Close,
 	waitForReady = false,
-	velocityDataPoints = {0, 0, 0, 0, 0}
+	velocityDataPoints = { 0, 0, 0, 0, 0 },
+	running = false
 }
 
 function shooter:init()
@@ -47,6 +49,32 @@ function shooter:start(vel)
 	self.motorR:setPower(1);
 	self.motorL:setVelocity(vel);
 	self.motorR:setVelocity(vel);
+end
+
+---@param dist number
+function shooter:updateVelocity(dist)
+	local vel = 0;
+	if (dist >= 20000) then
+		vel = 1220;
+	elseif (dist >= 15000) then
+		vel = 1140;
+	elseif (dist >= 14000) then
+		vel = 1140;
+	elseif (dist >= 8000) then
+		vel = 1000;
+	elseif (dist >= 6000) then
+		vel = 940;
+	elseif (dist >= 2000) then
+		vel = 940;
+	else
+		vel = 940;
+	end
+	if(not self.running) then
+		vel = 0;
+	end
+	if (vel ~= self.vel) then
+		self:start(vel);
+	end
 end
 
 function shooter:stop()
@@ -68,9 +96,10 @@ end
 function shooter:shootNum(et, count)
 	self.state = shooterState.Open;
 	self.count = count;
-	if(logFile ~= nil) then
-		logFile:write(("%f - %d"):format(et, self.motorL:getVelocity()));
+	if (logFile ~= nil) then
+		logFile:write(("gate open: %f - %d"):format(et, self.motorL:getVelocity()));
 	end
+	actionPane:addData("open gate", et);
 	self.gate:setPosition(self.gateOpen);
 	self.time = et;
 	self.delay = self.openDelay;
@@ -86,6 +115,9 @@ function shooter:update(et)
 	if (self.time + self.delay <= et) then
 		if (self.state == shooterState.Open) then
 			self.gate:setPosition(self.gateClosed);
+			if (logFile ~= nil) then
+				logFile:write(("gate closed: %f - %d"):format(et, self.motorL:getVelocity()));
+			end
 			self.time = et;
 			self.state = shooterState.Close;
 			self.delay = self.closeDelay;
