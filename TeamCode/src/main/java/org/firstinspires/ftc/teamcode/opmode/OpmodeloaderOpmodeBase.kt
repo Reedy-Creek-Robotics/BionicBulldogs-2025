@@ -8,6 +8,7 @@ import org.firstinspires.ftc.teamcode.modules.LuaDashboard
 import org.firstinspires.ftc.teamcode.modules.LuaGamepad
 import org.firstinspires.ftc.teamcode.modules.luaHardware.LuaHardwaremap
 import org.firstinspires.ftc.teamcode.modules.LuaLog
+import org.firstinspires.ftc.teamcode.modules.LuaSave
 import org.firstinspires.ftc.teamcode.modules.LuaTelemetry
 import org.firstinspires.ftc.teamcode.modules.Turret
 
@@ -18,6 +19,7 @@ open class OpmodeloaderOpmodeBase(private val name: String) : LinearOpMode()
 		val opmodeloader = OpmodeLoader();
 		val builder = opmodeloader.getFunctionBuilder();
 
+		LuaSave.build(builder);
 		LuaGamepad.init(builder, gamepad1);
 		LuaHardwaremap.init(builder, hardwareMap);
 		LuaTelemetry.init(builder, telemetry);

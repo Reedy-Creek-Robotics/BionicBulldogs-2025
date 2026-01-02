@@ -25,7 +25,8 @@ shooterState = {
 shooter = {
 	gateOpen = 0.3,
 	gateClosed = 0,
-	openDelay = 0.15,
+	openDelay = 0.16,
+	openDelayEnd = 0.16,
 	closeDelay = 0.35,
 	state = shooterState.Close,
 	waitForReady = false,
@@ -45,31 +46,49 @@ end
 ---@param vel number
 function shooter:start(vel)
 	self.vel = vel;
-	self.motorL:setPower(1);
-	self.motorR:setPower(1);
 	self.motorL:setVelocity(vel);
 	self.motorR:setVelocity(vel);
 end
 
+---@param x number
+---@param y number
 ---@param dist number
-function shooter:updateVelocity(dist)
-	local vel = 0;
-	if (dist >= 20000) then
-		vel = 1220;
-	elseif (dist >= 15000) then
-		vel = 1140;
-	elseif (dist >= 14000) then
-		vel = 1140;
-	elseif (dist >= 8000) then
-		vel = 1000;
-	elseif (dist >= 6000) then
-		vel = 940;
-	elseif (dist >= 2000) then
-		vel = 940;
-	else
-		vel = 940;
+function shooter:updateVelocity(x, y, dist)
+	if (x < 0) then
+		x = -x;
 	end
-	if(not self.running) then
+
+	local vel = 0;
+	if (x > 12 * 6) then
+		if (y > 48) then
+			vel = 940;
+		else
+			vel = 1200;
+		end
+	else
+		if (y > 48) then
+			vel = 920;
+		else
+			vel = 1160;
+		end
+	end
+
+	--if (dist >= 20000) then
+	--	vel = 1160;
+	--elseif (dist >= 15000) then
+	--	vel = 1080;
+	--elseif (dist >= 14000) then
+	--	vel = 1080;
+	--elseif (dist >= 8000) then
+	--	vel = 940;
+	--elseif (dist >= 6000) then
+	--	vel = 880;
+	--elseif (dist >= 2000) then
+	--	vel = 880;
+	--else
+	--	vel = 880;
+	--end
+	if (not self.running) then
 		vel = 0;
 	end
 	if (vel ~= self.vel) then
@@ -129,7 +148,11 @@ function shooter:update(et)
 				return true;
 			else
 				self:shootNum(et, self.count - 1);
-				self.delay = self.openDelay;
+				if (self.count == 1) then
+					self.delay = self.openDelayEnd;
+				else
+					self.delay = self.openDelay;
+				end
 			end
 		end
 	end

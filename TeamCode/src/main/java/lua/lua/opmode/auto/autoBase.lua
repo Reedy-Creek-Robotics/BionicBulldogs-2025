@@ -66,8 +66,11 @@ function autoUpdate(dt, et)
 	follower.update();
 	follower.telem();
 
-	local dx = turretTarget.x - follower.getPositionX();
-	local dy = turretTarget.y - follower.getPositionY();
+	local x = follower.getPositionX();
+	local y = follower.getPositionY();
+
+	local dx = turretTarget.x - x;
+	local dy = turretTarget.y - y;
 	local angle = math.atan(dy, dx) - follower.getPositionH();
 	angle = math.deg(angle);
 	if (angle > 180) then
@@ -79,7 +82,7 @@ function autoUpdate(dt, et)
 	turret.turnTo(angle);
 
 	local dist = dx * dx + dy * dy;
-	shooter:updateVelocity(dist);
+	shooter:updateVelocity(x, y, dist);
 
 	logFile:write(
 		" x: " .. tostring(follower.getPositionX()) ..
@@ -106,6 +109,7 @@ end
 function autoStart()
 	logFile = io.open(DATADIR .. "/log.txt", "wb");
 	turret.startAutomatic();
+	shooter.running = true;
 	action:start(0);
 end
 
@@ -120,7 +124,7 @@ function loadOpmodes(name, genFun, count)
 			init = function ()
 				shooter:init();
 				intake:init();
-				turret.init();
+				turret.init(true);
 				genFun(i);
 			end,
 			start = autoStart,
@@ -172,7 +176,7 @@ function addConfig(name, prefix, config)
 			turretTarget = config.turretTarget;
 			shooter:init();
 			intake:init();
-			turret.init();
+			turret.init(true);
 		end,
 		start = autoStart,
 		update = autoUpdate

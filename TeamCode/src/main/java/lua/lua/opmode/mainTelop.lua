@@ -19,6 +19,9 @@ local shooterLabel = { "Close", "Moderate", "Far" }
 ---@type DcMotor
 local turretMotor = {};
 
+---@type vec3
+local startPos;
+
 function telopInit()
 	require("modules.telemetry");
 
@@ -26,18 +29,19 @@ function telopInit()
 	drive.localizerMode = LocalizerMode.pinpoint;
 	drive.pinpoint = hardwareMap.pinpointGet();
 
-	if (save.containsd("resetTurret")) then
+	if (save.containsb("resetTurret")) then
+		actionPane:addLine("values from auto found");
 		local x = save.loadd("x");
 		local y = save.loadd("y");
 		local h = save.loadd("h");
 
-		drive.pinpoint:setX(x);
-		drive.pinpoint:setY(y);
-		drive.pinpoint:setH(h);
+		startPos = { x = x, y = y, z = h };
+
 
 		local resetTurret = save.loadb("resetTurret");
 		turret.init(resetTurret);
 	else
+		actionPane:addLine("values from auto not found, reseting");
 		turret.init(true);
 	end
 
@@ -62,6 +66,14 @@ function telopStartBlue()
 	initPos = { x = 144 - 15.5 / 2, y = 9, z = math.pi2 };
 	--initPos = {x = 72, y = 72, z = math.pi2};
 	targetPos = { x = 7, y = 138 };
+
+	if (startPos == nil) then
+		startPos = initPos;
+	end
+
+	drive.pinpoint:setPosX(startPos.x);
+	drive.pinpoint:setPosY(startPos.y);
+	drive.pinpoint:setHeading(startPos.z);
 end
 
 function telopStartRed()
@@ -69,8 +81,16 @@ function telopStartRed()
 	turret.setTargetTag(24);
 	turret.startAutomatic();
 	shooter:close();
-	initPos = { x = 15.5 / 2, y = 9, z = math.pi2 };
-	targetPos = { x = 138, y = 138 };
+	initPos = { x = -(144 - 15.5 / 2), y = 9, z = math.pi2 };
+	targetPos = { x = -7, y = 138 };
+
+	if (startPos == nil) then
+		startPos = initPos;
+	end
+
+	drive.pinpoint:setPosX(startPos.x);
+	drive.pinpoint:setPosY(startPos.y);
+	drive.pinpoint:setHeading(startPos.z);
 end
 
 function telopUpdate(dt, et)
@@ -139,8 +159,11 @@ function telopUpdate(dt, et)
 		turret.lockOnTag();
 	end
 
-	local dx = targetPos.x - drive.pinpoint:getX();
-	local dy = targetPos.y - drive.pinpoint:getY();
+	local x = drive.pinpoint:getX();
+	local y = drive.pinpoint:getY();
+
+	local dx = targetPos.x - x;
+	local dy = targetPos.y - y;
 	local angle = math.atan(dy, dx) - drive.pinpoint:getHeading();
 	angle = math.deg(angle);
 	if (angle > 180) then
@@ -152,7 +175,7 @@ function telopUpdate(dt, et)
 	turret.turnTo(angle);
 
 	local dist = dx * dx + dy * dy;
-	shooter:updateVelocity(dist);
+	shooter:updateVelocity(x, y, dist);
 
 	--turret.updateMotor();
 

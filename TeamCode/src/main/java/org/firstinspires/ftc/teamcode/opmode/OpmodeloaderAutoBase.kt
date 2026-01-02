@@ -8,6 +8,7 @@ import org.firstinspires.ftc.teamcode.modules.luaHardware.LuaAprilTagProcessor
 import org.firstinspires.ftc.teamcode.modules.luaHardware.LuaHardwaremap
 import org.firstinspires.ftc.teamcode.modules.LuaLog
 import org.firstinspires.ftc.teamcode.modules.LuaDashboard
+import org.firstinspires.ftc.teamcode.modules.LuaSave
 import org.firstinspires.ftc.teamcode.modules.LuaTelemetry
 import org.firstinspires.ftc.teamcode.modules.Turret
 import org.firstinspires.ftc.teamcode.modules.pathing.LuaFollower
@@ -23,6 +24,7 @@ open class OpmodeloaderAutoBase(private val name: String) : LinearOpMode()
 
 		val follower = Constants.createFollower(hardwareMap);
 
+		LuaSave.build(builder);
 		LuaHardwaremap.init(builder, hardwareMap);
 		LuaTelemetry.init(builder, telemetry);
 		LuaDashboard.init(builder);

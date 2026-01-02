@@ -1,0 +1,16 @@
+SeqAction - 22.48
+├─SeqAction(preload) - 6.94
+│ ├─ShooterEnable(1200) - 0.00
+│ ├─Shoot(4) - 6.43
+│ └─SleepAction(0.50s) - 0.51
+├─SeqAction(line1) - 8.04
+│ ├─PathAction(100.00%) - 1.70
+│ ├─PathAction(100.00%) - 1.38
+│ ├─PathAction(100.00%) - 2.15
+│ └─Shoot(3) - 2.81
+├─SeqAction(line2) - 6.28
+│ ├─PathAction(100.00%) - 1.23
+│ ├─PathAction(100.00%) - 2.75
+│ ├─SleepAction(0.50s) - 0.50
+│ └─Shoot(3) - 1.79
+└─PathAction(100.00%) - 1.21
