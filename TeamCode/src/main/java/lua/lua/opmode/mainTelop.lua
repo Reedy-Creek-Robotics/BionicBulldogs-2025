@@ -7,14 +7,7 @@ require("modules.shooter");
 local drive;
 
 ---@type number[]
-local shooterVelocity = { 1000, 1250 }
-
----@type number
-local id = 1
-
---Id to string label for telemetry
----@type string[]
-local shooterLabel = { "Close", "Moderate", "Far" }
+local shooterVelocity = { 900, 1120 }
 
 ---@type DcMotor
 local turretMotor = {};
@@ -22,7 +15,17 @@ local turretMotor = {};
 ---@type vec3
 local startPos;
 
+---@type boolean
+local shooterAutomatic = true;
+
+---@type integer
+local turretOffset = 0;
+
+---@type file*
+local logFile;
+
 function telopInit()
+	logFile = io.open(DATADIR .. "telop" .. tostring(os.time), "w");
 	require("modules.telemetry");
 
 	drive = HDrive.new();
@@ -64,8 +67,8 @@ function telopStartBlue()
 	turret.startAutomatic();
 	shooter:close();
 	initPos = { x = 144 - 15.5 / 2, y = 9, z = math.pi2 };
-	--initPos = {x = 72, y = 72, z = math.pi2};
-	targetPos = { x = 7, y = 138 };
+	--targetPos = { x = 7, y = 138 };
+	targetPos = { x = 0, y = 144 };
 
 	if (startPos == nil) then
 		startPos = initPos;
@@ -74,6 +77,8 @@ function telopStartBlue()
 	drive.pinpoint:setPosX(startPos.x);
 	drive.pinpoint:setPosY(startPos.y);
 	drive.pinpoint:setHeading(startPos.z);
+	shooter.vel = shooterVelocity[1];
+	shooter:start(shooter.vel);
 end
 
 function telopStartRed()
@@ -82,7 +87,8 @@ function telopStartRed()
 	turret.startAutomatic();
 	shooter:close();
 	initPos = { x = -(144 - 15.5 / 2), y = 9, z = math.pi2 };
-	targetPos = { x = -7, y = 138 };
+	--targetPos = { x = -7, y = 138 };
+	targetPos = { x = 0, y = 144 };
 
 	if (startPos == nil) then
 		startPos = initPos;
@@ -91,10 +97,17 @@ function telopStartRed()
 	drive.pinpoint:setPosX(startPos.x);
 	drive.pinpoint:setPosY(startPos.y);
 	drive.pinpoint:setHeading(startPos.z);
+	shooter.vel = shooterVelocity[1];
+	shooter:start(shooter.vel);
 end
 
 function telopUpdate(dt, et)
 	drive.pinpoint:update();
+
+	local x = drive.pinpoint:getX();
+	local y = drive.pinpoint:getY();
+	local h = drive.pinpoint:getHeading();
+
 	--Drive the bot
 	local forward = gamepad.getLeftStickY();
 	local right = gamepad.getLeftStickX();
@@ -108,6 +121,18 @@ function telopUpdate(dt, et)
 	--if (bTag:valid()) then
 	--	dist = bTag:getDist()
 	--end
+
+	local dx = targetPos.x - x;
+	local dy = targetPos.y - y;
+	local angle = math.atan(dy, dx) - h;
+	angle = math.deg(angle);
+	if (angle > 180) then
+		angle = angle - 360;
+	end
+	if (angle < -180) then
+		angle = angle + 360;
+	end
+	turret.turnTo(angle + turretOffset);
 
 	--Forward/stop intake
 	if (gamepad.getRightBumper2()) then
@@ -128,21 +153,28 @@ function telopUpdate(dt, et)
 	end
 
 	if (gamepad.getDpadUp2()) then
-		if (id == 2) then
-			id = 1;
-		else
-			id = id + 1;
-		end
+		turretOffset = turretOffset + 1;
+		logFile:write(("x: %6.2f, y: %6.2f, h: %6.4f, angle: %6.2f, offset: %d"):format(x, y, h, angle, turretOffset));
 	end
+	if (gamepad.getDpadDown2()) then
+		turretOffset = turretOffset - 1;
+		logFile:write(("x: %6.2f, y: %6.2f, h: %6.4f, angle: %6.2f, offset: %d"):format(x, y, h, angle, turretOffset));
+	end
+
 	if (gamepad.getDpadLeft2()) then
-		shooterVelocity[id] = shooterVelocity[id] - 20;
+		shooterAutomatic = false;
+		shooter.vel = shooterVelocity[1];
+		shooter:start(shooter.vel);
 	end
 	if (gamepad.getDpadRight2()) then
-		shooterVelocity[id] = shooterVelocity[id] + 20;
+		shooterAutomatic = false;
+		shooter.vel = shooterVelocity[2];
+		shooter:start(shooter.vel);
 	end
 
 	--Run/don't run specifically the shooter
 	if (gamepad.getCircle2()) then
+		shooterAutomatic = true;
 		shooter.running = true;
 	end
 	if (gamepad.getTriangle2()) then
@@ -159,23 +191,10 @@ function telopUpdate(dt, et)
 		turret.lockOnTag();
 	end
 
-	local x = drive.pinpoint:getX();
-	local y = drive.pinpoint:getY();
-
-	local dx = targetPos.x - x;
-	local dy = targetPos.y - y;
-	local angle = math.atan(dy, dx) - drive.pinpoint:getHeading();
-	angle = math.deg(angle);
-	if (angle > 180) then
-		angle = angle - 360;
-	end
-	if (angle < -180) then
-		angle = angle + 360;
-	end
-	turret.turnTo(angle);
-
-	local dist = dx * dx + dy * dy;
-	shooter:updateVelocity(x, y, dist);
+	--if (shooterAutomatic) then
+	--local dist = dx * dx + dy * dy;
+	--shooter:updateVelocity(x, y, 0);
+	--end
 
 	--turret.updateMotor();
 
@@ -186,20 +205,23 @@ function telopUpdate(dt, et)
 	end
 
 	--Automatically updates
-	if (shooter:update(et)) then
-		turret.reset();
-	end
+	shooter:update(et);
+
 	local tps = 1 / dt;
+
 	robotPane:addData("tps", tps);
 	robotPane:addData("x", drive.pinpoint:getX());
 	robotPane:addData("y", drive.pinpoint:getY());
 	robotPane:addData("h", math.deg(drive.pinpoint:getHeading()));
-	robotPane:addData("dist", dist);
+	robotPane:addData("dist", "nil");
 	robotPane:addData("tarPos", turretMotor:getTargetPosition());
 	robotPane:addData("curPos", turretMotor:getCurrentPosition());
+	robotPane:addData("offset", turretOffset);
+
 	shooter:telem();
-	robotPane:addLine(shooterLabel[id]);
+
 	robotPane:addData("setVel", shooter.vel);
+
 	currentPane:addData("fl", drive.frontLeft:getCurrent());
 	currentPane:addData("fr", drive.frontRight:getCurrent());
 	currentPane:addData("bl", drive.backLeft:getCurrent());
@@ -207,14 +229,7 @@ function telopUpdate(dt, et)
 	currentPane:addData("sl", shooter.motorL:getCurrent());
 	currentPane:addData("sr", shooter.motorR:getCurrent());
 	currentPane:addData("in", intake.motor:getCurrent());
-	--if bTag:valid() then
-	--	aprilTagPane:addData("tag distance", bTag:getDist())
-	--	--positive error means tag is to the right, and vice versa
-	--	aprilTagPane:addData("angle error", bTag:bearing())
-	--else
-	--	aprilTagPane:addLine("tag distance: -1")
-	--	aprilTagPane:addLine("angle error: -1")
-	--end
+
 	TelemPaneManager:update();
 
 	return false;

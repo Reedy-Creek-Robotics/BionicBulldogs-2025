@@ -7,7 +7,7 @@ local config = {
 	preload = function ()
 		return SeqAction.newl(
 			"preload",
-			RobotActions.ShooterStart.new(1200),
+			RobotActions.ShooterStart.new(1120),
 			RobotActions.Shoot.new(4),
 			SleepAction.new(0.5)
 		)
