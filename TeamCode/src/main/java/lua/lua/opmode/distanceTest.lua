@@ -1,5 +1,5 @@
 ---@type Opmode
-local opmode = { name = "a_distanceTest" };
+local opmode = { name = "distanceTest", type = OpmodeType.Auto };
 
 
 function opmode.init()

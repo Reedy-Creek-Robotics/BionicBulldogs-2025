@@ -1,8 +1,10 @@
 ---@class Opmode
 ---@field name string
+---@field type OpmodeType
 ---@field init fun()?
 ---@field start fun(recog: number)?
 ---@field update (fun(dt: number, elapsed: number): boolean)?
+---@field stop fun()?
 
 ---@param opmode Opmode
 function addOpmode(opmode) end

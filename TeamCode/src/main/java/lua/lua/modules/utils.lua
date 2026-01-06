@@ -21,6 +21,12 @@ Team = {
 	Blue = 1
 };
 
+---@enum OpmodeType
+OpmodeType = {
+	Telop = 0,
+	Auto = 1
+};
+
 math.tau = math.pi * 2;
 math.pi2 = math.pi / 2;
 math.pi4 = math.pi / 4;

@@ -5,6 +5,7 @@ import android.util.Log
 import com.minerkid08.dynamicopmodeloader.CompileError
 import com.minerkid08.dynamicopmodeloader.FileServer
 import com.minerkid08.dynamicopmodeloader.LuaError
+import com.minerkid08.dynamicopmodeloader.Opmode
 import com.minerkid08.dynamicopmodeloader.OpmodeLoader
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode
 import com.qualcomm.robotcore.eventloop.opmode.OpModeManager
@@ -27,7 +28,7 @@ object FileServerStarter
 	@OpModeRegistrar
 	fun register(reg: OpModeManager)
 	{
-		var opmodes: Array<String>? = null;
+		var opmodes: Array<Opmode>? = null;
 		try
 		{
 			val opmodeLoader = OpmodeLoader();
@@ -38,7 +39,7 @@ object FileServerStarter
 		{
 			Log.e("lua", "runtime error: " + e.localizedMessage);
 			val stackTrace = e.stackTrace;
-			for(elem in stackTrace)
+			for (elem in stackTrace)
 			{
 				var elemStr = elem.toString();
 				elemStr = elemStr.substring(2);
@@ -70,29 +71,42 @@ object FileServerStarter
 
 		for (opmode in opmodes)
 		{
-			if (opmode[0] == 't' && opmode[1] == '_')
-			{
-				val meta = OpModeMeta.Builder()
-					.setName(opmode.substring(2))
-					.setFlavor(OpModeMeta.Flavor.TELEOP)
-					.setGroup("lua")
-					.build();
-				reg.register(meta, OpmodeloaderOpmodeBase(opmode))
-			}
-			if (opmode[0] == 'a' && opmode[1] == '_')
-			{
-				val meta = OpModeMeta.Builder()
-					.setName(opmode.substring(2))
-					.setFlavor(OpModeMeta.Flavor.AUTONOMOUS)
-					.setGroup("lua")
-					.build();
-				reg.register(meta, OpmodeloaderAutoBase(opmode))
-			}
+			val group = if (opmode.group == null) "usorted" else opmode.group;
+			val type =
+				if (opmode.type == Opmode.Telop) OpModeMeta.Flavor.TELEOP else OpModeMeta.Flavor.AUTONOMOUS;
+			val meta = OpModeMeta.Builder()
+				.setName(opmode.name)
+				.setFlavor(type)
+				.setGroup(group!!)
+				.setSystemOpModeBaseDisplayName("mainTelop")
+				.build();
+			if (opmode.type == Opmode.Telop)
+				reg.register(meta, OpmodeloaderOpmodeBase(opmode.name));
+			else
+				reg.register(meta, OpmodeloaderAutoBase(opmode.name));
+			//if (opmode[0] == 't' && opmode[1] == '_')
+			//{
+			//	val meta = OpModeMeta.Builder()
+			//		.setName(opmode.substring(2))
+			//		.setFlavor(OpModeMeta.Flavor.TELEOP)
+			//		.setGroup("lua")
+			//		.build();
+			//	reg.register(meta, OpmodeloaderOpmodeBase(opmode))
+			//}
+			//if (opmode[0] == 'a' && opmode[1] == '_')
+			//{
+			//	val meta = OpModeMeta.Builder()
+			//		.setName(opmode.substring(2))
+			//		.setFlavor(OpModeMeta.Flavor.AUTONOMOUS)
+			//		.setGroup("lua")
+			//		.build();
+			//	reg.register(meta, OpmodeloaderAutoBase(opmode))
+			//}
 		}
 	}
 }
 
-class ErrorOpmode(): LinearOpMode()
+class ErrorOpmode() : LinearOpMode()
 {
 	override fun runOpMode()
 	{

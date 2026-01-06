@@ -40,7 +40,6 @@ function telopInit()
 
 		startPos = { x = x, y = y, z = h };
 
-
 		local resetTurret = save.loadb("resetTurret");
 		turret.init(resetTurret);
 	else
@@ -237,7 +236,8 @@ end
 
 ---@type Opmode
 local telopRed = {
-	name = "t_mainTelopRed",
+	name = "mainTelopRed",
+	type = OpmodeType.Telop,
 	init = telopInit,
 	start = telopStartRed,
 	update = telopUpdate
@@ -245,7 +245,8 @@ local telopRed = {
 
 ---@type Opmode
 local telopBlue = {
-	name = "t_mainTelopBlue",
+	name = "mainTelopBlue",
+	type = OpmodeType.Telop,
 	init = telopInit,
 	start = telopStartBlue,
 	update = telopUpdate

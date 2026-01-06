@@ -1,5 +1,5 @@
 ---@type Opmode
-local opmode = { name = "t_TransferTest" };
+local opmode = { name = "TransferTest", type = OpmodeType.Telop };
 
 ---@type DcMotor
 local m1;

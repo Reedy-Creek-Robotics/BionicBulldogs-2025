@@ -1,7 +1,7 @@
 require("modules.hdrive");
 
 ---@type Opmode
-local opmode = { name = "t_intakeTest" };
+local opmode = { name = "intakeTest", type = OpmodeType.Telop};
 
 ---@type HDrive
 local drive;

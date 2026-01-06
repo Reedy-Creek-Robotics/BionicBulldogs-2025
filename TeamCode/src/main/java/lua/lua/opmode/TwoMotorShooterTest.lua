@@ -1,7 +1,7 @@
 require("modules.telemPanes");
 
 ---@type Opmode
-local opmode = { name = "t_TwoMotorShooterTest" };
+local opmode = { name = "TwoMotorShooterTest", type = OpmodeType.Telop};
 
 ---@type number[]
 local shooterVelocity = { 1200, 1300, 1600 }

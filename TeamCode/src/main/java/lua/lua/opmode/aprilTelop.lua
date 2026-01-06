@@ -4,7 +4,7 @@ require("modules.hdrive");
 require("modules.telemPanes");
 
 ---@type Opmode
-local opmode = { name = "t_aprilTelop" };
+local opmode = { name = "aprilTelop", type = OpmodeType.Telop };
 
 ---@type HDrive
 local drive;

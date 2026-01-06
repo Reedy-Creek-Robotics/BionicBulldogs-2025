@@ -93,11 +93,6 @@ function autoUpdate(dt, et)
 	local state = action:update(dt, et);
 	if (state ~= ActionState.Running) then
 		profiler.genString(profileFileName, action);
-		logFile:close();
-		save.saved("x", follower.getPositionX());
-		save.saved("y", follower.getPositionY());
-		save.saved("h", follower.getPositionH());
-		save.saveb("resetTurret", false);
 		if (state ~= ActionState.Done) then
 			error(("root action '%s' failed"):format(tostring(action)));
 		end
@@ -113,24 +108,12 @@ function autoStart()
 	action:start(0);
 end
 
----@param name string
----@param genFun fun(number)
----@param count number
-function loadOpmodes(name, genFun, count)
-	count = count or 3
-	for i = 0, count do
-		addOpmode({
-			name = "a_" .. name .. tostring((i + 1) * 3),
-			init = function ()
-				shooter:init();
-				intake:init();
-				turret.init(true);
-				genFun(i);
-			end,
-			start = autoStart,
-			update = autoUpdate
-		});
-	end
+function autoStop()
+	save.saved("x", follower.getPositionX());
+	save.saved("y", follower.getPositionY());
+	save.saved("h", follower.getPositionH());
+	save.saveb("resetTurret", false);
+	logFile:close();
 end
 
 local genPathFuncs = {
@@ -167,7 +150,8 @@ local genPathFuncs = {
 ---@param config AutoPaths
 function addConfig(name, prefix, config)
 	addOpmode({
-		name = "a_" .. name .. tostring(prefix),
+		name = name .. tostring(prefix),
+		type = OpmodeType.Auto,
 		init = function ()
 			--drive = HDrive.new(false);
 			require("modules.telemetry");
@@ -179,7 +163,8 @@ function addConfig(name, prefix, config)
 			turret.init(true);
 		end,
 		start = autoStart,
-		update = autoUpdate
+		update = autoUpdate,
+		stop = autoStop
 	});
 end
 

@@ -1,5 +1,5 @@
 ---@type Opmode
-local opmode = { name = "t_turretTest" };
+local opmode = { name = "turretTest", type = OpmodeType.Telop };
 
 local turretStateLabels = { "tracking", "waiting", "manual" };
 

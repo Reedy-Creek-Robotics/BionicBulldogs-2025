@@ -54,6 +54,7 @@ open class OpmodeloaderOpmodeBase(private val name: String) : LinearOpMode()
 			if(opmodeloader.update(dt, now))
 				break;
 		}
+		opmodeloader.stop();
 		opmodeloader.close();
 	}
 }

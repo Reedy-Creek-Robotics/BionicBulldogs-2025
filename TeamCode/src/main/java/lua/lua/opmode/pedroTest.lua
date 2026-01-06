@@ -4,7 +4,7 @@ require("modules.action.seqAction");
 require("modules.action.parallelAction");
 
 ---@type Opmode
-local opmode = { name = "a_pedroTest" };
+local opmode = { name = "pedroTest", type = OpmodeType.Auto };
 
 ---@type Action
 local a;
