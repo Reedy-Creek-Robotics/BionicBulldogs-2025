@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode.modules
 
 import android.util.Log
 import com.minerkid08.dynamicopmodeloader.FunctionBuilder
+import com.minerkid08.dynamicopmodeloader.LuaError
 import com.minerkid08.dynamicopmodeloader.OpmodeLoaderFunction
 
 object LuaSave
@@ -60,7 +61,7 @@ object LuaSave
 			Log.d("load", "int: '$value'");
 			return value;
 		}
-		error("int map does not contain key $key");
+		throw LuaError("int map does not contain key $key");
 	}
 
 	@JvmStatic
@@ -73,7 +74,7 @@ object LuaSave
 			Log.d("load", "double: '$value'");
 			return value;
 		}
-		error("double map does not contain key $key");
+		throw LuaError("double map does not contain key $key");
 	}
 
 	@JvmStatic
@@ -86,7 +87,7 @@ object LuaSave
 			Log.d("load", "bool: '$value'");
 			return value;
 		}
-		error("bool map does not contain key $key");
+		throw LuaError("bool map does not contain key $key");
 	}
 
 	@JvmStatic
@@ -99,7 +100,7 @@ object LuaSave
 			Log.d("load", "string: '$value'");
 			return value;
 		}
-		error("string map does not contain key $key");
+		throw LuaError("string map does not contain key $key");
 	}
 
 	@JvmStatic

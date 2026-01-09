@@ -21,12 +21,14 @@ local shooterAutomatic = true;
 ---@type integer
 local turretOffset = 0;
 
----@type file*
-local logFile;
+local fileId = os.time();
 
 function telopInit()
-	logFile = io.open(DATADIR .. "telop" .. tostring(os.time), "w");
+	chub = hardwareMap.chubGet();
+	logFile = io.open(DATADIR .. "telop" .. tostring(fileId), "w");
 	require("modules.telemetry");
+
+	actionPane:addData("telop file", fileId);
 
 	drive = HDrive.new();
 	drive.localizerMode = LocalizerMode.pinpoint;
@@ -52,6 +54,13 @@ function telopInit()
 
 	intake:init();
 	shooter:init();
+
+	--local p = dashboard.getp();
+	--local i = dashboard.geti();
+	--local d = dashboard.getd();
+	--local f = dashboard.getf();
+	--shooter.motorL:setPidf(p, i, d, f);
+	--shooter.motorR:setPidf(p, i, d, f);
 end
 
 ---@type vec3
@@ -153,47 +162,65 @@ function telopUpdate(dt, et)
 
 	if (gamepad.getDpadUp2()) then
 		turretOffset = turretOffset + 1;
-		logFile:write(("x: %6.2f, y: %6.2f, h: %6.4f, angle: %6.2f, offset: %d"):format(x, y, h, angle, turretOffset));
+		logFile:write(("%7.2f | x: %6.2f, y: %6.2f, h: %6.4f, angle: %6.2f, offset: %d\n"):format(et, x, y, h, angle,
+			turretOffset));
 	end
 	if (gamepad.getDpadDown2()) then
 		turretOffset = turretOffset - 1;
-		logFile:write(("x: %6.2f, y: %6.2f, h: %6.4f, angle: %6.2f, offset: %d"):format(x, y, h, angle, turretOffset));
+		logFile:write(("%7.2f | x: %6.2f, y: %6.2f, h: %6.4f, angle: %6.2f, offset: %d\n"):format(et, x, y, h, angle,
+			turretOffset));
+	end
+
+	if (gamepad.getTouchpad2()) then
+		shooter.vel = shooter.vel + 20;
+		shooter:start(shooter.vel);
+	end
+	if (gamepad.getShare2()) then
+		shooter.vel = shooter.vel - 20;
+		shooter:start(shooter.vel);
 	end
 
 	if (gamepad.getDpadLeft2()) then
 		shooterAutomatic = false;
-		shooter.vel = shooterVelocity[1];
-		shooter:start(shooter.vel);
+		--shooter.vel = shooterVelocity[1];
+		--shooter:start(shooter.vel);
 	end
 	if (gamepad.getDpadRight2()) then
 		shooterAutomatic = false;
-		shooter.vel = shooterVelocity[2];
-		shooter:start(shooter.vel);
+		--shooter.vel = shooterVelocity[2];
+		--shooter:start(shooter.vel);
 	end
 
 	--Run/don't run specifically the shooter
 	if (gamepad.getCircle2()) then
+		shooter:start(shooter.vel);
 		shooterAutomatic = true;
 		shooter.running = true;
 	end
 	if (gamepad.getTriangle2()) then
+		shooter:stop();
 		shooter.running = false;
 	end
 
 	--Start intake and shooter
 	if (gamepad.getCross2()) then
 		intake:forward();
-		shooter:shootNum(et, 3);
+		shooter:shootNum(et, 1);
 	end
 
 	if (gamepad.getSquare2()) then
-		turret.lockOnTag();
+		local p = dashboard.getp();
+		local i = dashboard.geti();
+		local d = dashboard.getd();
+		local f = dashboard.getf();
+		shooter.motorL:setPidf(p, i, d, f);
+		shooter.motorR:setPidf(p, i, d, f);
 	end
 
-	--if (shooterAutomatic) then
-	--local dist = dx * dx + dy * dy;
-	--shooter:updateVelocity(x, y, 0);
-	--end
+	if (shooterAutomatic) then
+		local dist = dx * dx + dy * dy;
+		shooter:updateVelocity(x, y, 0);
+	end
 
 	--turret.updateMotor();
 
@@ -212,7 +239,6 @@ function telopUpdate(dt, et)
 	robotPane:addData("x", drive.pinpoint:getX());
 	robotPane:addData("y", drive.pinpoint:getY());
 	robotPane:addData("h", math.deg(drive.pinpoint:getHeading()));
-	robotPane:addData("dist", "nil");
 	robotPane:addData("tarPos", turretMotor:getTargetPosition());
 	robotPane:addData("curPos", turretMotor:getCurrentPosition());
 	robotPane:addData("offset", turretOffset);
@@ -231,7 +257,20 @@ function telopUpdate(dt, et)
 
 	TelemPaneManager:update();
 
+	dashboard.addDataf("tps", tps);
+	dashboard.addDataf("leftPower", shooter.motorL:getPower());
+	dashboard.addDataf("leftVel", shooter.motorL:getVelocity());
+	dashboard.addDataf("leftCur", shooter.motorL:getCurrent());
+	dashboard.addDataf("rightPower", shooter.motorR:getPower());
+	dashboard.addDataf("rightVel", shooter.motorR:getVelocity());
+	dashboard.addDataf("rightCur", shooter.motorR:getCurrent());
+	dashboard.update();
+
 	return false;
+end
+
+function telopStop()
+	logFile:close();
 end
 
 ---@type Opmode
@@ -240,7 +279,8 @@ local telopRed = {
 	type = OpmodeType.Telop,
 	init = telopInit,
 	start = telopStartRed,
-	update = telopUpdate
+	update = telopUpdate,
+	stop = telopStop
 };
 
 ---@type Opmode
@@ -249,7 +289,8 @@ local telopBlue = {
 	type = OpmodeType.Telop,
 	init = telopInit,
 	start = telopStartBlue,
-	update = telopUpdate
+	update = telopUpdate,
+	stop = telopStop
 };
 
 addOpmode(telopRed);

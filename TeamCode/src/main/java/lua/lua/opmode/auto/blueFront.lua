@@ -2,8 +2,8 @@ require("opmode.auto.autoBase");
 
 ---@type AutoPaths
 local config = {
-	start = { x = 32, y = 136, z = 180 },
-	turretTarget = { x = 6, y = 138 },
+	start = { x = 32.24, y = 133, z = 180 },
+	turretTarget = { x = 0, y = 144 },
 	preload = function ()
 		return SeqAction.newl(
 			"preload",
@@ -14,7 +14,7 @@ local config = {
 				:constantHeading(180.00)
 				:build()
 			),
-			RobotActions.Shoot.new(4)
+			RobotActions.Shoot.new(1)
 		)
 	end,
 	line1 = {
@@ -35,7 +35,7 @@ local config = {
 					:constantHeading(180.00)
 					:build()
 				),
-				RobotActions.Shoot.new(3)
+				RobotActions.Shoot.new(1)
 			)
 		end,
 		gate = function ()
@@ -67,7 +67,7 @@ local config = {
 					:constantHeading(180.00)
 					:build()
 				),
-				RobotActions.Shoot.new(3)
+				RobotActions.Shoot.new(1)
 			)
 		end
 	},
@@ -89,7 +89,7 @@ local config = {
 					:constantHeading(180.00)
 					:build()
 				),
-				RobotActions.Shoot.new(3)
+				RobotActions.Shoot.new(1)
 			)
 		end,
 		gate = function ()
@@ -124,7 +124,7 @@ local config = {
 					:constantHeading(180.00)
 					:build()
 				),
-				RobotActions.Shoot.new(3)
+				RobotActions.Shoot.new(1)
 			)
 		end
 	},
@@ -145,7 +145,7 @@ local config = {
 				:constantHeading(180.00)
 				:build()
 			),
-			RobotActions.Shoot.new(3)
+			RobotActions.Shoot.new(1)
 		)
 	end,
 	line4 = function ()
@@ -163,7 +163,7 @@ local config = {
 				:constantHeading(180.00)
 				:build()
 			),
-			RobotActions.Shoot.new(3)
+			RobotActions.Shoot.new(1)
 		)
 	end,
 	park = function ()

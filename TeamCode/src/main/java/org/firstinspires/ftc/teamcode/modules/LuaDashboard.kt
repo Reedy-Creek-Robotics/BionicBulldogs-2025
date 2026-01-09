@@ -1,12 +1,23 @@
 package org.firstinspires.ftc.teamcode.modules
 
 import com.acmerobotics.dashboard.FtcDashboard
+import com.acmerobotics.dashboard.config.Config
 import com.minerkid08.dynamicopmodeloader.FunctionBuilder
 import com.minerkid08.dynamicopmodeloader.OpmodeLoaderFunction
 import org.firstinspires.ftc.robotcore.external.Telemetry
 
+@Config
 object LuaDashboard
 {
+	@JvmField
+	var p = 320.0;
+	@JvmField
+	var i = 3.0;
+	@JvmField
+	var d = 0.0;
+	@JvmField
+	var f = 10.0;
+
 	val telem: Telemetry = FtcDashboard.getInstance().telemetry;
 
 	fun init(builder: FunctionBuilder)
@@ -51,4 +62,17 @@ object LuaDashboard
 	{
 		telem.update();
 	}
+
+	@JvmStatic
+	@OpmodeLoaderFunction
+	fun getp() = p;
+	@JvmStatic
+	@OpmodeLoaderFunction
+	fun geti() = i;
+	@JvmStatic
+	@OpmodeLoaderFunction
+	fun getd() = d;
+	@JvmStatic
+	@OpmodeLoaderFunction
+	fun getf() = f;
 }

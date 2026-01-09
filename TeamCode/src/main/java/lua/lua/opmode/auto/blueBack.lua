@@ -2,13 +2,13 @@ require("opmode.auto.autoBase");
 
 ---@type AutoPaths
 local config = {
-	start = { x = 55.5, y = 8, z = 180 },
-	turretTarget = { x = 6, y = 138 },
+	start = { x = 55.25, y = 7.75, z = 180 },
+	turretTarget = { x = 0, y = 144 },
 	preload = function ()
 		return SeqAction.newl(
 			"preload",
 			RobotActions.ShooterStart.new(1120),
-			RobotActions.Shoot.new(4),
+			RobotActions.Shoot.new(1),
 			SleepAction.new(0.5)
 		)
 	end,
@@ -34,7 +34,7 @@ local config = {
 					:constantHeading(180)
 					:build()
 				),
-				RobotActions.Shoot.new(3)
+				RobotActions.Shoot.new(1)
 			)
 		end,
 		gate = function ()
@@ -71,7 +71,7 @@ local config = {
 					:build()
 				),
 				Delay.new(0.5),
-				RobotActions.Shoot.new(3)
+				RobotActions.Shoot.new(1)
 			)
 		end
 	},
@@ -97,7 +97,7 @@ local config = {
 					:build()
 				),
 				Delay.new(0.5),
-				RobotActions.Shoot.new(3)
+				RobotActions.Shoot.new(1)
 			)
 		end
 	},
@@ -118,7 +118,7 @@ local config = {
 				:build()
 			),
 			Delay.new(0.5),
-			RobotActions.Shoot.new(3)
+			RobotActions.Shoot.new(1)
 		)
 	end,
 	park = function ()

@@ -1,8 +1,6 @@
 require("modules.action.seqAction");
 require("modules.action.parallelAction");
 
-DATADIR = DATADIR or "/sdcard/";
-
 profiler = {};
 
 ---@param filename string

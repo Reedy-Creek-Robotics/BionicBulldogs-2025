@@ -66,11 +66,11 @@ class autoAim : LinearOpMode()
 		cameraSetExposure(8, 255, visionPortal, telemetry);
 
 		//tpr = ticks per rev
-    val ticksPerRev = 537.7;
+		val ticksPerRev = 537.7;
 
 		//tpd = tick per degrees
-  
-    val gearRatio = 208.0 / 114;
+
+		val gearRatio = 208.0 / 114;
 
 		val ticksPerDeg = -ticksPerRev / 360 * gearRatio;
 

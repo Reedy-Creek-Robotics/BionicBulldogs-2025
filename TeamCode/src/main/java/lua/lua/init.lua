@@ -2,6 +2,8 @@ SCRIPTDIR = SCRIPTDIR or "/sdcard/lua";
 
 IMPORTDIR = { "opmode" };
 
+DATADIR = DATADIR or "/sdcard/";
+
 --DISABLE_ROBOT = true;
 
 require("opmode.auto");

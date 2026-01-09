@@ -14,6 +14,9 @@ DcMotor = {};
 ---@param power number
 function DcMotor:setPower(power) end
 
+---@return number
+function DcMotor:getPower() end
+
 ---@param dir integer
 function DcMotor:setDirection(dir) end
 
@@ -81,6 +84,11 @@ function Pinpoint:setY(y) end
 ---@param h number
 function Pinpoint:setH(h) end
 
+---@class Chub
+Chub = {}
+---@return number
+function Chub:getVoltage() end
+
 hardwareMap = {};
 
 ---@param name string
@@ -107,6 +115,9 @@ function hardwareMap.spimuGet() end
 
 ---@return Pinpoint
 function hardwareMap.pinpointGet() end
+
+---@return Chub 
+function hardwareMap.chubGet() end
 
 gamepad = {};
 

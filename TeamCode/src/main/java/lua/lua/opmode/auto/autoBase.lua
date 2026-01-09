@@ -153,6 +153,7 @@ function addConfig(name, prefix, config)
 		name = name .. tostring(prefix),
 		type = OpmodeType.Auto,
 		init = function ()
+			chub = hardwareMap.chubGet();
 			--drive = HDrive.new(false);
 			require("modules.telemetry");
 			follower.setPosition(config.start.x, config.start.y, config.start.z);

@@ -4,6 +4,8 @@ import com.minerkid08.dynamicopmodeloader.OpmodeLoaderFunction
 import com.qualcomm.robotcore.hardware.DcMotor
 import com.qualcomm.robotcore.hardware.DcMotorEx
 import com.qualcomm.robotcore.hardware.DcMotorSimple
+import com.qualcomm.robotcore.hardware.MotorControlAlgorithm
+import com.qualcomm.robotcore.hardware.PIDFCoefficients
 import org.firstinspires.ftc.robotcore.external.navigation.CurrentUnit
 import org.firstinspires.ftc.teamcode.modules.LuaDefines
 
@@ -61,6 +63,9 @@ class LuaDcMotor(private val m: DcMotor)
 
 	@OpmodeLoaderFunction
 	fun getTargetPosition(): Int = m.targetPosition;
+
+	@OpmodeLoaderFunction
+	fun getPower(): Double = m.power;
 }
 
 class LuaDcMotorEx(private val m: DcMotorEx)
@@ -130,4 +135,13 @@ class LuaDcMotorEx(private val m: DcMotorEx)
 
 	@OpmodeLoaderFunction
 	fun getTargetPosition(): Int = m.targetPosition;
+
+	@OpmodeLoaderFunction
+	fun getPower(): Double = m.power;
+
+	@OpmodeLoaderFunction
+	fun setPidf(p: Double, i: Double, d: Double, f: Double)
+	{
+		m.setPIDFCoefficients(m.mode, PIDFCoefficients(p, i, d, f, MotorControlAlgorithm.PIDF));
+	}
 }

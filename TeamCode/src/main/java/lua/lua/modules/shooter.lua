@@ -25,8 +25,8 @@ shooterState = {
 shooter = {
 	gateOpen = 0.3,
 	gateClosed = 0,
-	openDelay = 0.16,
-	openDelayEnd = 0.16,
+	openDelay = 1, -- 0.16
+	openDelayEnd = 1,
 	closeDelay = 0.35,
 	state = shooterState.Close,
 	waitForReady = false,
@@ -67,9 +67,9 @@ function shooter:updateVelocity(x, y, dist)
 		end
 	else
 		if (y > 48) then
-			vel = 920;
+			vel = 820;
 		else
-			vel = 1160;
+			vel = 1120;
 		end
 	end
 
@@ -92,6 +92,13 @@ function shooter:updateVelocity(x, y, dist)
 		vel = 0;
 	end
 	if (vel ~= self.vel) then
+		if(vel > 1000) then
+			--self.motorL:setPidf(320,3,0,7.5);
+			--self.motorR:setPidf(320,3,0,7.5);
+		else
+			--self.motorL:setPidf(320,3,0,0);
+			--self.motorR:setPidf(320,3,0,0);
+		end
 		self:start(vel);
 	end
 end
@@ -116,9 +123,15 @@ function shooter:shootNum(et, count)
 	self.state = shooterState.Open;
 	self.count = count;
 	if (logFile ~= nil) then
-		logFile:write(("gate open: %f - %d"):format(et, self.motorL:getVelocity()));
+		logFile:write(
+			("%7.2f | gate open:   left %4d %5.3f %5.2f, right %4d %5.3f %5.2f, bat: %5.2f\n")
+			:format(et, self.motorL:getVelocity(), self.motorL:getVelocity(), self.motorL:getCurrent(),
+				self.motorR:getVelocity(), self.motorR:getPower(),
+				self.motorR:getCurrent(), chub:getVoltage()
+			)
+		);
 	end
-	actionPane:addData("open gate", et);
+	--actionPane:addData("open gate", et);
 	self.gate:setPosition(self.gateOpen);
 	self.time = et;
 	self.delay = self.openDelay;
@@ -135,7 +148,13 @@ function shooter:update(et)
 		if (self.state == shooterState.Open) then
 			self.gate:setPosition(self.gateClosed);
 			if (logFile ~= nil) then
-				logFile:write(("gate closed: %f - %d"):format(et, self.motorL:getVelocity()));
+				logFile:write(
+					("%7.2f | gate closed: left %4d %5.3f %5.2f, right %4d %5.3f %5.2f, bat: %5.2f\n")
+					:format(et, self.motorL:getVelocity(), self.motorL:getVelocity(), self.motorL:getCurrent(),
+						self.motorR:getVelocity(), self.motorR:getPower(),
+						self.motorR:getCurrent(), chub:getVoltage()
+					)
+				);
 			end
 			self.time = et;
 			self.state = shooterState.Close;
@@ -171,7 +190,7 @@ function shooter:ready()
 	sum = sum + self.velocityDataPoints[4] - self.velocityDataPoints[3];
 	sum = sum + self.velocityDataPoints[5] - self.velocityDataPoints[4];
 	local slope = sum / 5;
-	return vel >= self.vel - 40 and vel <= self.vel + 40 --and slope >= -40 and slope <= 40;
+	return vel >= self.vel - 40 and vel <= self.vel + 40 and slope >= -20 and slope <= 20;
 end
 
 function shooter:close()
