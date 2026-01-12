@@ -71,8 +71,7 @@ local targetPos = nil;
 
 function telopStartBlue()
 	drive.offset = math.pi2;
-	turret.setTargetTag(20);
-	turret.startAutomatic();
+	turret.start();
 	shooter:close();
 	initPos = { x = 144 - 15.5 / 2, y = 9, z = math.pi2 };
 	--targetPos = { x = 7, y = 138 };
@@ -91,8 +90,7 @@ end
 
 function telopStartRed()
 	drive.offset = -math.pi2;
-	turret.setTargetTag(24);
-	turret.startAutomatic();
+	turret.start();
 	shooter:close();
 	initPos = { x = -(144 - 15.5 / 2), y = 9, z = math.pi2 };
 	--targetPos = { x = -7, y = 138 };
@@ -140,7 +138,7 @@ function telopUpdate(dt, et)
 	if (angle < -180) then
 		angle = angle + 360;
 	end
-	turret.turnTo(angle + turretOffset);
+	turret.update(angle + turretOffset);
 
 	--Forward/stop intake
 	if (gamepad.getRightBumper2()) then
@@ -221,8 +219,6 @@ function telopUpdate(dt, et)
 		local dist = dx * dx + dy * dy;
 		shooter:updateVelocity(x, y, 0);
 	end
-
-	--turret.updateMotor();
 
 	if (gamepad.getStart()) then
 		drive.pinpoint:setPosX(initPos.x);

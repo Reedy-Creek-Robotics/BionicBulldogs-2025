@@ -1,5 +1,7 @@
 package org.firstinspires.ftc.teamcode.modules.luaHardware
 
+import com.minerkid08.dynamicopmodeloader.FunctionBuilder
+import com.minerkid08.dynamicopmodeloader.LuaType
 import com.minerkid08.dynamicopmodeloader.OpmodeLoaderFunction
 import com.qualcomm.robotcore.hardware.DcMotor
 import com.qualcomm.robotcore.hardware.DcMotorEx
@@ -144,4 +146,37 @@ class LuaDcMotorEx(private val m: DcMotorEx)
 	{
 		m.setPIDFCoefficients(m.mode, PIDFCoefficients(p, i, d, f, MotorControlAlgorithm.PIDF));
 	}
+}
+
+fun buildDcMotor(builder: FunctionBuilder)
+{
+	builder.createClass("DcMotor");
+	builder.addClassFunction(DcMotor::class.java, "setDirection", LuaType.Void, listOf(LuaType.Object(DcMotorSimple.Direction::class.java)));
+	builder.addClassFunction(DcMotor::class.java, "getDirection", LuaType.Object(DcMotorSimple.Direction::class.java));
+	builder.addClassFunction(DcMotor::class.java, "setPower", LuaType.Void, listOf(LuaType.Double));
+	builder.addClassFunction(DcMotor::class.java, "getPower", LuaType.Double);
+	builder.addClassFunction(DcMotor::class.java, "setZeroPowerBehavior", LuaType.Void, listOf(LuaType.Object(DcMotor.ZeroPowerBehavior::class.java)));
+	builder.addClassFunction(DcMotor::class.java, "getZeroPowerBehavior", LuaType.Object(DcMotor.ZeroPowerBehavior::class.java));
+	builder.addClassFunction(DcMotor::class.java, "setTargetPosition", LuaType.Void, listOf(LuaType.Int));
+	builder.addClassFunction(DcMotor::class.java, "getTargetPosition", LuaType.Int);
+	builder.addClassFunction(DcMotor::class.java, "getCurrentPosition", LuaType.Int);
+	builder.addClassFunction(DcMotor::class.java, "setMode", LuaType.Void, listOf(LuaType.Object(DcMotor.RunMode::class.java)));
+	builder.addClassFunction(DcMotor::class.java, "getMode", LuaType.Object(DcMotor.RunMode::class.java));
+
+	builder.createClass("DcMotorEx");
+	builder.addClassFunction(DcMotorEx::class.java, "setDirection", LuaType.Void, listOf(LuaType.Object(DcMotorSimple.Direction::class.java)));
+	builder.addClassFunction(DcMotorEx::class.java, "getDirection", LuaType.Object(DcMotorSimple.Direction::class.java));
+	builder.addClassFunction(DcMotorEx::class.java, "setPower", LuaType.Void, listOf(LuaType.Double));
+	builder.addClassFunction(DcMotorEx::class.java, "getPower", LuaType.Double);
+	builder.addClassFunction(DcMotorEx::class.java, "setZeroPowerBehavior", LuaType.Void, listOf(LuaType.Object(DcMotor.ZeroPowerBehavior::class.java)));
+	builder.addClassFunction(DcMotorEx::class.java, "getZeroPowerBehavior", LuaType.Object(DcMotor.ZeroPowerBehavior::class.java));
+	builder.addClassFunction(DcMotorEx::class.java, "setTargetPosition", LuaType.Void, listOf(LuaType.Int));
+	builder.addClassFunction(DcMotorEx::class.java, "getTargetPosition", LuaType.Int);
+	builder.addClassFunction(DcMotorEx::class.java, "getCurrentPosition", LuaType.Int);
+	builder.addClassFunction(DcMotorEx::class.java, "setMode", LuaType.Void, listOf(LuaType.Object(DcMotor.RunMode::class.java)));
+	builder.addClassFunction(DcMotorEx::class.java, "getMode", LuaType.Object(DcMotor.RunMode::class.java));
+	builder.addClassFunction(DcMotorEx::class.java, "setVelocity", LuaType.Void, listOf(LuaType.Double));
+	builder.addClassFunction(DcMotorEx::class.java, "getVelocity", LuaType.Double);
+	builder.addClassFunction(DcMotorEx::class.java, "setPIDFCoefficients", LuaType.Void, listOf(LuaType.Object(DcMotor.RunMode::class.java), LuaType.Object(PIDFCoefficients::class.java)));
+	builder.addClassFunction(DcMotorEx::class.java, "getCurrent", LuaType.Double, listOf(LuaType.Object(CurrentUnit::class.java)));
 }

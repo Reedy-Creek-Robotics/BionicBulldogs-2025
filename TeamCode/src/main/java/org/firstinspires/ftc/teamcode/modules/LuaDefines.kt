@@ -1,8 +1,11 @@
 package org.firstinspires.ftc.teamcode.modules
 
 import com.minerkid08.dynamicopmodeloader.FunctionBuilder
+import com.minerkid08.dynamicopmodeloader.OpmodeLoaderFunction
 import com.qualcomm.robotcore.hardware.DcMotor
 import com.qualcomm.robotcore.hardware.DcMotorSimple
+import com.qualcomm.robotcore.hardware.PIDFCoefficients
+import org.firstinspires.ftc.robotcore.external.navigation.CurrentUnit
 
 object LuaDefines
 {
@@ -26,11 +29,19 @@ object LuaDefines
 		const val Brake = 1;
 	}
 
+	@JvmStatic
+	@OpmodeLoaderFunction
+	fun newPIDF(p: Double, i: Double, d: Double, f: Double) = PIDFCoefficients(p, i, d, f);
+
 	fun build(builder: FunctionBuilder)
 	{
+		builder.addClassAsGlobal(LuaDefines::class.java);
+
 		builder.createClass("Direction");
 		builder.createClass("RunMode");
 		builder.createClass("ZeroPowerBehavior");
+		builder.createClass("CurrentUnit");
+		builder.createClass("PIDFCoefficients");
 
 		builder.pushTable("direction");
 		builder.pushValueo("forward", DcMotorSimple.Direction.FORWARD);
@@ -47,6 +58,11 @@ object LuaDefines
 		builder.pushTable("zeroPowerBehavior");
 		builder.pushValueo("brake", DcMotor.ZeroPowerBehavior.BRAKE);
 		builder.pushValueo("float", DcMotor.ZeroPowerBehavior.FLOAT);
+		builder.popTable();
+
+		builder.pushTable("currentUnit");
+		builder.pushValueo("amps", CurrentUnit.AMPS);
+		builder.pushValueo("milliamps", CurrentUnit.MILLIAMPS);
 		builder.popTable();
 	}
 }
