@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode.opmode
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode
 import com.minerkid08.dynamicopmodeloader.OpmodeLoader
 import com.qualcomm.robotcore.util.ElapsedTime
+import com.qualcomm.robotcore.util.RobotLog
 import org.firstinspires.ftc.teamcode.modules.luaHardware.LuaAprilTagProcessor
 import org.firstinspires.ftc.teamcode.modules.LuaDashboard
 import org.firstinspires.ftc.teamcode.modules.LuaGamepad
@@ -16,6 +17,9 @@ open class OpmodeloaderOpmodeBase(private val name: String) : LinearOpMode()
 {
 	override fun runOpMode()
 	{
+		RobotLog.clearGlobalErrorMsg();
+		RobotLog.clearGlobalWarningMsg();
+
 		val opmodeloader = OpmodeLoader();
 		val builder = opmodeloader.getFunctionBuilder();
 

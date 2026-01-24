@@ -1,4 +1,4 @@
-/*package org.firstinspires.ftc.teamcode
+package org.firstinspires.ftc.teamcode
 
 import com.qualcomm.robotcore.hardware.HardwareDevice.Manufacturer
 import com.qualcomm.robotcore.hardware.I2cAddr
@@ -7,37 +7,41 @@ import com.qualcomm.robotcore.hardware.I2cDeviceSynchDevice
 import com.qualcomm.robotcore.hardware.configuration.annotations.DeviceProperties
 import com.qualcomm.robotcore.hardware.configuration.annotations.I2cDeviceType
 
-fun write8(driver: I2cDeviceSynch, reg: LightStripDriver.Register, value: UByte)
+fun writeu8(driver: I2cDeviceSynch, reg: LightStripDriver.Register, value: UByte)
 {
 	driver.write(reg.id, ByteArray(1) { value.toByte() });
 }
 
-fun write32(driver: I2cDeviceSynch, reg: LightStripDriver.Register, value: UInt)
+fun writeu32(driver: I2cDeviceSynch, reg: LightStripDriver.Register, value: UInt)
 {
 	val byteArr = ByteArray(4);
-	driver.write(reg.id, ByteArray(1, ));
+	byteArr[0] = value.toByte()
+	byteArr[1] = (value shr 8).toByte()
+	byteArr[2] = (value shr 16).toByte()
+	byteArr[3] = (value shr 24).toByte()
+	driver.write(reg.id, byteArr);
 }
 
 class Color
 {
-	var r: Byte = 0;
-	var g: Byte= 0;
-	var b: Byte= 0;
+	var r: UByte = 0u;
+	var g: UByte= 0u;
+	var b: UByte= 0u;
 	fun toByteArray(): ByteArray
 	{
 		val arr = ByteArray(3);
-		arr[0] = r;
-		arr[1] = g;
-		arr[2] = b;
+		arr[0] = r.toByte();
+		arr[1] = g.toByte();
+		arr[2] = b.toByte();
 		return arr;
 	}
 }
 
 abstract class Animation
 {
-	var brightness: Byte = 0;
-	var startInd: Byte = 0;
-	var endInd: Byte = 0;
+	var brightness: UByte = 0u;
+	var startInd: UByte = 0u;
+	var endInd: UByte = 0u;
 
 	abstract fun save(driver: I2cDeviceSynch);
 
@@ -49,9 +53,9 @@ class SolidColor : Animation()
 
 	override fun save(driver: I2cDeviceSynch)
 	{
-		write8(driver, LightStripDriver.Register.L1, brightness);
-		write8(driver, LightStripDriver.Register.L2, startInd);
-		write8(driver, LightStripDriver.Register.L3, endInd);
+		writeu8(driver, LightStripDriver.Register.L1, brightness);
+		writeu8(driver, LightStripDriver.Register.L2, startInd);
+		writeu8(driver, LightStripDriver.Register.L3, endInd);
 		driver.write(LightStripDriver.Register.L4.id, color.toByteArray());
 	}
 }
@@ -60,17 +64,17 @@ class Blinking : Animation()
 {
 	var primaryColor = Color();
 	var secondaryColor = Color();
-	var period = 2000;
-	var primaryPeriod = 1000;
+	var period = 2000u;
+	var primaryPeriod = 1000u;
 
 	override fun save(driver: I2cDeviceSynch)
 	{
-		write8(driver, LightStripDriver.Register.L1, brightness);
-		write8(driver, LightStripDriver.Register.L2, startInd);
-		write8(driver, LightStripDriver.Register.L3, endInd);
-		driver.write(LightStripDriver.Register.L4.id, color.toByteArray());
-		driver.write(LightStripDriver.Register.L4.id, color.toByteArray());
-		driver.write32
+		writeu8(driver, LightStripDriver.Register.L1, brightness);
+		writeu8(driver, LightStripDriver.Register.L2, startInd);
+		writeu8(driver, LightStripDriver.Register.L3, endInd);
+		driver.write(LightStripDriver.Register.L4.id, primaryColor.toByteArray());
+		driver.write(LightStripDriver.Register.L5.id, secondaryColor.toByteArray());
+		writeu32(driver, LightStripDriver.Register.L6, period);
 	}
 }
 
@@ -170,4 +174,4 @@ class LightStripDriver(deviceClient: I2cDeviceSynch, isOwned: Boolean) :
 	}
 
 
-}*/
+}

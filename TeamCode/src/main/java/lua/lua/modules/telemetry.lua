@@ -8,4 +8,4 @@ actionPane = aPane;
 actionPane.autoReset = false;
 robotPane = actionPane:vsplit("robot", 5);
 currentPane = robotPane:hsplit("current");
-aprilTagPane = currentPane:vsplit("aprilTag", 8);
+aprilTagPane = currentPane:vsplit("aprilTag", 9);

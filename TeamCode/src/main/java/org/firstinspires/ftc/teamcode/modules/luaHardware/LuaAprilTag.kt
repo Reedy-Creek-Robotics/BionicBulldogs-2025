@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.modules.luaHardware
 
+import com.minerkid08.dynamicopmodeloader.LuaError
 import android.util.Size
 import com.minerkid08.dynamicopmodeloader.FunctionBuilder
 import com.minerkid08.dynamicopmodeloader.OpmodeLoaderFunction
@@ -8,8 +9,10 @@ import com.qualcomm.robotcore.util.ElapsedTime
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName
 import org.firstinspires.ftc.robotcore.external.hardware.camera.controls.ExposureControl
 import org.firstinspires.ftc.robotcore.external.hardware.camera.controls.GainControl
+import org.firstinspires.ftc.robotcore.external.navigation.Pose3D
 import org.firstinspires.ftc.vision.VisionPortal
 import org.firstinspires.ftc.vision.apriltag.AprilTagDetection
+import org.firstinspires.ftc.vision.apriltag.AprilTagPoseFtc
 import org.firstinspires.ftc.vision.apriltag.AprilTagProcessor
 import java.util.concurrent.TimeUnit
 
@@ -21,11 +24,14 @@ object LuaAprilTagProcessor
 		builder.pushTable("aprilTagProcessor");
 		builder.addStaticClassAsGlobal(LuaAprilTagProcessor::class.java)
 		builder.addClassAsClass(LuaAprilTag::class.java)
+		builder.addClassAsClass(LuaFtcPos::class.java)
+		builder.addClassAsClass(LuaPose3D::class.java)
 		builder.popTable();
 	}
 
 	var hardwareMap: HardwareMap? = null;
 	var processor: AprilTagProcessor? = null;
+	var detections: List<AprilTagDetection>? = null;
 
 	@OpmodeLoaderFunction
 	@JvmStatic
@@ -51,9 +57,15 @@ object LuaAprilTagProcessor
 
 	@OpmodeLoaderFunction
 	@JvmStatic
+	fun update()
+	{
+		detections = processor?.detections;
+	}
+
+	@OpmodeLoaderFunction
+	@JvmStatic
 	fun getTag(id: Int): LuaAprilTag
 	{
-		val detections = processor?.detections;
 		if (detections != null)
 		{
 			for (detection in detections)
@@ -97,40 +109,52 @@ object LuaAprilTagProcessor
 	}
 }
 
+class LuaFtcPos(private val pos: AprilTagPoseFtc)
+{
+	@OpmodeLoaderFunction
+	fun x(): Double = pos.x;
+	@OpmodeLoaderFunction
+	fun y(): Double = pos.y;
+	@OpmodeLoaderFunction
+	fun bearing(): Double = pos.bearing;
+	@OpmodeLoaderFunction
+	fun range(): Double = pos.range;
+}
+
+class LuaPose3D(private val pos: Pose3D)
+{
+	@OpmodeLoaderFunction
+	fun x(): Double = pos.position.x;
+	@OpmodeLoaderFunction
+	fun y(): Double = pos.position.y;
+	@OpmodeLoaderFunction
+	fun z(): Double = pos.position.z;
+	@OpmodeLoaderFunction
+	fun pitch(): Double = pos.orientation.pitch;
+	@OpmodeLoaderFunction
+	fun yaw(): Double = pos.orientation.yaw;
+	@OpmodeLoaderFunction
+	fun roll(): Double = pos.orientation.roll;
+}
+
 class LuaAprilTag(private val tag: AprilTagDetection?)
 {
 	@OpmodeLoaderFunction
 	fun valid() = (tag != null)
 
 	@OpmodeLoaderFunction
-	fun getDist(): Double
+	fun ftcPos(): AprilTagPoseFtc
 	{
 		if (tag != null)
-			return tag.ftcPose.range;
-		error("attempted to call 'getDist' on a nil tag");
+			return tag.ftcPose;
+		throw LuaError("attempted to call 'ftcPos' on a nil tag");
 	}
 
 	@OpmodeLoaderFunction
-	fun x(): Double
+	fun robotPos(): Pose3D
 	{
-		if(tag != null)
-			return tag.ftcPose.x;
-		error("attempted to call 'x' on a nil tag");
-	}
-
-	@OpmodeLoaderFunction
-	fun y(): Double
-	{
-		if(tag != null)
-			return tag.ftcPose.y;
-		error("attempted to call 'y' on a nil tag");
-	}
-
-	@OpmodeLoaderFunction
-	fun bearing(): Double
-	{
-		if(tag != null)
-			return tag.ftcPose.bearing;
-		error("attempted to call 'bearing' on a nil tag");
+		if (tag != null)
+			return tag.robotPose;
+		throw LuaError("attempted to call 'ftcPos' on a nil tag");
 	}
 }

@@ -25,7 +25,7 @@ shooterState = {
 shooter = {
 	gateOpen = 0.3,
 	gateClosed = 0,
-	openDelay = 1, -- 0.16
+	openDelay = 1.1, -- 0.16
 	openDelayEnd = 1,
 	closeDelay = 0.35,
 	state = shooterState.Close,
@@ -50,6 +50,15 @@ function shooter:start(vel)
 	self.motorR:setVelocity(vel);
 end
 
+local shooterVelMap = {
+	{ -001, -001, -001, -001, 0840, 0840 },
+	{ 1120, 1120, -001, 0840, 0840, 0840 },
+	{ 1120, 1120, 0860, 0860, 0840, 0840 },
+	{ 1180, 1180, 0940, 0940, 0940, 0940 },
+	{ 1180, 1180, -001, 0940, 0940, 0940 },
+	{ -001, -001, -001, -001, 0940, 0940 }
+};
+
 ---@param x number
 ---@param y number
 ---@param dist number
@@ -59,45 +68,30 @@ function shooter:updateVelocity(x, y, dist)
 	end
 
 	local vel = 0;
-	if (x > 12 * 6) then
-		if (y > 48) then
-			vel = 940;
-		else
-			vel = 1200;
-		end
-	else
-		if (y > 48) then
-			vel = 820;
-		else
-			vel = 1120;
-		end
-	end
+	local tx = math.floor(x / 24);
+	local ty = math.floor(y / 24);
+	vel = shooterVelMap[tx + 1][ty + 1];
 
-	--if (dist >= 20000) then
-	--	vel = 1160;
-	--elseif (dist >= 15000) then
-	--	vel = 1080;
-	--elseif (dist >= 14000) then
-	--	vel = 1080;
-	--elseif (dist >= 8000) then
-	--	vel = 940;
-	--elseif (dist >= 6000) then
-	--	vel = 880;
-	--elseif (dist >= 2000) then
-	--	vel = 880;
-	--else
-	--	vel = 880;
-	--end
+	if(vel == -1) then
+		return;
+	end
 	if (not self.running) then
 		vel = 0;
 	end
 	if (vel ~= self.vel) then
-		if(vel > 1000) then
-			--self.motorL:setPidf(320,3,0,7.5);
-			--self.motorR:setPidf(320,3,0,7.5);
+		if (vel > 1000) then
+			if (self.running) then
+				intake.speed = 0.9;
+				intake:forward(0.9);
+			end
+			self.motorL:setPidf(320, 3, 0, 7.5);
+			self.motorR:setPidf(320, 3, 0, 7.5);
 		else
-			--self.motorL:setPidf(320,3,0,0);
-			--self.motorR:setPidf(320,3,0,0);
+			if (self.running) then
+				intake.speed = 1.0;
+			end
+			self.motorL:setPidf(320, 3, 0, 0);
+			self.motorR:setPidf(320, 3, 0, 0);
 		end
 		self:start(vel);
 	end
@@ -115,6 +109,7 @@ function shooter:shoot(et)
 	self.gate:setPosition(self.gateOpen);
 	self.time = et;
 	self.delay = self.openDelay;
+	intake:forward();
 end
 
 ---@param et number
@@ -185,10 +180,7 @@ function shooter:ready()
 	self.velocityDataPoints[3] = self.velocityDataPoints[2];
 	self.velocityDataPoints[2] = self.velocityDataPoints[1];
 	self.velocityDataPoints[1] = vel;
-	local sum = self.velocityDataPoints[2] - self.velocityDataPoints[1];
-	sum = sum + self.velocityDataPoints[3] - self.velocityDataPoints[2];
-	sum = sum + self.velocityDataPoints[4] - self.velocityDataPoints[3];
-	sum = sum + self.velocityDataPoints[5] - self.velocityDataPoints[4];
+	local sum = self.velocityDataPoints[5] - self.velocityDataPoints[1];
 	local slope = sum / 5;
 	return vel >= self.vel - 40 and vel <= self.vel + 40 and slope >= -20 and slope <= 20;
 end
@@ -198,8 +190,7 @@ function shooter:close()
 end
 
 function shooter:telem()
-	robotPane:addData("shooterCurL", shooter.motorL:getCurrent());
-	robotPane:addData("shooterVelL", shooter.motorL:getVelocity());
-	robotPane:addData("shooterCurR", shooter.motorR:getCurrent());
-	robotPane:addData("shooterVelR", shooter.motorR:getVelocity());
+	robotPane:addData("shooterTarV", self.vel);
+	robotPane:addData("shooterVelL", self.motorL:getVelocity());
+	robotPane:addData("shooterVelR", self.motorR:getVelocity());
 end

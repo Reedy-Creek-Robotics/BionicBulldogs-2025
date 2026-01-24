@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode.modules.luaHardware
 
 import com.minerkid08.dynamicopmodeloader.FunctionBuilder
 import com.minerkid08.dynamicopmodeloader.LuaError
+import com.minerkid08.dynamicopmodeloader.LuaType
 import com.minerkid08.dynamicopmodeloader.OpmodeLoaderFunction
 import com.qualcomm.hardware.gobilda.GoBildaPinpointDriver
 import com.qualcomm.hardware.sparkfun.SparkFunOTOS
@@ -68,9 +69,9 @@ class LuaHardwaremap(private val hardwareMap: HardwareMap)
 	@OpmodeLoaderFunction
 	fun imuGet(): LuaImu
 	{
-		if (hardwareMap.i2cDevice.contains("imu"))
+		//if (hardwareMap.i2cDevice.contains("imu"))
 			return LuaImu(hardwareMap.get(IMU::class.java, "imu"));
-		throw LuaError("cannot find imu with the name 'imu'");
+		//throw LuaError("cannot find imu with the name 'imu'");
 	}
 
 	@OpmodeLoaderFunction
@@ -122,4 +123,20 @@ class LuaServo(private val m: Servo)
 	{
 		m.direction = if (dir == 1) Servo.Direction.FORWARD else Servo.Direction.REVERSE;
 	}
+}
+
+fun buildServo(builder: FunctionBuilder)
+{
+	builder.createClass("Servo");
+	builder.addClassFunction(Servo::class.java, "setDirection", LuaType.Void, listOf(LuaType.Object(DcMotorSimple.Direction::class.java)));
+	builder.addClassFunction(Servo::class.java, "getDirection", LuaType.Object(DcMotorSimple.Direction::class.java));
+	builder.addClassFunction(Servo::class.java, "setPosition", LuaType.Void, listOf(LuaType.Double));
+	builder.addClassFunction(Servo::class.java, "getPosition", LuaType.Double);
+	builder.addClassFunction(Servo::class.java, "scaleRange", LuaType.Void, listOf(LuaType.Double, LuaType.Double));
+
+	builder.createClass("CRServo");
+	builder.addClassFunction(CRServo::class.java, "setDirection", LuaType.Void, listOf(LuaType.Object(DcMotorSimple.Direction::class.java)));
+	builder.addClassFunction(CRServo::class.java, "getDirection", LuaType.Object(DcMotorSimple.Direction::class.java));
+	builder.addClassFunction(CRServo::class.java, "getPower", LuaType.Void, listOf(LuaType.Double));
+	builder.addClassFunction(CRServo::class.java, "setPower", LuaType.Double);
 }

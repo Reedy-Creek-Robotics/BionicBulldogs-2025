@@ -18,8 +18,9 @@ function intake:init()
 	self.state = IntakeState.Stopped;
 end
 
-function intake:forward()
-	self.motor:setPower(self.speed);
+---@param speed number?
+function intake:forward(speed)
+	self.motor:setPower(speed or self.speed);
 	self.state = IntakeState.Forward;
 end
 

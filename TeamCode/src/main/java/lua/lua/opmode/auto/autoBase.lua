@@ -28,11 +28,9 @@ if (DISABLE_ROBOT ~= nil) then
 	tmpAction.new = function ()
 		return tmpAction;
 	end
-	RobotActions.IntakeStop = tmpAction;
-	RobotActions.Intake = tmpAction;
-	RobotActions.ShooterDisable = tmpAction;
-	RobotActions.Shoot = tmpAction;
-	RobotActions.ShooterStart = tmpAction;
+	for k, v in RobotActions do
+		RobotActions[k] = tmpAction;
+	end
 end
 
 ---@type Action
@@ -46,6 +44,9 @@ logFile = nil;
 
 ---@type vec2
 local turretTarget = nil;
+
+---@type DcMotor
+local turretMotor = nil;
 
 function autoUpdate(dt, et)
 	local tps = 1 / dt;
@@ -68,6 +69,7 @@ function autoUpdate(dt, et)
 
 	local x = follower.getPositionX();
 	local y = follower.getPositionY();
+	local h = follower.getPositionH();
 
 	local dx = turretTarget.x - x;
 	local dy = turretTarget.y - y;
@@ -79,17 +81,14 @@ function autoUpdate(dt, et)
 	if (angle < -180) then
 		angle = angle + 360;
 	end
-	turret.turnTo(angle);
+	turret.update(angle);
 
 	local dist = dx * dx + dy * dy;
-	shooter:updateVelocity(x, y, dist);
+	--shooter:updateVelocity(x, y, dist);
 
-	logFile:write(
-		" x: " .. tostring(follower.getPositionX()) ..
-		" y: " .. tostring(follower.getPositionY()) ..
-		" z: " .. tostring(follower.getPositionH()) .. "\n"
-	);
-
+	logFile:write(("%7.2f | x: %6.2f, y: %6.2f, h: %6.4f, curPos: %5d, tarPos: %5d, angle: %6.2f\n"):format(et, x, y, h,
+		turretMotor:getCurrentPosition(), turretMotor:getTargetPosition(), angle
+	));
 	local state = action:update(dt, et);
 	if (state ~= ActionState.Running) then
 		profiler.genString(profileFileName, action);
@@ -102,9 +101,11 @@ function autoUpdate(dt, et)
 end
 
 function autoStart()
-	logFile = io.open(DATADIR .. "/log.txt", "wb");
-	turret.startAutomatic();
+	logFile = io.open(DATADIR .. "/log" .. tostring(os.time()) .. ".txt", "wb");
+	turret.start();
 	shooter.running = true;
+	--turret.reset();
+	shooter:updateVelocity(follower.getPositionX(), follower.getPositionY(), 0);
 	action:start(0);
 end
 
@@ -142,11 +143,17 @@ local genPathFuncs = {
 	[15] = function (config)
 		return SeqAction.new(config.preload(), config.line1.noGate(), config.line2.gate(), config.line3(), config.line4(),
 			config.park());
+	end,
+	partner = function (config)
+		if (config.start.y >= 24) then
+			return SeqAction.new(config.preload(), config.line1.gate(), config.line2.gate(), config.park());
+		end
+		return SeqAction.new(config.preload(), config.line2.noGate(), config.line3(), config.line3(), config.park());
 	end
 };
 
 ---@param name string
----@param prefix number
+---@param prefix number | string
 ---@param config AutoPaths
 function addConfig(name, prefix, config)
 	addOpmode({
@@ -162,6 +169,7 @@ function addConfig(name, prefix, config)
 			shooter:init();
 			intake:init();
 			turret.init(true);
+			turretMotor = turret.getMotor();
 		end,
 		start = autoStart,
 		update = autoUpdate,
@@ -177,4 +185,5 @@ function loadOpmodeConfigs(name, config)
 	addConfig(name, 9, config);
 	addConfig(name, 12, config);
 	addConfig(name, 15, config);
+	addConfig(name, "partner", config);
 end

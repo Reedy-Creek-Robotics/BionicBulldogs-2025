@@ -10,7 +10,7 @@ class LuaTelemetry(private val telem: Telemetry)
 	{
 		fun init(builder: FunctionBuilder, telem: Telemetry)
 		{
-      telem.setDisplayFormat(Telemetry.DisplayFormat.MONOSPACE);
+			telem.setDisplayFormat(Telemetry.DisplayFormat.MONOSPACE);
 			builder.pushTable("telemetry");
 			builder.addObjectAsGlobal(LuaTelemetry(telem));
 			builder.popTable();

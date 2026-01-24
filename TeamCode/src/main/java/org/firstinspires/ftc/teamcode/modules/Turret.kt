@@ -3,8 +3,12 @@ package org.firstinspires.ftc.teamcode.modules;
 import com.minerkid08.dynamicopmodeloader.FunctionBuilder
 import com.minerkid08.dynamicopmodeloader.OpmodeLoaderFunction
 import com.qualcomm.robotcore.hardware.DcMotor
+import com.qualcomm.robotcore.hardware.DcMotorEx
 import com.qualcomm.robotcore.hardware.HardwareMap
+import com.qualcomm.robotcore.hardware.PIDFCoefficients
+import com.qualcomm.robotcore.hardware.TouchSensor
 import org.firstinspires.ftc.teamcode.modules.luaHardware.LuaDcMotor
+import org.firstinspires.ftc.teamcode.modules.luaHardware.LuaDcMotorEx
 import org.firstinspires.ftc.teamcode.opmode.clampi
 import kotlin.math.abs
 
@@ -25,16 +29,18 @@ class Turret(val hardwaremap: HardwareMap)
 		Tracking, Resetting
 	}
 
-	lateinit var motor: DcMotor;
+	lateinit var motor: DcMotorEx;
+	lateinit var sensor: TouchSensor;
 	var state = State.Tracking;
 
 	//145.1 for 1150
 	//384.5 for 435
 
 	private val ticksPerRev = 384.5;
-	private val gearRatio = 208.0 / 50.0;
+	private val gearRatio = 208.0 / 51.0;
 	private val ticksPerDeg = ticksPerRev / 360 * gearRatio;
-	private val limit = abs(ticksPerDeg * 90).toInt();
+	private val limit = abs(ticksPerDeg * 89).toInt();
+	private var offsetTicks = 0;
 
 	private var offset = 0.0;
 	private var prevPos = 0;
@@ -42,14 +48,17 @@ class Turret(val hardwaremap: HardwareMap)
 	@OpmodeLoaderFunction
 	fun init(reset: Boolean)
 	{
-		motor = hardwaremap.dcMotor.get("turret");
+		motor = hardwaremap.dcMotor.get("turret") as DcMotorEx;
+		sensor = hardwaremap.get(TouchSensor::class.java, "turretSensor");
 		if (reset)
 			motor.mode = DcMotor.RunMode.STOP_AND_RESET_ENCODER;
 		motor.mode = DcMotor.RunMode.RUN_WITHOUT_ENCODER;
+		motor.targetPositionTolerance = 1;
+		motor.setPIDFCoefficients(DcMotor.RunMode.RUN_TO_POSITION, PIDFCoefficients(15.0, 0.0, 0.0, 0.0));
 	}
 
 	@OpmodeLoaderFunction
-	fun getMotor() = LuaDcMotor(motor);
+	fun getMotor() = LuaDcMotorEx(motor);
 
 	@OpmodeLoaderFunction
 	fun reset()
@@ -76,6 +85,7 @@ class Turret(val hardwaremap: HardwareMap)
 	fun setOffset(o: Double)
 	{
 		offset = o;
+		offsetTicks = (offset * ticksPerDeg).toInt();
 	}
 
 	@OpmodeLoaderFunction
@@ -83,20 +93,21 @@ class Turret(val hardwaremap: HardwareMap)
 	{
 		if (state == State.Resetting)
 		{
-			if(prevPos == motor.currentPosition)
+			if(!sensor.isPressed)
 			{
 				motor.mode = DcMotor.RunMode.STOP_AND_RESET_ENCODER;
-				offset = 92.0;
 
 				motor.power = 0.0;
-				turnTo(offset);
+				setOffset(0.0);
+				turnTo(pos);
 				motor.mode = DcMotor.RunMode.RUN_TO_POSITION;
 				motor.power = 1.0;
+				state = State.Tracking;
 			}
 			prevPos = motor.currentPosition;
 		}
 		else
-			turnTo(pos + offset);
+			turnTo(pos);
 	}
 
 	@OpmodeLoaderFunction
@@ -113,7 +124,7 @@ class Turret(val hardwaremap: HardwareMap)
 	{
 		if(state == State.Resetting) return;
 		val newpos = (angle * ticksPerDeg).toInt();
-		val targetPosition = clampi(-limit, limit, newpos);
+		val targetPosition = clampi(-limit, limit, newpos) + offsetTicks;
 		motor.targetPosition = targetPosition;
 	}
 }

@@ -89,6 +89,13 @@ function ShooterEnable:start(et)
 		telemetry.update();
 	else
 		shooter:start(self.vel);
+		if(self.vel > 1000) then
+			shooter.motorL:setPidf(320, 3, 0, 7.5);
+			shooter.motorR:setPidf(320, 3, 0, 7.5);
+		else
+			shooter.motorL:setPidf(320, 3, 0, 0);
+			shooter.motorR:setPidf(320, 3, 0, 0);
+		end
 	end
 end
 

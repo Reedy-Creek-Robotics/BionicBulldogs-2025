@@ -9,7 +9,7 @@ local drive;
 ---@type number[]
 local shooterVelocity = { 900, 1120 }
 
----@type DcMotor
+---@type DcMotorEx
 local turretMotor = {};
 
 ---@type vec3
@@ -23,7 +23,11 @@ local turretOffset = 0;
 
 local fileId = os.time();
 
+---@type Imu
+local imu;
+
 function telopInit()
+	imu = hardwareMap.imuGet();
 	chub = hardwareMap.chubGet();
 	logFile = io.open(DATADIR .. "telop" .. tostring(fileId), "w");
 	require("modules.telemetry");
@@ -68,14 +72,18 @@ local initPos = nil;
 
 ---@type vec2
 local targetPos = nil;
+---@type vec2
+local targetPos2 = nil;
 
 function telopStartBlue()
 	drive.offset = math.pi2;
 	turret.start();
 	shooter:close();
-	initPos = { x = 144 - 15.5 / 2, y = 9, z = math.pi2 };
+	initPos = { x = 144 - 8.5, y = 8, z = math.pi2 };
 	--targetPos = { x = 7, y = 138 };
 	targetPos = { x = 0, y = 144 };
+	targetPos2 = { x = 0, y = 140 };
+	imu:resetHeading();
 
 	if (startPos == nil) then
 		startPos = initPos;
@@ -86,15 +94,18 @@ function telopStartBlue()
 	drive.pinpoint:setHeading(startPos.z);
 	shooter.vel = shooterVelocity[1];
 	shooter:start(shooter.vel);
+	--turret.reset();
 end
 
 function telopStartRed()
 	drive.offset = -math.pi2;
 	turret.start();
 	shooter:close();
-	initPos = { x = -(144 - 15.5 / 2), y = 9, z = math.pi2 };
+	initPos = { x = -(144 - 8.5 / 2), y = 8, z = math.pi2 };
 	--targetPos = { x = -7, y = 138 };
 	targetPos = { x = 0, y = 144 };
+	targetPos2 = { x = 0, y = 140 };
+	imu:resetHeading();
 
 	if (startPos == nil) then
 		startPos = initPos;
@@ -105,6 +116,7 @@ function telopStartRed()
 	drive.pinpoint:setHeading(startPos.z);
 	shooter.vel = shooterVelocity[1];
 	shooter:start(shooter.vel);
+	--turret.reset();
 end
 
 function telopUpdate(dt, et)
@@ -113,6 +125,7 @@ function telopUpdate(dt, et)
 	local x = drive.pinpoint:getX();
 	local y = drive.pinpoint:getY();
 	local h = drive.pinpoint:getHeading();
+	local h2 = imu:getHeading();
 
 	--Drive the bot
 	local forward = gamepad.getLeftStickY();
@@ -128,8 +141,17 @@ function telopUpdate(dt, et)
 	--	dist = bTag:getDist()
 	--end
 
-	local dx = targetPos.x - x;
-	local dy = targetPos.y - y;
+	local dx = 0;
+	local dy = 0;
+
+	if (y > 120) then
+		dx = targetPos2.x - x;
+		dy = targetPos2.y - y;
+	else
+		dx = targetPos.x - x;
+		dy = targetPos.y - y;
+	end
+
 	local angle = math.atan(dy, dx) - h;
 	angle = math.deg(angle);
 	if (angle > 180) then
@@ -174,8 +196,9 @@ function telopUpdate(dt, et)
 		shooter:start(shooter.vel);
 	end
 	if (gamepad.getShare2()) then
-		shooter.vel = shooter.vel - 20;
-		shooter:start(shooter.vel);
+		turret.reset();
+		--shooter.vel = shooter.vel - 20;
+		--shooter:start(shooter.vel);
 	end
 
 	if (gamepad.getDpadLeft2()) then
@@ -211,9 +234,22 @@ function telopUpdate(dt, et)
 		local i = dashboard.geti();
 		local d = dashboard.getd();
 		local f = dashboard.getf();
-		shooter.motorL:setPidf(p, i, d, f);
-		shooter.motorR:setPidf(p, i, d, f);
+		--shooter.motorL:setPidf(p, i, d, f);
+		--shooter.motorR:setPidf(p, i, d, f);
+		turretMotor:setPidf(p, i, d, f);
+
+		--local tag = aprilTagProcessor.getTag(20);
+		--if (tag:valid()) then
+		--	local angle2 = tag:bearing() + math.deg(h);
+		--	turretOffset = angle2 - angle;
+		--end
 	end
+
+	--if(gamepad.getTouchpad2()) then
+	--	local tag = aprilTagProcessor.getTag(20);
+	--	local pos = tag:ftcPos();
+	--	pos:bearing();
+	--end
 
 	if (shooterAutomatic) then
 		local dist = dx * dx + dy * dy;
@@ -226,6 +262,8 @@ function telopUpdate(dt, et)
 		drive.pinpoint:setHeading(initPos.z);
 	end
 
+	--aprilTagProcessor.update();
+
 	--Automatically updates
 	shooter:update(et);
 
@@ -234,9 +272,11 @@ function telopUpdate(dt, et)
 	robotPane:addData("tps", tps);
 	robotPane:addData("x", drive.pinpoint:getX());
 	robotPane:addData("y", drive.pinpoint:getY());
-	robotPane:addData("h", math.deg(drive.pinpoint:getHeading()));
+	robotPane:addData("h", math.deg(h));
+	--robotPane:addData("h2", math.deg(h2));
 	robotPane:addData("tarPos", turretMotor:getTargetPosition());
 	robotPane:addData("curPos", turretMotor:getCurrentPosition());
+	robotPane:addData("angle", angle + turretOffset);
 	robotPane:addData("offset", turretOffset);
 
 	shooter:telem();
@@ -250,6 +290,7 @@ function telopUpdate(dt, et)
 	currentPane:addData("sl", shooter.motorL:getCurrent());
 	currentPane:addData("sr", shooter.motorR:getCurrent());
 	currentPane:addData("in", intake.motor:getCurrent());
+	currentPane:addData("tu", turretMotor:getCurrent());
 
 	TelemPaneManager:update();
 
@@ -260,6 +301,8 @@ function telopUpdate(dt, et)
 	dashboard.addDataf("rightPower", shooter.motorR:getPower());
 	dashboard.addDataf("rightVel", shooter.motorR:getVelocity());
 	dashboard.addDataf("rightCur", shooter.motorR:getCurrent());
+	dashboard.addDataf("turretPos", turretMotor:getCurrentPosition());
+	dashboard.addDataf("turretTargetPos", turretMotor:getTargetPosition());
 	dashboard.update();
 
 	return false;

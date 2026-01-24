@@ -10,13 +10,13 @@ import org.firstinspires.ftc.robotcore.external.Telemetry
 object LuaDashboard
 {
 	@JvmField
-	var p = 320.0;
+	var p = 10.0;
 	@JvmField
 	var i = 3.0;
 	@JvmField
 	var d = 0.0;
 	@JvmField
-	var f = 10.0;
+	var f = 0.0;
 
 	val telem: Telemetry = FtcDashboard.getInstance().telemetry;
 

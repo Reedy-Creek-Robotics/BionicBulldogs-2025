@@ -5,6 +5,7 @@ local config = {
 	start = { x = 55.25, y = 7.75, z = 180 },
 	turretTarget = { x = 0, y = 144 },
 	preload = function ()
+		intake.speed = 0.85;
 		return SeqAction.newl(
 			"preload",
 			RobotActions.ShooterStart.new(1120),
@@ -24,13 +25,13 @@ local config = {
 				),
 				PathAction.new(
 					path.chain()
-					:add(path.line(42.00, 58.00, 18.00, 58.00))
+					:add(path.line(42.00, 58.00, 16.00, 58.00))
 					:constantHeading(180)
 					:build()
 				),
 				PathAction.new(
 					path.chain()
-					:add(path.curve3(18.00, 58.00, 60.00, 48.00, 60.00, 12.00))
+					:add(path.curve3(16.00, 58.00, 60.00, 48.00, 60.00, 12.00))
 					:constantHeading(180)
 					:build()
 				),
@@ -90,9 +91,9 @@ local config = {
 				),
 				PathAction.new(
 					path.chain()
-					:add(path.line(42.00, 36.00, 18.00, 36.00))
+					:add(path.line(42.00, 36.00, 17.00, 36.00))
 					:constantHeading(180)
-					:add(path.line(18.00, 36.00, 60.00, 12.00))
+					:add(path.line(17.00, 36.00, 60.00, 12.00))
 					:constantHeading(180)
 					:build()
 				),
@@ -111,6 +112,7 @@ local config = {
 				:build(),
 				0.5
 			),
+			RobotActions.IntakeStop.new(),
 			PathAction.new(
 				path.chain()
 				:add(path.line(12.00, 8.00, 60.00, 12.00))
