@@ -28,6 +28,7 @@ local imu;
 
 local logInterval = 0;
 local logTimer = 5;
+local logVel = false;
 
 function telopInit()
 	imu = hardwareMap.imuGet();
@@ -231,7 +232,7 @@ function telopUpdate(dt, et)
 	--Start intake and shooter
 	if (gamepad.getCross2()) then
 		intake:forward();
-		logTimer = -1;
+		logVel = true;
 		shooter:shootNum(et, 1);
 	end
 
@@ -245,7 +246,7 @@ function telopUpdate(dt, et)
 		--turretMotor:setPidf(p, i, d, f);
 
 		local id = 0;
-		if(initPos.x > 0) then
+		if (initPos.x > 0) then
 			id = 20;
 		else
 			id = 24;
@@ -262,7 +263,7 @@ function telopUpdate(dt, et)
 			actionPane:addLine("tag no exist");
 		end
 	end
---if(gamepad.getTouchpad2()) then local tag = aprilTagProcessor.getTag(20);
+	--if(gamepad.getTouchpad2()) then local tag = aprilTagProcessor.getTag(20);
 	--	local pos = tag:ftcPos();
 	--	pos:bearing();
 	--end
@@ -283,22 +284,27 @@ function telopUpdate(dt, et)
 	if (logInterval > logTimer) then
 		logInterval = 0;
 		logFile:write(("%7.2f | fl: %5.2f, fr: %5.2f, bl: %5.2f, br: %5.2f, in: %5.2f, sl: %5.2f, sr: %5.2f, tu: %5.2f\n")
-		:format(et,
-			drive.frontLeft:getCurrent(),
-			drive.frontRight:getCurrent(),
-			drive.backLeft:getCurrent(),
-			drive.backRight:getCurrent(),
-			intake.motor:getCurrent(),
-			shooter.motorL:getCurrent(),
-			shooter.motorR:getCurrent(),
-			turretMotor:getCurrent()
-		));
+			:format(et,
+				drive.frontLeft:getCurrent(),
+				drive.frontRight:getCurrent(),
+				drive.backLeft:getCurrent(),
+				drive.backRight:getCurrent(),
+				intake.motor:getCurrent(),
+				shooter.motorL:getCurrent(),
+				shooter.motorR:getCurrent(),
+				turretMotor:getCurrent()
+			));
 	end
 	logInterval = logInterval + 1;
 
+	if (logVel) then
+		logFile:write(("%7.2f | left vel: %4d, right vel: %4d\n"):format(et, shooter.motorL:getVelocity(),
+			shooter.motorR:getVelocity()));
+	end
+
 	--Automatically updates
-	if(shooter:update(et)) then
-		logTimer = 5;
+	if (shooter:update(et)) then
+		logVel = false;
 	end
 
 	local tps = 1 / dt;
