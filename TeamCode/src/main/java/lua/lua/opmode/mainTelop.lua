@@ -26,6 +26,9 @@ local fileId = os.time();
 ---@type Imu
 local imu;
 
+local logInterval = 0;
+local logTimer = 5;
+
 function telopInit()
 	imu = hardwareMap.imuGet();
 	chub = hardwareMap.chubGet();
@@ -54,7 +57,8 @@ function telopInit()
 	end
 
 	turretMotor = turret.getMotor();
-	--aprilTagProcessor.init(1920, 1080, 2, 255, 1.0)
+	--aprilTagProcessor.init(1280, 720, 2, 255, 1.0)
+	aprilTagProcessor.init(640, 480, 2, 255, 1.0)
 
 	intake:init();
 	shooter:init();
@@ -161,6 +165,7 @@ function telopUpdate(dt, et)
 		angle = angle + 360;
 	end
 	turret.update(angle + turretOffset);
+	--turret.update(0);
 
 	--Forward/stop intake
 	if (gamepad.getRightBumper2()) then
@@ -226,27 +231,38 @@ function telopUpdate(dt, et)
 	--Start intake and shooter
 	if (gamepad.getCross2()) then
 		intake:forward();
+		logTimer = -1;
 		shooter:shootNum(et, 1);
 	end
 
 	if (gamepad.getSquare2()) then
-		local p = dashboard.getp();
-		local i = dashboard.geti();
-		local d = dashboard.getd();
-		local f = dashboard.getf();
+		--local p = dashboard.getp();
+		--local i = dashboard.geti();
+		--local d = dashboard.getd();
+		--local f = dashboard.getf();
 		--shooter.motorL:setPidf(p, i, d, f);
 		--shooter.motorR:setPidf(p, i, d, f);
-		turretMotor:setPidf(p, i, d, f);
+		--turretMotor:setPidf(p, i, d, f);
 
-		--local tag = aprilTagProcessor.getTag(20);
-		--if (tag:valid()) then
-		--	local angle2 = tag:bearing() + math.deg(h);
-		--	turretOffset = angle2 - angle;
-		--end
+		local id = 0;
+		if(initPos.x > 0) then
+			id = 20;
+		else
+			id = 24;
+		end
+		local tag = aprilTagProcessor.getTag(id);
+		if (tag:valid()) then
+			local pos = tag:robotPos();
+			actionPane:addLine(("x: %6.2f, y: %6.2f, z: %6.2f"):format(pos:x(), pos:y(), pos:z()));
+			actionPane:addLine(("pitch: %6.2f, yaw: %6.2f, roll: %6.2f"):format(pos:pitch(), pos:yaw(), pos:roll()));
+			local pos2 = tag:ftcPos();
+			actionPane:addLine(("x: %6.2f, y: %6.2f"):format(pos2:x(), pos2:y()));
+			actionPane:addLine(("bearing: %6.2f, range: %6.2f"):format(pos2:bearing(), pos2:range()));
+		else
+			actionPane:addLine("tag no exist");
+		end
 	end
-
-	--if(gamepad.getTouchpad2()) then
-	--	local tag = aprilTagProcessor.getTag(20);
+--if(gamepad.getTouchpad2()) then local tag = aprilTagProcessor.getTag(20);
 	--	local pos = tag:ftcPos();
 	--	pos:bearing();
 	--end
@@ -262,10 +278,28 @@ function telopUpdate(dt, et)
 		drive.pinpoint:setHeading(initPos.z);
 	end
 
-	--aprilTagProcessor.update();
+	aprilTagProcessor.update();
+
+	if (logInterval > logTimer) then
+		logInterval = 0;
+		logFile:write(("%7.2f | fl: %5.2f, fr: %5.2f, bl: %5.2f, br: %5.2f, in: %5.2f, sl: %5.2f, sr: %5.2f, tu: %5.2f\n")
+		:format(et,
+			drive.frontLeft:getCurrent(),
+			drive.frontRight:getCurrent(),
+			drive.backLeft:getCurrent(),
+			drive.backRight:getCurrent(),
+			intake.motor:getCurrent(),
+			shooter.motorL:getCurrent(),
+			shooter.motorR:getCurrent(),
+			turretMotor:getCurrent()
+		));
+	end
+	logInterval = logInterval + 1;
 
 	--Automatically updates
-	shooter:update(et);
+	if(shooter:update(et)) then
+		logTimer = 5;
+	end
 
 	local tps = 1 / dt;
 

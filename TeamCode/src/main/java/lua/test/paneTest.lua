@@ -14,14 +14,17 @@ end
 function telemetry.update()
 end
 
+for i = 0, 10 do
+	actionPane:addLine(tostring(i));
+end
 actionPane:addLine("error: 'path' action failed");
-	currentPane:addData("fl", 100);
-	currentPane:addData("fr", 100);
-	currentPane:addData("bl", 100);
-	currentPane:addData("br", 100);
-	currentPane:addData("sl", 100);
-	currentPane:addData("sr", 100);
-	currentPane:addData("in", 100);
+currentPane:addData("fl", 100);
+currentPane:addData("fr", 100);
+currentPane:addData("bl", 100);
+currentPane:addData("br", 100);
+currentPane:addData("sl", 100);
+currentPane:addData("sr", 100);
+currentPane:addData("in", 100);
 
 robotPane:addData("pos", -300);
 robotPane:addData("target pos", 500);
