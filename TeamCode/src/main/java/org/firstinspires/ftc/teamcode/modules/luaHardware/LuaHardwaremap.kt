@@ -12,6 +12,7 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple
 import com.qualcomm.robotcore.hardware.HardwareMap
 import com.qualcomm.robotcore.hardware.IMU
 import com.qualcomm.robotcore.hardware.Servo
+import org.firstinspires.ftc.teamcode.LightStripDriver
 
 class LuaHardwaremap(private val hardwareMap: HardwareMap)
 {
@@ -92,6 +93,12 @@ class LuaHardwaremap(private val hardwareMap: HardwareMap)
 
 	@OpmodeLoaderFunction
 	fun chubGet() = LuaChub(hardwareMap);
+
+	@OpmodeLoaderFunction
+	fun ledGet(): LightStripDriver
+	{
+		return hardwareMap.get(LightStripDriver::class.java, "lightStrip") as LightStripDriver;
+	}
 }
 
 class LuaCrServo(private val m: CRServo)

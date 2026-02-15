@@ -1,10 +1,12 @@
-require("modules.utils")
+require("modules.utils");
+require("modules.vec2");
 
 ---@enum shooterState
 shooterState = {
 	Open = 0,
 	Close = 1,
-	Wait = 2
+	Wait = 2,
+	Rev = 3
 }
 ---@class shooter
 ---@field motorL DcMotorEx
@@ -31,7 +33,9 @@ shooter = {
 	state = shooterState.Close,
 	waitForReady = false,
 	velocityDataPoints = { 0, 0, 0, 0, 0 },
-	running = false
+	running = false,
+	onField = true,
+	vel = 0
 }
 
 function shooter:init()
@@ -50,29 +54,60 @@ function shooter:start(vel)
 	self.motorR:setVelocity(vel);
 end
 
+--local shooterVelMap = {
+--	{ -001, -001, -001, -001, 0700, 0700 },
+--	{ 0940, 0940, -001, 0700, 0700, 0700 },
+--	{ 0940, 0940, 0720, 0720, 0700, 0700 },
+--	{ 0970, 0970, 0800, 0780, 0780, 0780 },
+--	{ 0970, 0970, -001, 0780, 0780, 0780 },
+--	{ -001, -001, -001, -001, 0780, 0780 }
+--};
 local shooterVelMap = {
-	{ -001, -001, -001, -001, 0840, 0840 },
-	{ 1120, 1120, -001, 0840, 0840, 0840 },
-	{ 1120, 1120, 0860, 0860, 0840, 0840 },
-	{ 1180, 1180, 0940, 0940, 0940, 0940 },
-	{ 1180, 1180, -001, 0940, 0940, 0940 },
-	{ -001, -001, -001, -001, 0940, 0940 }
+	{ -001, -001, -001, -001, 0700, 0700 },
+	{ 0900, 0900, -001, 0700, 0700, 0700 },
+	{ 0900, 0900, 0720, 0720, 0700, 0700 },
+	{ 0940, 0940, 0800, 0760, 0760, 0760 },
+	{ 0940, 0940, -001, 0780, 0780, 0780 },
+	{ -001, -001, -001, -001, 0780, 0780 }
 };
 
 ---@param x number
 ---@param y number
----@param dist number
-function shooter:updateVelocity(x, y, dist)
+---@param vx number
+---@param vy number
+function shooter:updateVelocity(x, y, vx, vy)
+	if (self.state == shooterState.Rev) then
+		return;
+	end
+
 	if (x < 0) then
 		x = -x;
+		--vx = -vx;
 	end
 
 	local vel = 0;
 	local tx = math.floor(x / 24);
 	local ty = math.floor(y / 24);
+
+	--local v1 = { tx, ty };
+	--local v2 = { vx, vy };
+
+	--vec2.normalize(v1);
+	--vec2.normalize(v2);
+
+	--dashboard.addDataf("dot", vec2.dot(v1, v2));
+
+	if (tx < 0 or tx >= 6 or ty < 0 or ty >= 6) then
+		if (self.onField == true) then
+			actionPane:addLine("robot left field");
+		end
+		self.onField = false;
+		return;
+	end
+	self.onField = true;
 	vel = shooterVelMap[tx + 1][ty + 1];
 
-	if(vel == -1) then
+	if (vel == -1) then
 		return;
 	end
 	if (not self.running) then
@@ -84,8 +119,8 @@ function shooter:updateVelocity(x, y, dist)
 				intake.speed = 0.9;
 				intake:forward(0.9);
 			end
-			self.motorL:setPidf(320, 3, 0, 7.5);
-			self.motorR:setPidf(320, 3, 0, 7.5);
+			self.motorL:setPidf(320, 3, 0, 0);
+			self.motorR:setPidf(320, 3, 0, 0);
 		else
 			if (self.running) then
 				intake.speed = 1.0;
@@ -100,6 +135,17 @@ end
 function shooter:stop()
 	self.motorL:setPower(0);
 	self.motorR:setPower(0);
+end
+
+---@param et number
+function shooter:reverse(et)
+	self.time = et;
+	self.delay = 1;
+	self.motorL:setVelocity(-2000);
+	self.motorR:setVelocity(-2000);
+	intake:reverse();
+	self.gate:setPosition(self.gateOpen);
+	self.state = shooterState.Rev;
 end
 
 ---@param et number
@@ -140,6 +186,14 @@ function shooter:update(et)
 	end
 
 	if (self.time + self.delay <= et) then
+		if (self.state == shooterState.Rev) then
+			intake:stop();
+			self.gate:setPosition(self.gateClosed);
+			self.state = shooterState.Close;
+			self.time = nil;
+			return false;
+		end
+
 		if (self.state == shooterState.Open) then
 			self.gate:setPosition(self.gateClosed);
 			if (logFile ~= nil) then
@@ -150,6 +204,11 @@ function shooter:update(et)
 						self.motorR:getCurrent(), chub:getVoltage()
 					)
 				);
+				if (self.count == 1) then
+					self.count = 0;
+					self.time = nil;
+					return true;
+				end
 			end
 			self.time = et;
 			self.state = shooterState.Close;
@@ -182,7 +241,7 @@ function shooter:ready()
 	self.velocityDataPoints[1] = vel;
 	local sum = self.velocityDataPoints[5] - self.velocityDataPoints[1];
 	local slope = sum / 5;
-	return vel >= self.vel - 40 and vel <= self.vel + 40 and slope >= -20 and slope <= 20;
+	return vel >= self.vel - 40 and vel <= self.vel + 40 and slope >= -10 and slope <= 10;
 end
 
 function shooter:close()

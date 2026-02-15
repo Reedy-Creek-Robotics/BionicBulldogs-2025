@@ -5,12 +5,13 @@ import com.qualcomm.hardware.gobilda.GoBildaPinpointDriver
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit
 import org.firstinspires.ftc.robotcore.external.navigation.Pose2D
+import org.firstinspires.ftc.robotcore.external.navigation.UnnormalizedAngleUnit
 
 class LuaPinpoint(val pinpoint: GoBildaPinpointDriver)
 {
 	init
 	{
-		pinpoint.setOffsets(-6.7, 0.0, DistanceUnit.INCH);
+		pinpoint.setOffsets(-6.5, 0.0, DistanceUnit.INCH);
 		pinpoint.setEncoderResolution(GoBildaPinpointDriver.GoBildaOdometryPods.goBILDA_4_BAR_POD);
 		pinpoint.setEncoderDirections(
 			GoBildaPinpointDriver.EncoderDirection.REVERSED,
@@ -30,8 +31,10 @@ class LuaPinpoint(val pinpoint: GoBildaPinpointDriver)
 
 	@OpmodeLoaderFunction
 	fun getHeading() = pos.getHeading(AngleUnit.RADIANS);
+
 	@OpmodeLoaderFunction
 	fun getX() = pos.getX(DistanceUnit.INCH);
+
 	@OpmodeLoaderFunction
 	fun getY() = pos.getY(DistanceUnit.INCH);
 
@@ -52,4 +55,13 @@ class LuaPinpoint(val pinpoint: GoBildaPinpointDriver)
 	{
 		pinpoint.setPosY(y, DistanceUnit.INCH);
 	}
+
+	@OpmodeLoaderFunction
+	fun getVelX(x: Double) = pinpoint.getVelX(DistanceUnit.INCH);
+
+	@OpmodeLoaderFunction
+	fun getVelY(x: Double) = pinpoint.getVelY(DistanceUnit.INCH);
+
+	@OpmodeLoaderFunction
+	fun getVelH(x: Double) = pinpoint.getHeadingVelocity(UnnormalizedAngleUnit.RADIANS);
 }

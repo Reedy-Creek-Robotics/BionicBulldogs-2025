@@ -1,32 +1,32 @@
 package org.firstinspires.ftc.teamcode
 
+import com.minerkid08.dynamicopmodeloader.OpmodeLoaderFunction
 import com.qualcomm.robotcore.hardware.HardwareDevice.Manufacturer
 import com.qualcomm.robotcore.hardware.I2cAddr
 import com.qualcomm.robotcore.hardware.I2cDeviceSynch
 import com.qualcomm.robotcore.hardware.I2cDeviceSynchDevice
 import com.qualcomm.robotcore.hardware.configuration.annotations.DeviceProperties
 import com.qualcomm.robotcore.hardware.configuration.annotations.I2cDeviceType
-
-fun writeu8(driver: I2cDeviceSynch, reg: LightStripDriver.Register, value: UByte)
-{
-	driver.write(reg.id, ByteArray(1) { value.toByte() });
-}
-
-fun writeu32(driver: I2cDeviceSynch, reg: LightStripDriver.Register, value: UInt)
-{
-	val byteArr = ByteArray(4);
-	byteArr[0] = value.toByte()
-	byteArr[1] = (value shr 8).toByte()
-	byteArr[2] = (value shr 16).toByte()
-	byteArr[3] = (value shr 24).toByte()
-	driver.write(reg.id, byteArr);
-}
+import com.qualcomm.robotcore.util.TypeConversion
+import java.nio.ByteOrder
 
 class Color
 {
 	var r: UByte = 0u;
-	var g: UByte= 0u;
-	var b: UByte= 0u;
+	var g: UByte = 0u;
+	var b: UByte = 0u;
+
+	constructor()
+	{
+	}
+
+	constructor(r2: UByte, g2: UByte, b2: UByte)
+	{
+		r = r2;
+		g = g2;
+		b = b2;
+	}
+
 	fun toByteArray(): ByteArray
 	{
 		val arr = ByteArray(3);
@@ -37,45 +37,16 @@ class Color
 	}
 }
 
-abstract class Animation
+fun writeColor(driver: I2cDeviceSynch, slot: LightStripDriver.Register, layer: Byte, value: Color)
 {
-	var brightness: UByte = 0u;
-	var startInd: UByte = 0u;
-	var endInd: UByte = 0u;
-
-	abstract fun save(driver: I2cDeviceSynch);
-
-}
-
-class SolidColor : Animation()
-{
-	var color = Color();
-
-	override fun save(driver: I2cDeviceSynch)
-	{
-		writeu8(driver, LightStripDriver.Register.L1, brightness);
-		writeu8(driver, LightStripDriver.Register.L2, startInd);
-		writeu8(driver, LightStripDriver.Register.L3, endInd);
-		driver.write(LightStripDriver.Register.L4.id, color.toByteArray());
-	}
-}
-
-class Blinking : Animation()
-{
-	var primaryColor = Color();
-	var secondaryColor = Color();
-	var period = 2000u;
-	var primaryPeriod = 1000u;
-
-	override fun save(driver: I2cDeviceSynch)
-	{
-		writeu8(driver, LightStripDriver.Register.L1, brightness);
-		writeu8(driver, LightStripDriver.Register.L2, startInd);
-		writeu8(driver, LightStripDriver.Register.L3, endInd);
-		driver.write(LightStripDriver.Register.L4.id, primaryColor.toByteArray());
-		driver.write(LightStripDriver.Register.L5.id, secondaryColor.toByteArray());
-		writeu32(driver, LightStripDriver.Register.L6, period);
-	}
+	val c = value.toByteArray();
+	val data = byteArrayOf(
+		layer,
+		c[0],
+		c[1],
+		c[2]
+	);
+	driver.write(slot.id, data);
 }
 
 //class Pulsing
@@ -116,24 +87,24 @@ class LightStripDriver(deviceClient: I2cDeviceSynch, isOwned: Boolean) :
 		L8(0x10),
 		L9(0x11),
 		First(DeviceID.id),
-	    Last(L9.id)
+		Last(L9.id)
 	}
 
-	enum class Animation
+	enum class AnimationEnum
 		(var id: Int)
 	{
-		SolidColor(0x00),
-		Blinking(0x01),
-		Pulsing(0x02),
-		Sine(0x03),
-		DroidScan(0x04),
-		Rainbow(0x05),
-		Snakes(0x06),
-		Random(0x07),
-		Sparkle(0x08),
-		SingleFill(0x09),
-		RainbowSnakes(0x0a),
-		PoliceLights(0x0b)
+		SolidColor(0x01),
+		Blinking(0x02),
+		Pulsing(0x03),
+		Sine(0x04),
+		DroidScan(0x05),
+		Rainbow(0x06),
+		Snakes(0x07),
+		Random(0x08),
+		Sparkle(0x09),
+		SingleFill(0x0a),
+		RainbowSnakes(0x0b),
+		PoliceLights(0x0c)
 	}
 
 	init
@@ -168,10 +139,106 @@ class LightStripDriver(deviceClient: I2cDeviceSynch, isOwned: Boolean) :
 		return "light driver";
 	}
 
-	fun saveAnimation(anim: Animation, slot: Int)
+	fun saveAnimation(anim: Animations.AnimationBase, slot: Int)
 	{
+		val slot = slotIdToEnum(slot);
+		val animId = classToEnum(anim).id;
 
+		writei8(deviceClient, slot, 0, intToByte(animId));
+		anim.save(deviceClient, slot);
 	}
 
+	fun clearAnimations()
+	{
+		val data = 1 shl 25;
+		val packet = TypeConversion.intToByteArray(data, ByteOrder.LITTLE_ENDIAN);
+		deviceClient.write(Register.Control.id, packet);
+	}
 
+	fun getRuntime(): Int
+	{
+		return readInt(deviceClient, Register.Runtime);
+	}
+
+	fun setLedCount(count: Int)
+	{
+		var data = 1 shl 24;
+		data = data or (count shl 16);
+		val packet = TypeConversion.intToByteArray(data, ByteOrder.LITTLE_ENDIAN);
+		deviceClient.write(Register.Control.id, packet);
+	}
+
+	fun getLedCount(): Int
+	{
+		val data = deviceClient.read(Register.Status.id, 4);
+		return TypeConversion.unsignedByteToInt(data[0]);
+	}
+
+	fun saveArtBoard(slot: Int)
+	{
+		val data = 1 shl slot;
+		deviceClient.write(
+			Register.SaveLoadAnimation.id,
+			TypeConversion.intToByteArray(data, ByteOrder.LITTLE_ENDIAN)
+		);
+	}
+
+	@OpmodeLoaderFunction
+	fun displayArtBoard(slot: Int)
+	{
+		val addr = 1 shl slot;
+		val data = addr shl 8;
+		deviceClient.write(
+			Register.SaveLoadAnimation.id,
+			TypeConversion.intToByteArray(data, ByteOrder.LITTLE_ENDIAN)
+		);
+	}
+
+	fun enableBootAnimation(slot: Int)
+	{
+		var data = 1 shl slot;
+		data = data shl 16;
+		data = data or (1 shl 24);
+		deviceClient.write(
+			Register.SaveLoadAnimation.id,
+			TypeConversion.intToByteArray(data, ByteOrder.LITTLE_ENDIAN)
+		);
+	}
+
+	fun disableBootAnimation()
+	{
+		val data = 1 shl 25;
+		val packet = TypeConversion.intToByteArray(data, ByteOrder.LITTLE_ENDIAN);
+		deviceClient.write(Register.SaveLoadAnimation.id, packet);
+	}
+
+	fun classToEnum(animation: Animations.AnimationBase): AnimationEnum
+	{
+		return when (animation)
+		{
+			is Animations.SolidColor -> AnimationEnum.SolidColor;
+			is Animations.Blinking   -> AnimationEnum.Blinking;
+			is Animations.Pulsing    -> AnimationEnum.Pulsing;
+			is Animations.Rainbow    -> AnimationEnum.Rainbow;
+			else          -> AnimationEnum.SolidColor;
+		}
+	}
+
+	fun slotIdToEnum(i: Int): Register
+	{
+		return when (i)
+		{
+			0    -> Register.L0;
+			1    -> Register.L1;
+			2    -> Register.L2;
+			3    -> Register.L3;
+			4    -> Register.L4;
+			5    -> Register.L5;
+			6    -> Register.L6;
+			7    -> Register.L7;
+			8    -> Register.L8;
+			9    -> Register.L9;
+			else -> error("invalid reg");
+		}
+	}
 }

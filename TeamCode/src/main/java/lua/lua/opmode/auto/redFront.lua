@@ -7,7 +7,7 @@ local config = {
 	preload = function ()
 		return SeqAction.newl(
 			"preload",
-			RobotActions.ShooterStart.new(840),
+			RobotActions.ShooterStart.new(680),
 			PathAction.new(
 				path.chain()
 				:add(path.line(-32.00, 136.00, -54.00, 90.00))
@@ -47,14 +47,14 @@ local config = {
 					:constantHeading(0)
 					:add(path.line(-38.00, 87.00, -23.25, 87.00))
 					:constantHeading(0)
-					:add(path.line(-23.25, 87.00, -23.25, 77.50))
+					:add(path.line(-23.25, 87.00, -23.25, 78.50))
 					:constantHeading(0)
 					:build()
 				),
 				WaitForFirstAction.new(
 					PathAction.new(
 						path.chain()
-						:add(path.line(-23.25, 77.50, -17.50, 77.60))
+						:add(path.line(-23.25, 78.50, -17.50, 78.60))
 						:constantHeading(0)
 						:build()
 					),

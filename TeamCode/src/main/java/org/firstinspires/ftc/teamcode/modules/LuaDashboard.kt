@@ -17,6 +17,8 @@ object LuaDashboard
 	var d = 0.0;
 	@JvmField
 	var f = 0.0;
+	@JvmField
+	var vel = 0;
 
 	val telem: Telemetry = FtcDashboard.getInstance().telemetry;
 
@@ -75,4 +77,7 @@ object LuaDashboard
 	@JvmStatic
 	@OpmodeLoaderFunction
 	fun getf() = f;
+	@JvmStatic
+	@OpmodeLoaderFunction
+	fun getvel() = vel;
 }

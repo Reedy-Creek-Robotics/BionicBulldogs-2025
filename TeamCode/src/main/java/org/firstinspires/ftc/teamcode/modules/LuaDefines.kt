@@ -35,34 +35,50 @@ object LuaDefines
 
 	fun build(builder: FunctionBuilder)
 	{
-		builder.addClassAsGlobal(LuaDefines::class.java);
+		builder.addStaticClassAsGlobal(LuaDefines::class.java);
 
-		builder.createClass("Direction");
-		builder.createClass("RunMode");
-		builder.createClass("ZeroPowerBehavior");
-		builder.createClass("CurrentUnit");
+		//builder.createClass("Direction");
+		//builder.createClass("RunMode");
+		//builder.createClass("ZeroPowerBehavior");
+		//builder.createClass("CurrentUnit");
 		builder.createClass("PIDFCoefficients");
 
-		builder.pushTable("direction");
-		builder.pushValueo("forward", DcMotorSimple.Direction.FORWARD);
-		builder.pushValueo("reverse", DcMotorSimple.Direction.REVERSE);
-		builder.popTable();
+		//builder.pushTable("direction");
+		//builder.pushValueo("forward", DcMotorSimple.Direction.FORWARD);
+		//builder.pushValueo("reverse", DcMotorSimple.Direction.REVERSE);
+		//builder.popTable();
 
-		builder.pushTable("runMode");
-		builder.pushValueo("runWithoutEncoder", DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-		builder.pushValueo("runUsingEncoder", DcMotor.RunMode.RUN_USING_ENCODER);
-		builder.pushValueo("runToPosition", DcMotor.RunMode.RUN_TO_POSITION);
-		builder.pushValueo("stopAndResetEncoder", DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-		builder.popTable();
+		//builder.pushTable("runMode");
+		//builder.pushValueo("runWithoutEncoder", DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+		//builder.pushValueo("runUsingEncoder", DcMotor.RunMode.RUN_USING_ENCODER);
+		//builder.pushValueo("runToPosition", DcMotor.RunMode.RUN_TO_POSITION);
+		//builder.pushValueo("stopAndResetEncoder", DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+		//builder.popTable();
 
-		builder.pushTable("zeroPowerBehavior");
-		builder.pushValueo("brake", DcMotor.ZeroPowerBehavior.BRAKE);
-		builder.pushValueo("float", DcMotor.ZeroPowerBehavior.FLOAT);
-		builder.popTable();
+		//builder.pushTable("zeroPowerBehavior");
+		//builder.pushValueo("brake", DcMotor.ZeroPowerBehavior.BRAKE);
+		//builder.pushValueo("float", DcMotor.ZeroPowerBehavior.FLOAT);
+		//builder.popTable();
 
-		builder.pushTable("currentUnit");
-		builder.pushValueo("amps", CurrentUnit.AMPS);
-		builder.pushValueo("milliamps", CurrentUnit.MILLIAMPS);
-		builder.popTable();
+		//builder.pushTable("currentUnit");
+		//builder.pushValueo("amps", CurrentUnit.AMPS);
+		//builder.pushValueo("milliamps", CurrentUnit.MILLIAMPS);
+		//builder.popTable();
 	}
+
+	@JvmStatic
+	@OpmodeLoaderFunction
+	fun pidfGetP(p: PIDFCoefficients) = p.p;
+
+	@JvmStatic
+	@OpmodeLoaderFunction
+	fun pidfGetI(p: PIDFCoefficients) = p.i;
+
+	@JvmStatic
+	@OpmodeLoaderFunction
+	fun pidfGetD(p: PIDFCoefficients) = p.d;
+
+	@JvmStatic
+	@OpmodeLoaderFunction
+	fun pidfGetF(p: PIDFCoefficients) = p.f;
 }

@@ -29,6 +29,15 @@ class Turret(val hardwaremap: HardwareMap)
 		Tracking, Resetting
 	}
 
+	enum class ResetState
+	{
+		Finding, NotFinding, Centering
+	}
+
+	private var resetState = ResetState.Finding;
+	private var resetPos = 0;
+	private var resetDir = 0;
+
 	lateinit var motor: DcMotorEx;
 	lateinit var sensor: TouchSensor;
 	var state = State.Tracking;
@@ -54,7 +63,10 @@ class Turret(val hardwaremap: HardwareMap)
 			motor.mode = DcMotor.RunMode.STOP_AND_RESET_ENCODER;
 		motor.mode = DcMotor.RunMode.RUN_WITHOUT_ENCODER;
 		motor.targetPositionTolerance = 1;
-		motor.setPIDFCoefficients(DcMotor.RunMode.RUN_TO_POSITION, PIDFCoefficients(15.0, 0.0, 0.0, 0.0));
+		motor.setPIDFCoefficients(
+			DcMotor.RunMode.RUN_TO_POSITION,
+			PIDFCoefficients(15.0, 0.0, 0.0, 0.0)
+		);
 	}
 
 	@OpmodeLoaderFunction
@@ -67,6 +79,7 @@ class Turret(val hardwaremap: HardwareMap)
 		motor.mode = DcMotor.RunMode.RUN_WITHOUT_ENCODER;
 		motor.power = -0.2;
 		prevPos = 999999999;
+		resetState = ResetState.Finding;
 	}
 
 	@OpmodeLoaderFunction
@@ -93,27 +106,68 @@ class Turret(val hardwaremap: HardwareMap)
 	{
 		if (state == State.Resetting)
 		{
-			if(!sensor.isPressed)
+			when (resetState)
 			{
-				motor.mode = DcMotor.RunMode.STOP_AND_RESET_ENCODER;
+				ResetState.Finding    ->
+				{
+					if (!sensor.isPressed)
+					{
+						resetPos = motor.currentPosition;
+						resetState = ResetState.NotFinding;
+					}
+					if (motor.currentPosition == prevPos)
+					{
+						motor.power *= -1;
+					}
+				}
 
-				motor.power = 0.0;
-				setOffset(0.0);
-				turnTo(pos);
-				motor.mode = DcMotor.RunMode.RUN_TO_POSITION;
-				motor.power = 1.0;
-				state = State.Tracking;
+				ResetState.NotFinding ->
+				{
+					if (sensor.isPressed)
+					{
+						val resetPos2 = motor.currentPosition;
+						resetPos = (resetPos + resetPos2) / 2;
+
+						resetDir = if (motor.power > 0.0)
+							1;
+						else
+							-1;
+						motor.power = 0.0;
+						motor.targetPosition = resetPos;
+						motor.mode = DcMotor.RunMode.RUN_TO_POSITION;
+						motor.power = 0.2;
+						resetState = ResetState.Centering;
+					}
+				}
+
+				ResetState.Centering  ->
+				{
+					if (!motor.isBusy)
+					{
+						motor.mode = DcMotor.RunMode.STOP_AND_RESET_ENCODER;
+
+						motor.power = 0.0;
+						//if (resetDir == 1)
+						//	setOffset(-4.0);
+						//else
+						//	setOffset(0.0);
+						turnTo(pos);
+						motor.mode = DcMotor.RunMode.RUN_TO_POSITION;
+						motor.power = 1.0;
+						state = State.Tracking;
+					}
+				}
 			}
-			prevPos = motor.currentPosition;
 		}
 		else
 			turnTo(pos);
+		prevPos = motor.currentPosition;
 	}
 
 	@OpmodeLoaderFunction
 	fun turnAngle(angle: Double)
 	{
-		if(state == State.Resetting) return;
+		if (state == State.Resetting) return;
 		val newpos = motor.currentPosition + (angle * ticksPerDeg).toInt();
 		val targetPosition = clampi(-limit, limit, newpos);
 		motor.targetPosition = targetPosition;
@@ -122,7 +176,7 @@ class Turret(val hardwaremap: HardwareMap)
 	@OpmodeLoaderFunction
 	fun turnTo(angle: Double)
 	{
-		if(state == State.Resetting) return;
+		if (state == State.Resetting) return;
 		val newpos = (angle * ticksPerDeg).toInt();
 		val targetPosition = clampi(-limit, limit, newpos) + offsetTicks;
 		motor.targetPosition = targetPosition;

@@ -156,6 +156,9 @@ class LuaDcMotorEx(private val m: DcMotorEx)
 	{
 		m.setPIDFCoefficients(m.mode, PIDFCoefficients(p, i, d, f, MotorControlAlgorithm.PIDF));
 	}
+
+	@OpmodeLoaderFunction
+	fun getPidf(): PIDFCoefficients = m.getPIDFCoefficients(m.mode);
 }
 
 fun buildDcMotor(builder: FunctionBuilder)

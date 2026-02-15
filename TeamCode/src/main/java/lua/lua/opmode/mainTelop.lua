@@ -30,11 +30,24 @@ local logInterval = 0;
 local logTimer = 5;
 local logVel = false;
 
+local prevLedState = 0;
+
 function telopInit()
+	--led = hardwareMap.ledGet();
 	imu = hardwareMap.imuGet();
 	chub = hardwareMap.chubGet();
 	logFile = io.open(DATADIR .. "telop" .. tostring(fileId), "w");
+	logFile2 = io.open(DATADIR .. "telop-turret" .. tostring(fileId), "w");
 	require("modules.telemetry");
+
+	if (logFile == nil) then
+		error("failed to open log file");
+	end
+	if (logFile2 == nil) then
+		error("failed to open log file 2");
+	end
+
+	logFile2:write("time, x, y, h, offset, turretAngle\n");
 
 	actionPane:addData("telop file", fileId);
 
@@ -59,7 +72,7 @@ function telopInit()
 
 	turretMotor = turret.getMotor();
 	--aprilTagProcessor.init(1280, 720, 2, 255, 1.0)
-	aprilTagProcessor.init(640, 480, 2, 255, 1.0)
+	--aprilTagProcessor.init(640, 480, 2, 255, 1.0)
 
 	intake:init();
 	shooter:init();
@@ -68,8 +81,12 @@ function telopInit()
 	--local i = dashboard.geti();
 	--local d = dashboard.getd();
 	--local f = dashboard.getf();
-	--shooter.motorL:setPidf(p, i, d, f);
-	--shooter.motorR:setPidf(p, i, d, f);
+	local p = 640;
+	local i = 3;
+	local d = 0;
+	local f = 0;
+	shooter.motorL:setPidf(p, i, d, f);
+	shooter.motorR:setPidf(p, i, d, f);
 end
 
 ---@type vec3
@@ -84,7 +101,7 @@ function telopStartBlue()
 	drive.offset = math.pi2;
 	turret.start();
 	shooter:close();
-	initPos = { x = 144 - 8.5, y = 8, z = math.pi2 };
+	initPos = { x = 144 - 7.5, y = 9, z = math.pi2 };
 	--targetPos = { x = 7, y = 138 };
 	targetPos = { x = 0, y = 144 };
 	targetPos2 = { x = 0, y = 140 };
@@ -106,7 +123,7 @@ function telopStartRed()
 	drive.offset = -math.pi2;
 	turret.start();
 	shooter:close();
-	initPos = { x = -(144 - 8.5 / 2), y = 8, z = math.pi2 };
+	initPos = { x = -(144 - 7.5), y = 9, z = math.pi2 };
 	--targetPos = { x = -7, y = 138 };
 	targetPos = { x = 0, y = 144 };
 	targetPos2 = { x = 0, y = 140 };
@@ -165,6 +182,9 @@ function telopUpdate(dt, et)
 	if (angle < -180) then
 		angle = angle + 360;
 	end
+	if(x < 24) then
+		angle = angle - 1;
+	end
 	turret.update(angle + turretOffset);
 	--turret.update(0);
 
@@ -197,14 +217,12 @@ function telopUpdate(dt, et)
 			turretOffset));
 	end
 
-	if (gamepad.getTouchpad2()) then
-		shooter.vel = shooter.vel + 20;
-		shooter:start(shooter.vel);
-	end
+	--if (gamepad.getTouchpad2()) then
+	--	shooter:reverse(et);
+	--end
+
 	if (gamepad.getShare2()) then
 		turret.reset();
-		--shooter.vel = shooter.vel - 20;
-		--shooter:start(shooter.vel);
 	end
 
 	if (gamepad.getDpadLeft2()) then
@@ -236,42 +254,39 @@ function telopUpdate(dt, et)
 		shooter:shootNum(et, 1);
 	end
 
-	if (gamepad.getSquare2()) then
-		--local p = dashboard.getp();
-		--local i = dashboard.geti();
-		--local d = dashboard.getd();
-		--local f = dashboard.getf();
-		--shooter.motorL:setPidf(p, i, d, f);
-		--shooter.motorR:setPidf(p, i, d, f);
-		--turretMotor:setPidf(p, i, d, f);
+	if (gamepad.getTouchpad2()) then
+		local p = dashboard.getp();
+		local i = dashboard.geti();
+		local d = dashboard.getd();
+		local f = dashboard.getf();
+		shooter.motorL:setPidf(p, i, d, f);
+		shooter.motorR:setPidf(p, i, d, f);
 
-		local id = 0;
-		if (initPos.x > 0) then
-			id = 20;
-		else
-			id = 24;
-		end
-		local tag = aprilTagProcessor.getTag(id);
-		if (tag:valid()) then
-			local pos = tag:robotPos();
-			actionPane:addLine(("x: %6.2f, y: %6.2f, z: %6.2f"):format(pos:x(), pos:y(), pos:z()));
-			actionPane:addLine(("pitch: %6.2f, yaw: %6.2f, roll: %6.2f"):format(pos:pitch(), pos:yaw(), pos:roll()));
-			local pos2 = tag:ftcPos();
-			actionPane:addLine(("x: %6.2f, y: %6.2f"):format(pos2:x(), pos2:y()));
-			actionPane:addLine(("bearing: %6.2f, range: %6.2f"):format(pos2:bearing(), pos2:range()));
-		else
-			actionPane:addLine("tag no exist");
-		end
+		local pidf = shooter.motorL:getPidf();
+
+		actionPane:addData("p", pidfGetP(pidf));
+		actionPane:addData("i", pidfGetI(pidf));
+		actionPane:addData("d", pidfGetD(pidf));
+		actionPane:addData("f", pidfGetF(pidf));
+		--turretMotor:setPidf(p, i, d, f);
 	end
-	--if(gamepad.getTouchpad2()) then local tag = aprilTagProcessor.getTag(20);
-	--	local pos = tag:ftcPos();
-	--	pos:bearing();
+
+	--local ledState = 0;
+	--if(turretMotor:getCurrentPosition() == turretMotor:getTargetPosition()) then
+	--	ledState = 1;
 	--end
 
-	if (shooterAutomatic) then
-		local dist = dx * dx + dy * dy;
-		shooter:updateVelocity(x, y, 0);
-	end
+	--if(shooter:ready()) then
+	--	ledState = ledState + 2;
+	--end
+
+	--if(ledState ~= prevLedState) then
+	--	led.displayArtBoard(ledState);
+	--	prevLedState = ledState;
+	--end
+
+	--shooter:updateVelocity(x, y, drive.pinpoint:getVelX(), drive.pinpoint:getVelY());
+	shooter:updateVelocity(x, y);
 
 	if (gamepad.getStart()) then
 		drive.pinpoint:setPosX(initPos.x);
@@ -279,7 +294,7 @@ function telopUpdate(dt, et)
 		drive.pinpoint:setHeading(initPos.z);
 	end
 
-	aprilTagProcessor.update();
+	--aprilTagProcessor.update();
 
 	if (logInterval > logTimer) then
 		logInterval = 0;
@@ -301,6 +316,8 @@ function telopUpdate(dt, et)
 		logFile:write(("%7.2f | left vel: %4d, right vel: %4d\n"):format(et, shooter.motorL:getVelocity(),
 			shooter.motorR:getVelocity()));
 	end
+	logFile2:write(("%7.2f, %6.2f, %6.2f, %6.2f, %d, %6.2f\n"):format(et, drive.pinpoint:getX(), drive.pinpoint:getY(),
+		drive.pinpoint:getHeading(), turretOffset, angle));
 
 	--Automatically updates
 	if (shooter:update(et)) then
@@ -350,6 +367,7 @@ end
 
 function telopStop()
 	logFile:close();
+	logFile2:close();
 end
 
 ---@type Opmode

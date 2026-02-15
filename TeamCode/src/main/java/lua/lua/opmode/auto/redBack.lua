@@ -3,12 +3,12 @@ require("opmode.auto.autoBase");
 ---@type AutoPaths
 local config = {
 	start = { x = -55.25, y = 7.75, z = 0 },
-	turretTarget = { x = 0, y = 144 },
+	turretTarget = { x = -6, y = 144 },
 	preload = function ()
 		intake.speed = 0.85;
 		return SeqAction.newl(
 			"preload",
-			RobotActions.ShooterStart.new(1120),
+			RobotActions.ShooterStart.new(880),
 			RobotActions.Shoot.new(1),
 			SleepAction.new(0.5)
 		)
@@ -59,7 +59,7 @@ local config = {
 					PathAction.new(
 						path.chain()
 						:add(path.line(-25.00, 65.00, -17.00, 65.00))
-						:constantHeading(180.00)
+						:constantHeading(0)
 						:build()
 					),
 					Delay.new(1.0)
@@ -112,6 +112,7 @@ local config = {
 				:build(),
 				0.5
 			),
+			RobotActions.IntakeStop.new(),
 			PathAction.new(
 				path.chain()
 				:add(path.line(-12.00, 8.00, -60.00, 12.00))

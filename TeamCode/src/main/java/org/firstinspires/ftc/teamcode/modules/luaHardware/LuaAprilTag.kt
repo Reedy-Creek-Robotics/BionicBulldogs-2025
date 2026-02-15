@@ -1,20 +1,33 @@
 package org.firstinspires.ftc.teamcode.modules.luaHardware
 
-import com.minerkid08.dynamicopmodeloader.LuaError
 import android.util.Size
 import com.minerkid08.dynamicopmodeloader.FunctionBuilder
+import com.minerkid08.dynamicopmodeloader.LuaError
 import com.minerkid08.dynamicopmodeloader.OpmodeLoaderFunction
 import com.qualcomm.robotcore.hardware.HardwareMap
 import com.qualcomm.robotcore.util.ElapsedTime
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName
 import org.firstinspires.ftc.robotcore.external.hardware.camera.controls.ExposureControl
 import org.firstinspires.ftc.robotcore.external.hardware.camera.controls.GainControl
+import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit
+import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit
 import org.firstinspires.ftc.robotcore.external.navigation.Pose3D
+import org.firstinspires.ftc.robotcore.external.navigation.Position
+import org.firstinspires.ftc.robotcore.external.navigation.YawPitchRollAngles
 import org.firstinspires.ftc.vision.VisionPortal
 import org.firstinspires.ftc.vision.apriltag.AprilTagDetection
 import org.firstinspires.ftc.vision.apriltag.AprilTagPoseFtc
 import org.firstinspires.ftc.vision.apriltag.AprilTagProcessor
 import java.util.concurrent.TimeUnit
+
+val cameraPosition = Position(
+	DistanceUnit.INCH,
+	-0.25, 5.5, 8.0, 0
+);
+val cameraOrientation = YawPitchRollAngles(
+	AngleUnit.DEGREES,
+	0.0, -90.0 + 5, 0.0, 0
+);
 
 object LuaAprilTagProcessor
 {
@@ -23,10 +36,10 @@ object LuaAprilTagProcessor
 		hardwareMap = hwMap;
 		builder.pushTable("aprilTagProcessor");
 		builder.addStaticClassAsGlobal(LuaAprilTagProcessor::class.java)
+		builder.popTable();
 		builder.addClassAsClass(LuaAprilTag::class.java)
 		builder.addClassAsClass(LuaFtcPos::class.java)
 		builder.addClassAsClass(LuaPose3D::class.java)
-		builder.popTable();
 	}
 
 	var hardwareMap: HardwareMap? = null;
@@ -38,7 +51,8 @@ object LuaAprilTagProcessor
 	fun init(width: Int, height: Int, exposureMS: Int, gain: Int, decimation: Float)
 	{
 		processor = AprilTagProcessor.Builder()
-			.setLensIntrinsics(596.507, 596.507, 960.585, 536.89)
+			//.setLensIntrinsics(596.507, 596.507, 960.585, 536.89)
+			.setCameraPose(cameraPosition, cameraOrientation)
 			.setDrawAxes(true)
 			.build();
 
@@ -143,18 +157,18 @@ class LuaAprilTag(private val tag: AprilTagDetection?)
 	fun valid() = (tag != null)
 
 	@OpmodeLoaderFunction
-	fun ftcPos(): AprilTagPoseFtc
+	fun ftcPos(): LuaFtcPos
 	{
 		if (tag != null)
-			return tag.ftcPose;
+			return LuaFtcPos(tag.ftcPose);
 		throw LuaError("attempted to call 'ftcPos' on a nil tag");
 	}
 
 	@OpmodeLoaderFunction
-	fun robotPos(): Pose3D
+	fun robotPos(): LuaPose3D
 	{
 		if (tag != null)
-			return tag.robotPose;
+			return LuaPose3D(tag.robotPose);
 		throw LuaError("attempted to call 'ftcPos' on a nil tag");
 	}
 }

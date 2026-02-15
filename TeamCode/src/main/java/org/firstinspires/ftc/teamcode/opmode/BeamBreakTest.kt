@@ -9,7 +9,7 @@ class BeamBreakTest : LinearOpMode()
 {
 	override fun runOpMode()
 	{
-		val sensor = hardwareMap.get(TouchSensor::class.java, "beamBreak");
+		val sensor = hardwareMap.get(TouchSensor::class.java, "turretSensor");
 
 		waitForStart();
 

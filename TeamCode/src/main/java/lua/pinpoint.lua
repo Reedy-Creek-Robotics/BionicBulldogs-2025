@@ -1,5 +1,6 @@
 ---@class Pinpoint
 Pinpoint = {}
+
 function Pinpoint:update() end
 ---@return number
 function Pinpoint:getX() end
@@ -7,6 +8,14 @@ function Pinpoint:getX() end
 function Pinpoint:getY() end
 ---@return number
 function Pinpoint:getHeading() end
+
+---@return number
+function Pinpoint:getVelX() end
+---@return number
+function Pinpoint:getVelY() end
+---@return number
+function Pinpoint:getVelH() end
+
 ---@param x number
 function Pinpoint:setPosX(x) end
 ---@param y number
