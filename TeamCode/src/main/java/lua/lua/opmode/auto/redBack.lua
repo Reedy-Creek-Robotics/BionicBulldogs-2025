@@ -109,8 +109,7 @@ local config = {
 				path.chain()
 				:add(path.line(-60.00, 12.00, -12.00, 8.00))
 				:constantHeading(0)
-				:build(),
-				0.5
+				:build()
 			),
 			RobotActions.IntakeStop.new(),
 			PathAction.new(

@@ -12,15 +12,15 @@ import java.nio.ByteOrder
 
 class Color
 {
-	var r: UByte = 0u;
-	var g: UByte = 0u;
-	var b: UByte = 0u;
+	var r: Int = 0;
+	var g: Int = 0;
+	var b: Int = 0;
 
 	constructor()
 	{
 	}
 
-	constructor(r2: UByte, g2: UByte, b2: UByte)
+	constructor(r2: Int, g2: Int, b2: Int)
 	{
 		r = r2;
 		g = g2;
@@ -30,9 +30,9 @@ class Color
 	fun toByteArray(): ByteArray
 	{
 		val arr = ByteArray(3);
-		arr[0] = r.toByte();
-		arr[1] = g.toByte();
-		arr[2] = b.toByte();
+		arr[0] = intToByte(r);
+		arr[1] = intToByte(g);
+		arr[2] = intToByte(b);
 		return arr;
 	}
 }
@@ -48,6 +48,19 @@ fun writeColor(driver: I2cDeviceSynch, slot: LightStripDriver.Register, layer: B
 	);
 	driver.write(slot.id, data);
 }
+
+/*fun readColor(driver: I2cDeviceSynch, slot: LightStripDriver.Register, layer: Byte): Color
+{
+	driver.write(byteArrayOf(intToByte(slot.id), layer));
+	return driver.read(1)[0];
+	val data = byteArrayOf(
+		layer,
+		c[0],
+		c[1],
+		c[2]
+	);
+	driver.write(slot.id, data);
+}*/
 
 //class Pulsing
 //class Sine
@@ -148,6 +161,22 @@ class LightStripDriver(deviceClient: I2cDeviceSynch, isOwned: Boolean) :
 		anim.save(deviceClient, slot);
 	}
 
+	fun loadAnimation(slot: Int): Animations.AnimationBase
+	{
+		val slot = slotIdToEnum(slot);
+
+		val animId = readi8(deviceClient, slot, 0);
+		val anim = when (animId)
+		{
+			intToByte(AnimationEnum.SolidColor.id) -> Animations.SolidColor();
+			intToByte(AnimationEnum.Blinking.id) -> Animations.Blinking();
+			intToByte(AnimationEnum.Pulsing.id) -> Animations.Pulsing();
+			else -> error("invalid anim id");
+		}
+		anim.load(deviceClient, slot);
+		return anim;
+	}
+
 	fun clearAnimations()
 	{
 		val data = 1 shl 25;
@@ -220,7 +249,7 @@ class LightStripDriver(deviceClient: I2cDeviceSynch, isOwned: Boolean) :
 			is Animations.Blinking   -> AnimationEnum.Blinking;
 			is Animations.Pulsing    -> AnimationEnum.Pulsing;
 			is Animations.Rainbow    -> AnimationEnum.Rainbow;
-			else          -> AnimationEnum.SolidColor;
+			else                     -> AnimationEnum.SolidColor;
 		}
 	}
 

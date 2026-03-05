@@ -27,10 +27,11 @@ function HDrive.new(disable)
 	local motorNames = { "frontLeft", "frontRight", "backLeft", "backRight" };
 	local m = new(HDrive);
 	for _, name in pairs(motorNames) do
-		m[name] = hardwareMap.dcmotorexGet(name);
+		local motor = hardwareMap.dcmotorexGet(name);
 		if (disable ~= true) then
-			m[name]:setZeroPowerBehavior(DcMotorZeroPowerBehavior.Brake);
+			motor:setZeroPowerBehavior(DcMotorZeroPowerBehavior.Brake);
 		end
+		m[name] = motor;
 	end
 	if (disable ~= true) then
 		m.frontRight:setDirection(Direction.Reverse);

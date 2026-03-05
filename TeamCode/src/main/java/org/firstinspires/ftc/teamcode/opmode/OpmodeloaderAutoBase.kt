@@ -4,6 +4,7 @@ import com.minerkid08.dynamicopmodeloader.OpmodeLoader
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode
 import com.qualcomm.robotcore.util.ElapsedTime
 import com.qualcomm.robotcore.util.RobotLog
+import org.firstinspires.ftc.teamcode.LightStripDriver
 import org.firstinspires.ftc.teamcode.modules.ApriltagDistance
 import org.firstinspires.ftc.teamcode.modules.luaHardware.LuaAprilTagProcessor
 import org.firstinspires.ftc.teamcode.modules.luaHardware.LuaHardwaremap
@@ -36,12 +37,15 @@ open class OpmodeloaderAutoBase(private val name: String) : LinearOpMode()
 		Turret.init(builder, hardwareMap);
 		builder.addClassAsGlobal(ApriltagDistance::class.java)
 		LuaAprilTagProcessor.build(builder, hardwareMap)
+		builder.addClassAsClass(LightStripDriver::class.java);
 
 		opmodeloader.init();
 
 		LuaFollower.init(builder, follower);
 
 		opmodeloader.loadOpmode(name);
+
+		sleep(1000);
 
 		telemetry.addLine("initalised");
 		telemetry.update();

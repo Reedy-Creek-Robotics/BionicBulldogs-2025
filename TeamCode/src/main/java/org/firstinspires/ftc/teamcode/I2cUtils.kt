@@ -21,6 +21,12 @@ fun readInt(driver: I2cDeviceSynch, register: LightStripDriver.Register): Int
 	)
 }
 
+fun readi8(driver: I2cDeviceSynch, register: LightStripDriver.Register, layer: Byte): Byte
+{
+	driver.write(byteArrayOf(intToByte(register.id), layer));
+	return driver.read(1)[0];
+}
+
 fun writei8(driver: I2cDeviceSynch, slot: LightStripDriver.Register, layer: Byte, value: Byte)
 {
 	val data = byteArrayOf(layer, value);

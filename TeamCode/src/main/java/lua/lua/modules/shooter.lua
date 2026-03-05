@@ -63,10 +63,10 @@ end
 --	{ -001, -001, -001, -001, 0780, 0780 }
 --};
 local shooterVelMap = {
-	{ -001, -001, -001, -001, 0700, 0700 },
-	{ 0900, 0900, -001, 0700, 0700, 0700 },
-	{ 0900, 0900, 0720, 0720, 0700, 0700 },
-	{ 0940, 0940, 0800, 0760, 0760, 0760 },
+	{ -001, -001, -001, -001, 0660, 0660 },
+	{ 0880, 0880, -001, 0660, 0660, 0660 },
+	{ 0880, 0880, 0680, 0680, 0660, 0660 },
+	{ 0940, 0940, 0720, 0720, 0700, 0700 },
 	{ 0940, 0940, -001, 0780, 0780, 0780 },
 	{ -001, -001, -001, -001, 0780, 0780 }
 };
@@ -89,13 +89,24 @@ function shooter:updateVelocity(x, y, vx, vy)
 	local tx = math.floor(x / 24);
 	local ty = math.floor(y / 24);
 
-	--local v1 = { tx, ty };
-	--local v2 = { vx, vy };
+	local v1 = { tx, ty };
+	local v2 = { vx, vy };
 
-	--vec2.normalize(v1);
-	--vec2.normalize(v2);
+	local len = 0;
+	local dot = 0;
+	if (vx ~= nil) then
+		len = v2[1] * v2[1] + v2[2] * v2[2];
 
-	--dashboard.addDataf("dot", vec2.dot(v1, v2));
+		if (len > 20 * 20) then
+			vec2.normalize(v1);
+			vec2.normalize(v2);
+			dot = vec2.dot(v1, v2);
+			dot = -dot;
+		end
+		dashboard.addDataf("dot", dot);
+		dashboard.addDataf("vel", len);
+	end
+
 
 	if (tx < 0 or tx >= 6 or ty < 0 or ty >= 6) then
 		if (self.onField == true) then
@@ -110,23 +121,30 @@ function shooter:updateVelocity(x, y, vx, vy)
 	if (vel == -1) then
 		return;
 	end
+
+	local velMod = 0;
+	if (vx ~= nil) then
+		if (dot > 0) then
+			velMod = vel * dot * 0.125;
+		else
+			velMod = vel * dot * 0.05;
+		end
+	end
+
+	if (math.abs(dot) > 0.2) then
+		vel = vel + velMod;
+	end
+
 	if (not self.running) then
 		vel = 0;
 	end
 	if (vel ~= self.vel) then
-		if (vel > 1000) then
-			if (self.running) then
+		if (self.running) then
+			if (vel > 1000) then
 				intake.speed = 0.9;
-				intake:forward(0.9);
-			end
-			self.motorL:setPidf(320, 3, 0, 0);
-			self.motorR:setPidf(320, 3, 0, 0);
-		else
-			if (self.running) then
+			else
 				intake.speed = 1.0;
 			end
-			self.motorL:setPidf(320, 3, 0, 0);
-			self.motorR:setPidf(320, 3, 0, 0);
 		end
 		self:start(vel);
 	end

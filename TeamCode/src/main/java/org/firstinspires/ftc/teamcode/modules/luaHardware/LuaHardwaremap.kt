@@ -5,13 +5,16 @@ import com.minerkid08.dynamicopmodeloader.LuaError
 import com.minerkid08.dynamicopmodeloader.LuaType
 import com.minerkid08.dynamicopmodeloader.OpmodeLoaderFunction
 import com.qualcomm.hardware.gobilda.GoBildaPinpointDriver
+import com.qualcomm.hardware.rev.RevTouchSensor
 import com.qualcomm.hardware.sparkfun.SparkFunOTOS
 import com.qualcomm.robotcore.hardware.CRServo
+import com.qualcomm.robotcore.hardware.DcMotor
 import com.qualcomm.robotcore.hardware.DcMotorEx
 import com.qualcomm.robotcore.hardware.DcMotorSimple
 import com.qualcomm.robotcore.hardware.HardwareMap
 import com.qualcomm.robotcore.hardware.IMU
 import com.qualcomm.robotcore.hardware.Servo
+import com.qualcomm.robotcore.hardware.TouchSensor
 import org.firstinspires.ftc.teamcode.LightStripDriver
 
 class LuaHardwaremap(private val hardwareMap: HardwareMap)
@@ -29,9 +32,14 @@ class LuaHardwaremap(private val hardwareMap: HardwareMap)
 			builder.addClassAsClass(LuaPinpoint::class.java);
 			builder.addClassAsClass(LuaChub::class.java);
 
+			builder.createClass("TouchSensor");
+			builder.addClassFunction(RevTouchSensor::class.java, "isPressed", LuaType.Bool);
+
 			builder.pushTable("hardwareMap");
 			builder.addObjectAsGlobal(LuaHardwaremap(hardwareMap));
 			builder.popTable();
+
+			//buildDcMotor(builder);
 		}
 	}
 
@@ -99,6 +107,8 @@ class LuaHardwaremap(private val hardwareMap: HardwareMap)
 	{
 		return hardwareMap.get(LightStripDriver::class.java, "lightStrip") as LightStripDriver;
 	}
+	@OpmodeLoaderFunction
+	fun beamBreakGet(name: String): TouchSensor = hardwareMap.get(TouchSensor::class.java, name);
 }
 
 class LuaCrServo(private val m: CRServo)

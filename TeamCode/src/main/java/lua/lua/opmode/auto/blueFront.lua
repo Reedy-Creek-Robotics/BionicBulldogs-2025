@@ -47,14 +47,14 @@ local config = {
 					:constantHeading(180)
 					:add(path.line(38, 87, 23.25, 87))
 					:constantHeading(180)
-					:add(path.line(23.25, 87, 23.25, 78.0))
+					:add(path.line(23.25, 87, 23.25, 79))
 					:constantHeading(180)
 					:build()
 				),
 				WaitForFirstAction.new(
 					PathAction.new(
 						path.chain()
-						:add(path.line(23.25, 78.0, 16.50, 78.0))
+						:add(path.line(23.25, 79, 16.50, 79))
 						:constantHeading(180)
 						:build()
 					),
@@ -63,7 +63,7 @@ local config = {
 				Delay.new(1.0),
 				PathAction.new(
 					path.chain()
-					:add(path.line(17.50, 77.50, 54, 90))
+					:add(path.line(16.50, 79, 54, 90))
 					:constantHeading(180)
 					:build()
 				),

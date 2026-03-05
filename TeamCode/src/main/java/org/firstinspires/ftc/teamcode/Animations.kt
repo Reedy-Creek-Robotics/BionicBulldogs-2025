@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode
 
 import com.qualcomm.robotcore.hardware.I2cDeviceSynch
+import com.qualcomm.robotcore.util.TypeConversion
 
 class Animations
 {
@@ -11,6 +12,7 @@ class Animations
 		var endInd: Int = 0;
 
 		abstract fun save(driver: I2cDeviceSynch, slot: LightStripDriver.Register);
+		abstract fun load(driver: I2cDeviceSynch, slot: LightStripDriver.Register);
 	}
 
 	class SolidColor : AnimationBase()
@@ -23,6 +25,14 @@ class Animations
 			writei8(driver, slot, 2, intToByte(startInd));
 			writei8(driver, slot, 3, intToByte(endInd));
 			writeColor(driver, slot, 4, color);
+		}
+
+		override fun load(driver: I2cDeviceSynch, slot: LightStripDriver.Register)
+		{
+			brightness = TypeConversion.unsignedByteToInt(readi8(driver, slot, 1));
+			startInd = TypeConversion.unsignedByteToInt(readi8(driver, slot, 1));
+			endInd = TypeConversion.unsignedByteToInt(readi8(driver, slot, 1));
+			//color = readColor(driver, slot, 4);
 		}
 	}
 
@@ -42,6 +52,10 @@ class Animations
 			writeColor(driver, slot, 5, secondaryColor);
 			writei32(driver, slot, 6, period);
 		}
+
+		override fun load(driver: I2cDeviceSynch, slot: LightStripDriver.Register)
+		{
+		}
 	}
 
 	class Pulsing : AnimationBase()
@@ -58,6 +72,10 @@ class Animations
 			writeColor(driver, slot, 4, primaryColor);
 			writeColor(driver, slot, 5, secondaryColor);
 			writei32(driver, slot, 6, period);
+		}
+
+		override fun load(driver: I2cDeviceSynch, slot: LightStripDriver.Register)
+		{
 		}
 	}
 
@@ -79,6 +97,10 @@ class Animations
 			writef32(driver, slot, 6, speed);
 			writei8(driver, slot, 7, intToByte(direction));
 			writei8(driver, slot, 9, intToByte(repeatAfter));
+		}
+
+		override fun load(driver: I2cDeviceSynch, slot: LightStripDriver.Register)
+		{
 		}
 	}
 }

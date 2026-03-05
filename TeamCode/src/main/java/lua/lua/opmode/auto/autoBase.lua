@@ -33,6 +33,8 @@ if (DISABLE_ROBOT ~= nil) then
 	end
 end
 
+local prevLedState = 0;
+
 ---@type Action
 action = nil;
 
@@ -49,6 +51,14 @@ local turretTarget = nil;
 local turretMotor = nil;
 
 function autoUpdate(dt, et)
+	local ledState = 1 + counter.count;
+
+	if (ledState ~= prevLedState) then
+		led:displayArtBoard(ledState);
+		prevLedState = ledState;
+	end
+	counter:updatLeds(et);
+
 	local tps = 1 / dt;
 	robotPane:addData("tps", tps);
 	robotPane:addData("x", follower.getPositionX());
@@ -84,7 +94,7 @@ function autoUpdate(dt, et)
 	turret.update(angle);
 
 	local dist = dx * dx + dy * dy;
---	shooter:updateVelocity(x, y, dist);
+	--	shooter:updateVelocity(x, y, dist);
 
 	logFile:write(("%7.2f | x: %6.2f, y: %6.2f, h: %6.4f, curPos: %5d, tarPos: %5d, angle: %6.2f\n"):format(et, x, y, h,
 		turretMotor:getCurrentPosition(), turretMotor:getTargetPosition(), angle
@@ -105,8 +115,9 @@ function autoStart()
 	shooter.running = true;
 	--turret.reset();
 	shooter:start(0);
-	shooter:updateVelocity(follower.getPositionX(), follower.getPositionY(), 0);
+	shooter:updateVelocity(follower.getPositionX(), follower.getPositionY());
 	action:start(0);
+	led:displayArtBoard(0);
 end
 
 function autoStop()
@@ -122,34 +133,34 @@ local genPathFuncs = {
 	---@param config AutoPaths
 	---@return Action
 	[3] = function (config)
-		return SeqAction.new(config.preload(), config.park());
+		return SeqAction.new(config.preload(), config.park(), SleepAction.new(2));
 	end,
 	---@param config AutoPaths
 	---@return Action
 	[6] = function (config)
-		return SeqAction.new(config.preload(), config.line1.noGate(), config.park());
+		return SeqAction.new(config.preload(), config.line1.noGate(), config.park(), SleepAction.new(2));
 	end,
 	---@param config AutoPaths
 	---@return Action
 	[9] = function (config)
-		return SeqAction.new(config.preload(), config.line1.noGate(), config.line2.noGate(), config.park());
+		return SeqAction.new(config.preload(), config.line1.gate(), config.line2.noGate(), config.park(), SleepAction.new(2));
 	end,
 	---@param config AutoPaths
 	---@return Action
 	[12] = function (config)
-		return SeqAction.new(config.preload(), config.line1.gate(), config.line2.noGate(), config.line3(), config.park());
+		return SeqAction.new(config.preload(), config.line1.gate(), config.line2.noGate(), config.line3(), config.park(), SleepAction.new(2));
 	end,
 	---@param config AutoPaths
 	---@return Action
 	[15] = function (config)
 		return SeqAction.new(config.preload(), config.line1.noGate(), config.line2.gate(), config.line3(), config.line4(),
-			config.park());
+			config.park(), SleepAction.new(2));
 	end,
 	partner = function (config)
 		if (config.start.y >= 24) then
-			return SeqAction.new(config.preload(), config.line1.gate(), config.line2.gate(), config.park());
+			return SeqAction.new(config.preload(), config.line1.gate(), config.line2.gate(), config.park(), SleepAction.new(2));
 		end
-		return SeqAction.new(config.preload(), config.line2.noGate(), config.line3(), config.line3(), config.park());
+		return SeqAction.new(config.preload(), config.line2.noGate(), config.line3(), config.line3(), config.line3(), config.park(), SleepAction.new(2));
 	end
 };
 
@@ -161,6 +172,7 @@ function addConfig(name, prefix, config)
 		name = name .. tostring(prefix),
 		type = OpmodeType.Auto,
 		init = function ()
+			led = hardwareMap.ledGet();
 			chub = hardwareMap.chubGet();
 			--drive = HDrive.new(false);
 			require("modules.telemetry");
@@ -171,6 +183,8 @@ function addConfig(name, prefix, config)
 			intake:init();
 			turret.init(true);
 			turretMotor = turret.getMotor();
+			led:displayArtBoard(0);
+			counter:init();
 		end,
 		start = autoStart,
 		update = autoUpdate,

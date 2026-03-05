@@ -60,6 +60,9 @@ class LuaGamepad(private val gamepad: Gamepad)
 			builder.addGlobalFunction("getShare2", LuaType.Bool);
 			builder.addGlobalFunction("getTouchpad2", LuaType.Bool);
 			builder.addGlobalFunction("getPs2", LuaType.Bool);
+
+			builder.addGlobalFunction("vibrate", LuaType.Void, listOf(LuaType.Double, LuaType.Double,
+				LuaType.Int));
 			builder.popTable();
 		}
 	}
@@ -108,4 +111,9 @@ class LuaGamepad(private val gamepad: Gamepad)
 	fun getShare2() = gamepad.shareWasPressed();
 	fun getTouchpad2() = gamepad.touchpadWasPressed();
 	fun getPs2() = gamepad.psWasPressed();
+
+	fun vibrate(s1: Double, s2: Double, duration: Int)
+	{
+		gamepad.rumble(s1, s2, duration);
+	}
 }

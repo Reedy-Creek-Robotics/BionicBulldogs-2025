@@ -40,8 +40,11 @@ open class OpmodeloaderOpmodeBase(private val name: String) : LinearOpMode()
 		opmodeloader.init();
 		opmodeloader.loadOpmode(name);
 
+		sleep(1000);
+
 		telemetry.addLine("initalised");
 		telemetry.update();
+
 		waitForStart();
 
 		if (!opModeIsActive())

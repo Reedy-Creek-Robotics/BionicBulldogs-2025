@@ -57,11 +57,11 @@ class LuaPinpoint(val pinpoint: GoBildaPinpointDriver)
 	}
 
 	@OpmodeLoaderFunction
-	fun getVelX(x: Double) = pinpoint.getVelX(DistanceUnit.INCH);
+	fun getVelX() = pinpoint.getVelX(DistanceUnit.INCH);
 
 	@OpmodeLoaderFunction
-	fun getVelY(x: Double) = pinpoint.getVelY(DistanceUnit.INCH);
+	fun getVelY() = pinpoint.getVelY(DistanceUnit.INCH);
 
 	@OpmodeLoaderFunction
-	fun getVelH(x: Double) = pinpoint.getHeadingVelocity(UnnormalizedAngleUnit.RADIANS);
+	fun getVelH() = pinpoint.getHeadingVelocity(UnnormalizedAngleUnit.RADIANS);
 }

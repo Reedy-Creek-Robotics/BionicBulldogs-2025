@@ -38,16 +38,12 @@ object LuaDefines
 		builder.addStaticClassAsGlobal(LuaDefines::class.java);
 
 		//builder.createClass("Direction");
-		//builder.createClass("RunMode");
-		//builder.createClass("ZeroPowerBehavior");
-		//builder.createClass("CurrentUnit");
-		builder.createClass("PIDFCoefficients");
-
 		//builder.pushTable("direction");
 		//builder.pushValueo("forward", DcMotorSimple.Direction.FORWARD);
 		//builder.pushValueo("reverse", DcMotorSimple.Direction.REVERSE);
 		//builder.popTable();
 
+		//builder.createClass("RunMode");
 		//builder.pushTable("runMode");
 		//builder.pushValueo("runWithoutEncoder", DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 		//builder.pushValueo("runUsingEncoder", DcMotor.RunMode.RUN_USING_ENCODER);
@@ -55,15 +51,19 @@ object LuaDefines
 		//builder.pushValueo("stopAndResetEncoder", DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 		//builder.popTable();
 
+		//builder.createClass("ZeroPowerBehavior");
 		//builder.pushTable("zeroPowerBehavior");
 		//builder.pushValueo("brake", DcMotor.ZeroPowerBehavior.BRAKE);
 		//builder.pushValueo("float", DcMotor.ZeroPowerBehavior.FLOAT);
 		//builder.popTable();
 
+		//builder.createClass("CurrentUnit");
 		//builder.pushTable("currentUnit");
 		//builder.pushValueo("amps", CurrentUnit.AMPS);
 		//builder.pushValueo("milliamps", CurrentUnit.MILLIAMPS);
 		//builder.popTable();
+
+		builder.createClass("PIDFCoefficients");
 	}
 
 	@JvmStatic
