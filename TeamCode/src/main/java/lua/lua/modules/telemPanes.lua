@@ -36,6 +36,7 @@ TelemPaneSplitDir = {
 ---@field h integer
 ---@field lines TelemPaneLine[]
 ---@field rootPane TelemPane | TelemPaneContainer
+---@field buffer Buffer2d
 TelemPaneManager = {
 	w = 37,
 	h = 19,
@@ -46,6 +47,7 @@ TelemPaneManager = {
 function TelemPaneManager:reset(label)
 	self.panes = {};
 	self.rootPane = TelemPane.new(1, 0, self.w - 1, self.h - 1, label or "main");
+	self.buffer = newBuf(self.w, self.h);
 end
 
 function TelemPaneManager:generate()
@@ -103,9 +105,11 @@ function TelemPaneManager:split(pane, container)
 end
 
 function TelemPaneManager:update()
+	self.buffer:fill(' ');
 	for y = 0, self.h - 2 do
-		local s = "|" .. self:getLine(self.rootPane, y);
-		telemetry.addLine(s);
+		self.buffer:write(0, y, '|');
+		local s = self:getLine(self.rootPane, y);
+		telemetry.addLine(self.buffer:readLine(y));
 	end
 	telemetry.addLine("|" .. string.rep("-", self.w - 2) .. "|");
 	telemetry.update();
@@ -123,25 +127,24 @@ function TelemPaneManager:getLine(container, y)
 			c = container.b;
 		end
 		if (c.label == nil) then
-			return self:getLine(c, y);
+			self:getLine(c, y);
 		else
-			return c:getLine(y);
+			c:getLine(self.buffer, y);
 		end
 	else
 		local l = nil;
 		local a = container.a;
 		local b = container.b;
 		if (a.label == nil) then
-			l = self:getLine(a, y);
+			self:getLine(a, y);
 		else
-			l = a:getLine(y);
+			a:getLine(self.buffer, y);
 		end
 		if (b.label == nil) then
-			l = l .. self:getLine(b, y);
+			self:getLine(b, y);
 		else
-			l = l .. b:getLine(y);
+			b:getLine(self.buffer, y);
 		end
-		return l;
 	end
 end
 
@@ -228,24 +231,31 @@ function TelemPane:hsplit(label, newWidth)
 	return newPane;
 end
 
+---@param buf Buffer2d
 ---@param y integer
----@return string
-function TelemPane:getLine(y)
+function TelemPane:getLine(buf, y)
 	if (y == self.y) then
-		return "-" .. self.label .. string.rep("-", self.w - self.label:len() - 2) .. "|";
+		if(self.header == nil) then
+			self.header = "-" .. self.label .. string.rep("-", self.w - self.label:len() - 2) .. "|";
+		end
+		buf:write(self.x, y, self.header);
 	end
 	---@type string
 	local data = self.data[y - self.y];
 	if (data == nil) then
-		return string.rep(" ", self.w - 1) .. "|";
+		buf:write(self.x + self.w - 1, y, '|');
+		return;
+		--return string.rep(" ", self.w - 1) .. "|";
 	end
 	if (self.autoReset) then
 		self.data[y - self.y] = nil;
 	end
 	if (data:len() >= self.w - 1) then
-		return data:sub(0, self.w - 1) .. "|";
+		buf:write(self.x, y, data:sub(0, self.w - 1));
+	else
+		buf:write(self.x, y, data);
 	end
-	return data .. string.rep(" ", self.w - data:len() - 1) .. "|";
+	buf:write(self.x + self.w - 1, y, "|");
 end
 
 ---@param line string

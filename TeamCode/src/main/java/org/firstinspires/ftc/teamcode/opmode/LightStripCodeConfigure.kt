@@ -34,6 +34,7 @@ class LightStripCodeConfigure : LinearOpMode()
 		colors['W'] = Color(255, 255, 255);
 		colors['P'] = Color(255, 0, 255);
 		colors['G'] = Color(0, 255, 0);
+		colors['R'] = Color(255, 0, 0);
 		var str = "NNNNNNNNNNNN_NNNNNNNNNNNN";
 		setArtBoard(driver, str, colors, 1);
 		str = "PPPPNNNNNNNN_NNNNNNNNPPPP";
@@ -44,6 +45,8 @@ class LightStripCodeConfigure : LinearOpMode()
 		setArtBoard(driver, str, colors, 4);
 		str = "WWWWWWWWWWWW_WWWWWWWWWWWW";
 		setArtBoard(driver, str, colors, 5);
+		str = "RRRRRRRRRRRR_RRRRRRRRRRRR";
+		setArtBoard(driver, str, colors, 6);
 		sleep(100);
 		driver.displayArtBoard(0);
 	}
@@ -51,10 +54,10 @@ class LightStripCodeConfigure : LinearOpMode()
 	fun setArtBoard(driver: LightStripDriver, str: String, colors: Map<Char, Color>, artBoard: Int)
 	{
 		driver.clearAnimations();
-		sleep(100);
+		sleep(200);
 		setAnimations(driver, str, colors);
 		driver.saveArtBoard(artBoard);
-		sleep(100);
+		sleep(200);
 		driver.displayArtBoard(artBoard);
 	}
 

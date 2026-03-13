@@ -18,7 +18,6 @@ local shooterAutomatic = true;
 
 ---@type integer
 local turretOffset = 0;
-local turretOffset2 = 0;
 
 local fileId = os.time();
 
@@ -31,13 +30,15 @@ local logVel = false;
 
 local prevLedState = 0;
 
+local hoodPos = 0;
+
 local function telopInit()
 	led = hardwareMap.ledGet();
 	led:displayArtBoard(0);
 	counter:init();
 	imu = hardwareMap.imuGet();
 	chub = hardwareMap.chubGet();
-	limelight = hardwareMap.limelightGet();
+	hood = hardwareMap.servoGet("hood");
 	logFile = io.open(DATADIR .. "telop" .. tostring(fileId), "w");
 	logFile2 = io.open(DATADIR .. "telop-turret" .. tostring(fileId), "w");
 	require("modules.telemetry");
@@ -120,6 +121,7 @@ local function telopStartBlue()
 	shooter:start(shooter.vel);
 	--turret.reset();
 	led:displayArtBoard(1);
+	hood:setPosition(0);
 end
 
 local function telopStartRed()
@@ -141,6 +143,7 @@ local function telopStartRed()
 	drive.pinpoint:setHeading(startPos.z);
 	--turret.reset();
 	led:displayArtBoard(1);
+	hood:setPosition(0);
 end
 
 local function telopUpdate(dt, et)
@@ -202,7 +205,7 @@ local function telopUpdate(dt, et)
 		da = 0;
 	end
 
-	angle = angle + turretOffset + turretOffset2 - da * (4 / 8) - vh * (5 / 32);
+	angle = angle + turretOffset - da * (4 / 8) - vh * (5 / 32);
 
 	if (angle > 180) then
 		angle = angle - 360;
@@ -255,14 +258,12 @@ local function telopUpdate(dt, et)
 	end
 
 	if (gamepad.getDpadLeft2()) then
-		shooterAutomatic = false;
-		--shooter.vel = shooterVelocity[1];
-		--shooter:start(shooter.vel);
+		hoodPos = hoodPos - 0.05;
+		hood:setPosition(hoodPos);
 	end
 	if (gamepad.getDpadRight2()) then
-		shooterAutomatic = false;
-		--shooter.vel = shooterVelocity[2];
-		--shooter:start(shooter.vel);
+		hoodPos = hoodPos + 0.05;
+		hood:setPosition(hoodPos);
 	end
 
 	--Run/don't run specifically the shooter
@@ -278,26 +279,9 @@ local function telopUpdate(dt, et)
 
 	--Start intake and shooter
 	if (gamepad.getCross2()) then
-		if (y < 48) then
-			limelight:update();
-			local tag = limelight:getTag(24);
-			if (tag ~= nil) then
-				turretOffset2 = turretOffset2 - tag:tx();
-			end
-			turretOffset2 = turretOffset2 - 3;
-		end
-		counter.count = 5;
 		intake:forward();
 		logVel = true;
 		shooter:shootNum(et, 1);
-	end
-
-	if (gamepad.getTouchpad2()) then
-		limelight:update();
-		local tag = limelight:getTag(24);
-		if (tag ~= nil) then
-			turretOffset2 = turretOffset2 - tag:tx() - 3;
-		end
 	end
 
 	local ledState = 1 + counter.count;
@@ -344,20 +328,11 @@ local function telopUpdate(dt, et)
 	if (shooter:update(et)) then
 		logVel = false;
 		counter:reset();
-		if (y < 48) then
-			turretOffset2 = turretOffset2 + 3;
-		end
-	end
-	if(y > 48) then
-		turretOffset2 = 0;
-	elseif(turretOffset2 == 0) then
-		turretOffset2 = 3;
 	end
 
 	local tps = 1 / dt;
 
 	counter:update(et);
-	--counter:updatLeds(et);
 
 	if (logInterval > logTimer) then
 		robotPane:addData("tps", tps);
@@ -368,6 +343,7 @@ local function telopUpdate(dt, et)
 		robotPane:addData("angle", angle + turretOffset);
 		robotPane:addData("offset", turretOffset);
 		robotPane:addData("ball count", counter.count);
+		robotPane:addData("hood", hoodPos);
 
 		shooter:telem();
 
@@ -384,7 +360,6 @@ local function telopUpdate(dt, et)
 
 		TelemPaneManager:update();
 	end
-
 	dashboard.addDataf("tps", tps);
 	dashboard.addDataf("leftPower", shooter.motorL:getPower());
 	dashboard.addDataf("leftVel", shooter.motorL:getVelocity());
@@ -407,7 +382,7 @@ end
 
 ---@type Opmode
 local telopRed = {
-	name = "mainTelopRed",
+	name = "hoodShooterRed",
 	type = OpmodeType.Telop,
 	init = telopInit,
 	start = telopStartRed,
@@ -417,7 +392,7 @@ local telopRed = {
 
 ---@type Opmode
 local telopBlue = {
-	name = "mainTelopBlue",
+	name = "hoodShooterBlue",
 	type = OpmodeType.Telop,
 	init = telopInit,
 	start = telopStartBlue,

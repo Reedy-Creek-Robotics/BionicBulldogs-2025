@@ -179,4 +179,15 @@ function log.w(tag, value) end
 ---@param value string
 function log.e(tag, value) end
 
+---@class Buffer2d
+---@field write fun(self: Buffer2d, x: integer, y: integer, str: string)
+---@field readLine fun(self: Buffer2d, y: integer)
+---@field fill fun(self: Buffer2d, str: string)
+---@field free fun(self: Buffer2d)
+
+---@param w integer
+---@param h integer
+---@return Buffer2d
+function newBuf(w, h) end
+
 require("pedro");

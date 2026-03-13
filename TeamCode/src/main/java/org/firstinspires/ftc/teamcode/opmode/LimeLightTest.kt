@@ -18,6 +18,8 @@ class LimeLightTest : LinearOpMode()
 		while(opModeIsActive())
 		{
 			val res = limelight.latestResult;
+			val tags = res.fiducialResults;
+			tags[0].fiducialId
 			telemetry.addData("latency", res.targetingLatency);
 			telemetry.update();
 		}

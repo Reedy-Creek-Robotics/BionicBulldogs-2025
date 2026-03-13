@@ -8,7 +8,6 @@ import com.qualcomm.hardware.gobilda.GoBildaPinpointDriver
 import com.qualcomm.hardware.rev.RevTouchSensor
 import com.qualcomm.hardware.sparkfun.SparkFunOTOS
 import com.qualcomm.robotcore.hardware.CRServo
-import com.qualcomm.robotcore.hardware.DcMotor
 import com.qualcomm.robotcore.hardware.DcMotorEx
 import com.qualcomm.robotcore.hardware.DcMotorSimple
 import com.qualcomm.robotcore.hardware.HardwareMap
@@ -31,6 +30,8 @@ class LuaHardwaremap(private val hardwareMap: HardwareMap)
 			builder.addClassAsClass(LuaSparkFunImu::class.java);
 			builder.addClassAsClass(LuaPinpoint::class.java);
 			builder.addClassAsClass(LuaChub::class.java);
+			builder.addClassAsClass(LuaLimelight::class.java);
+			builder.addClassAsClass(LimelightTag::class.java);
 
 			builder.createClass("TouchSensor");
 			builder.addClassFunction(RevTouchSensor::class.java, "isPressed", LuaType.Bool);
@@ -109,6 +110,9 @@ class LuaHardwaremap(private val hardwareMap: HardwareMap)
 	}
 	@OpmodeLoaderFunction
 	fun beamBreakGet(name: String): TouchSensor = hardwareMap.get(TouchSensor::class.java, name);
+
+	@OpmodeLoaderFunction
+	fun limelightGet() = LuaLimelight(hardwareMap);
 }
 
 class LuaCrServo(private val m: CRServo)

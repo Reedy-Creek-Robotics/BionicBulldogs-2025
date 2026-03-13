@@ -9,8 +9,10 @@ function vec2.normalize(v)
 	end
 	local len = math.sqrt(v[1] * v[1] + v[2] * v[2]);
 
-	v[1] = v[1] / len;
-	v[2] = v[2] / len;
+	local f = 1 / len;
+
+	v[1] = v[1] * f;
+	v[2] = v[2] * f;
 end
 
 ---@param a vec2

@@ -18,7 +18,6 @@ class LuaDcMotor(private val m: DcMotor)
 	@OpmodeLoaderFunction
 	fun setPower(power: Double)
 	{
-		Log.d("test", "motor set power");
 		m.power = power;
 	}
 
@@ -84,7 +83,6 @@ class LuaDcMotorEx(private val m: DcMotorEx)
 	@OpmodeLoaderFunction
 	fun setPower(power: Double)
 	{
-		Log.d("test", "motor set power");
 		m.power = power;
 	}
 

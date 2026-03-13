@@ -103,8 +103,6 @@ function shooter:updateVelocity(x, y, vx, vy)
 			dot = vec2.dot(v1, v2);
 			dot = -dot;
 		end
-		dashboard.addDataf("dot", dot);
-		dashboard.addDataf("vel", len);
 	end
 
 

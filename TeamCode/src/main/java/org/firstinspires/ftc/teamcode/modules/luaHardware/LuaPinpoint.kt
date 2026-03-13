@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.modules.luaHardware
 
+import com.minerkid08.dynamicopmodeloader.LuaError
 import com.minerkid08.dynamicopmodeloader.OpmodeLoaderFunction
 import com.qualcomm.hardware.gobilda.GoBildaPinpointDriver
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit
@@ -20,7 +21,7 @@ class LuaPinpoint(val pinpoint: GoBildaPinpointDriver)
 		pinpoint.resetPosAndIMU();
 	}
 
-	private lateinit var pos: Pose2D;
+	private var pos: Pose2D? = null;
 
 	@OpmodeLoaderFunction
 	fun update()
@@ -30,13 +31,28 @@ class LuaPinpoint(val pinpoint: GoBildaPinpointDriver)
 	}
 
 	@OpmodeLoaderFunction
-	fun getHeading() = pos.getHeading(AngleUnit.RADIANS);
+	fun getHeading(): Double
+	{
+		if(pos == null)
+			throw LuaError("position is null");
+		return pos!!.getHeading(AngleUnit.RADIANS);
+	}
 
 	@OpmodeLoaderFunction
-	fun getX() = pos.getX(DistanceUnit.INCH);
+	fun getX(): Double
+	{
+		if(pos == null)
+			throw LuaError("position is null");
+		return pos!!.getX(DistanceUnit.INCH);
+	}
 
 	@OpmodeLoaderFunction
-	fun getY() = pos.getY(DistanceUnit.INCH);
+	fun getY(): Double
+	{
+		if(pos == null)
+			throw LuaError("position is null");
+		return pos!!.getY(DistanceUnit.INCH);
+	}
 
 	@OpmodeLoaderFunction
 	fun setHeading(heading: Double)
