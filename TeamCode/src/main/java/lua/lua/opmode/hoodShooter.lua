@@ -19,6 +19,9 @@ local shooterAutomatic = true;
 ---@type integer
 local turretOffset = 0;
 
+---@type integer
+local shooterVel = -1000;
+
 local fileId = os.time();
 
 ---@type Imu
@@ -239,14 +242,16 @@ local function telopUpdate(dt, et)
 	end
 
 	if (gamepad.getDpadUp2()) then
-		turretOffset = turretOffset + 1;
-		logFile:write(("%7.2f | x: %6.2f, y: %6.2f, h: %6.4f, angle: %6.2f, offset: %f\n"):format(et, x, y, h, angle,
-			turretOffset));
+		shooterVel = shooterVel - 20;
+		if(shooter.running) then
+			shooter:start(shooterVel);
+		end
 	end
 	if (gamepad.getDpadDown2()) then
-		turretOffset = turretOffset - 1;
-		logFile:write(("%7.2f | x: %6.2f, y: %6.2f, h: %6.4f, angle: %6.2f, offset: %f\n"):format(et, x, y, h, angle,
-			turretOffset));
+		shooterVel = shooterVel + 20;
+		if(shooter.running) then
+			shooter:start(shooterVel);
+		end
 	end
 
 	--if (gamepad.getTouchpad2()) then
@@ -268,7 +273,7 @@ local function telopUpdate(dt, et)
 
 	--Run/don't run specifically the shooter
 	if (gamepad.getCircle2()) then
-		shooter:start(shooter.vel);
+		shooter:start(shooterVel);
 		shooterAutomatic = true;
 		shooter.running = true;
 	end
@@ -290,8 +295,6 @@ local function telopUpdate(dt, et)
 		led:displayArtBoard(ledState);
 		prevLedState = ledState;
 	end
-
-	shooter:updateVelocity(x, y, drive.pinpoint:getVelX(), drive.pinpoint:getVelY());
 
 	if (gamepad.getStart()) then
 		drive.pinpoint:setPosX(initPos.x);

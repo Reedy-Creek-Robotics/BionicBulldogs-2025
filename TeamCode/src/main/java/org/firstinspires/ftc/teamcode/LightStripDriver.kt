@@ -168,10 +168,11 @@ class LightStripDriver(deviceClient: I2cDeviceSynch, isOwned: Boolean) :
 		val animId = readi8(deviceClient, slot, 0);
 		val anim = when (animId)
 		{
-			intToByte(AnimationEnum.SolidColor.id) -> Animations.SolidColor();
-			intToByte(AnimationEnum.Blinking.id) -> Animations.Blinking();
-			intToByte(AnimationEnum.Pulsing.id) -> Animations.Pulsing();
-			else -> error("invalid anim id");
+			intToByte(AnimationEnum.SolidColor.id)   -> Animations.SolidColor();
+			intToByte(AnimationEnum.Blinking.id)     -> Animations.Blinking();
+			intToByte(AnimationEnum.Pulsing.id)      -> Animations.Pulsing();
+			intToByte(AnimationEnum.PoliceLights.id) -> Animations.PoliceLights();
+			else                                     -> error("invalid anim id");
 		}
 		anim.load(deviceClient, slot);
 		return anim;
@@ -245,11 +246,12 @@ class LightStripDriver(deviceClient: I2cDeviceSynch, isOwned: Boolean) :
 	{
 		return when (animation)
 		{
-			is Animations.SolidColor -> AnimationEnum.SolidColor;
-			is Animations.Blinking   -> AnimationEnum.Blinking;
-			is Animations.Pulsing    -> AnimationEnum.Pulsing;
-			is Animations.Rainbow    -> AnimationEnum.Rainbow;
-			else                     -> AnimationEnum.SolidColor;
+			is Animations.SolidColor   -> AnimationEnum.SolidColor;
+			is Animations.Blinking     -> AnimationEnum.Blinking;
+			is Animations.Pulsing      -> AnimationEnum.Pulsing;
+			is Animations.Rainbow      -> AnimationEnum.Rainbow;
+			is Animations.PoliceLights -> AnimationEnum.PoliceLights;
+			else                       -> AnimationEnum.SolidColor;
 		}
 	}
 

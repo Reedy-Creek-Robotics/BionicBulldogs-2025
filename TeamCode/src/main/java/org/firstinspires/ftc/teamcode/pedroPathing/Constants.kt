@@ -28,8 +28,10 @@ object Constants
 		.rightFrontMotorDirection(DcMotorSimple.Direction.FORWARD)
 		.leftRearMotorDirection(DcMotorSimple.Direction.REVERSE)
 		.rightRearMotorDirection(DcMotorSimple.Direction.FORWARD)
-		.xVelocity(76.9)
-		.yVelocity(57.4);
+		.xVelocity(76.9 * 1.5)
+		.yVelocity(57.4 * 1.5);
+		/*.xVelocity(76.9)
+		.yVelocity(57.4);*/
 
 
 	val localizerConstants: PinpointConstants = PinpointConstants()

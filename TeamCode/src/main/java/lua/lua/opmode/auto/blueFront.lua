@@ -7,7 +7,7 @@ local config = {
 	preload = function ()
 		return SeqAction.newl(
 			"preload",
-		  RobotActions.ShooterStart.new(680),
+			RobotActions.ShooterStart.new(680),
 			PathAction.new(
 				path.chain()
 				:add(path.line(32, 136, 54, 90))
@@ -168,6 +168,26 @@ local config = {
 			),
 			RobotActions.Shoot.new(1)
 		)
+	end,
+	cycle = function ()
+		return SeqAction.newl(
+			"cycle",
+			PathAction.new(
+				path.chain()
+				:add(path.curve3(54, 90, 54, 64.5, 12.5, 64.5))
+				:linearHeading(180, 180 - 29.5)
+				:build()
+			),
+			Delay.new(2.0),
+			RobotActions.IntakeStop.new(),
+			PathAction.new(
+				path.chain()
+				:add(path.curve3(12.5, 64.5, 54, 64.5, 54.00, 90.00))
+				:linearHeading(180 - 29.5, 180)
+				:build()
+			),
+			RobotActions.Shoot.new(1)
+		);
 	end,
 	park = function ()
 		return PathAction.new(

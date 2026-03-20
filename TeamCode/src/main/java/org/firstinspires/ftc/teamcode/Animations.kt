@@ -103,4 +103,29 @@ class Animations
 		{
 		}
 	}
+
+	class PoliceLights : AnimationBase()
+	{
+		var period = 1000;
+		var redColor = Color(255, 0, 0);
+		var whiteColor = Color(255, 255, 255);
+		var blueColor = Color(0, 0, 255);
+		var style = 0;
+
+		override fun save(driver: I2cDeviceSynch, slot: LightStripDriver.Register)
+		{
+			writei8(driver, slot, 1, intToByte(brightness));
+			writei8(driver, slot, 2, intToByte(startInd));
+			writei8(driver, slot, 3, intToByte(endInd));
+			writei32(driver, slot, 6, period);
+			writeColor(driver, slot, 7, redColor);
+			writeColor(driver, slot, 8, whiteColor);
+			writeColor(driver, slot, 9, blueColor);
+			writei8(driver, slot, 0x0b, intToByte(style));
+		}
+
+		override fun load(driver: I2cDeviceSynch, slot: LightStripDriver.Register)
+		{
+		}
+	}
 }

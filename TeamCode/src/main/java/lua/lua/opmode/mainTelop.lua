@@ -282,9 +282,10 @@ local function telopUpdate(dt, et)
 			limelight:update();
 			local tag = limelight:getTag(24);
 			if (tag ~= nil) then
-				turretOffset2 = turretOffset2 - tag:tx();
+				turretOffset2 = turretOffset2 - tag:tx() - 3;
+			else
+				turretOffset2 = turretOffset2 - 6;
 			end
-			turretOffset2 = turretOffset2 - 3;
 		end
 		counter.count = 5;
 		intake:forward();

@@ -1,6 +1,5 @@
 package org.firstinspires.ftc.teamcode.opmode
 
-import android.R
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp
 import org.firstinspires.ftc.teamcode.Animations
@@ -19,8 +18,13 @@ class LightStripCodeConfigure : LinearOpMode()
 		bootAnim.endInd = 24;
 		bootAnim.brightness = 50;
 		bootAnim.period = 5000;
-		bootAnim.primaryColor = Color(0, 255, 0);
+		bootAnim.primaryColor = Color(0xff, 0xa5, 0x00);
 		bootAnim.secondaryColor = Color(0, 0, 0);
+
+		val police = Animations.PoliceLights();
+		police.startInd = 0;
+		police.endInd = 24;
+
 
 		driver.clearAnimations();
 		sleep(100);
@@ -29,10 +33,16 @@ class LightStripCodeConfigure : LinearOpMode()
 		driver.saveArtBoard(0);
 		sleep(100);
 		driver.enableBootAnimation(0);
+		sleep(100);
+		driver.clearAnimations();
+		sleep(100);
+		driver.saveAnimation(police, 0);
+		sleep(100);
+		driver.saveArtBoard(7);
 
 		val colors = HashMap<Char, Color>();
 		colors['W'] = Color(255, 255, 255);
-		colors['P'] = Color(255, 0, 255);
+		colors['P'] = bootAnim.primaryColor;
 		colors['G'] = Color(0, 255, 0);
 		colors['R'] = Color(255, 0, 0);
 		var str = "NNNNNNNNNNNN_NNNNNNNNNNNN";
