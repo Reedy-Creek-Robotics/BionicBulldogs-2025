@@ -1,28 +1,34 @@
-SeqAction - 22.68
-├─SeqAction(preload) - 3.53
-│ ├─ShooterEnable(840) - 0.00
-│ ├─PathAction(100.00%) - 1.82
-│ └─Shoot(1) - 1.71
-├─SeqAction(line1) - 5.34
-│ ├─PathAction(100.00%) - 1.93
-│ ├─PathAction(100.00%) - 1.86
-│ └─Shoot(1) - 1.55
-├─SeqAction(line2) - 7.19
-│ ├─PathAction(100.00%) - 1.32
-│ ├─PathAction(100.00%) - 1.86
-│ ├─WaitForFirstAction - 0.81
-│ │ ├─PathAction(100.00%) - 0.81
-│ │ └─SleepAction(2.00s) (running) - ?
-│ ├─PathAction(100.00%) - 1.68
-│ └─Shoot(1) - 1.53
-├─SeqAction(line3) - 6.62
-│ ├─PathAction(100.00%) - 2.04
-│ ├─PathAction(100.00%) - 3.04
-│ └─Shoot(1) - 1.53
-├─SeqAction(line4) (running) - ?
-│ ├─PathAction(100.00%) - 2.33
-│ ├─PathAction(100.00%) - 2.47
-│ ├─IntakeStop - 0.05
-│ ├─PathAction(100.00%) (running) - ?
-│ └─Shoot(1) - ?
-└─PathAction(100.00%) - ?
+SeqAction - 25.19
+├─SeqAction(preload) - 3.42
+│ ├─BeamBreakStopIntake(false) - 0.00
+│ ├─ShooterEnable(880) - 0.05
+│ ├─Shoot(1) - 2.80
+│ ├─BeamBreakStopIntake(true) - 0.05
+│ └─SleepAction(0.50s) - 0.51
+├─SeqAction(line2) - 5.80
+│ ├─PathAction(100.00%) - 2.30
+│ ├─PathAction(100.00%) - 1.61
+│ ├─SleepAction(0.50s) - 0.53
+│ └─Shoot(1) - 1.35
+├─SeqAction(line3) - 5.72
+│ ├─PathAction(100.00%) - 2.27
+│ ├─PathAction(100.00%) - 1.65
+│ ├─SleepAction(0.40s) - 0.43
+│ └─Shoot(1) - 1.37
+├─SeqAction(line3) - 5.18
+│ ├─PathAction(100.00%) - 1.75
+│ ├─PathAction(100.00%) - 1.67
+│ ├─SleepAction(0.40s) - 0.41
+│ └─Shoot(1) - 1.35
+├─SeqAction(line3) - 5.06
+│ ├─PathAction(100.00%) - 1.61
+│ ├─PathAction(100.00%) - 1.69
+│ ├─SleepAction(0.40s) - 0.41
+│ └─Shoot(1) - 1.35
+├─SeqAction(line3) (running) - ?
+│ ├─PathAction(100.00%) - 1.54
+│ ├─PathAction(100.00%) - 1.70
+│ ├─SleepAction(0.40s) - 0.43
+│ └─Shoot(1) (running) - ?
+├─PathAction(100.00%) - ?
+└─SleepAction(2.00s) - ?

@@ -18,7 +18,6 @@ local shooterAutomatic = true;
 
 ---@type integer
 local turretOffset = 0;
-local turretOffset2 = 0;
 
 local fileId = os.time();
 
@@ -31,13 +30,12 @@ local logVel = false;
 
 local prevLedState = 0;
 
-local function telopInit()
+function telopInit()
 	led = hardwareMap.ledGet();
 	led:displayArtBoard(0);
 	counter:init();
 	imu = hardwareMap.imuGet();
 	chub = hardwareMap.chubGet();
-	limelight = hardwareMap.limelightGet();
 	logFile = io.open(DATADIR .. "telop" .. tostring(fileId), "w");
 	logFile2 = io.open(DATADIR .. "telop-turret" .. tostring(fileId), "w");
 	require("modules.telemetry");
@@ -100,7 +98,7 @@ local targetPos = nil;
 ---@type vec2
 local targetPos2 = nil;
 
-local function telopStartBlue()
+function telopStartBlue()
 	drive.offset = math.pi2;
 	turret.start();
 	shooter:close();
@@ -122,7 +120,8 @@ local function telopStartBlue()
 	led:displayArtBoard(1);
 end
 
-local function telopStartRed()
+function telopStartRed()
+	print("start");
 	drive.offset = -math.pi2;
 	turret.start();
 	shooter:close();
@@ -141,9 +140,11 @@ local function telopStartRed()
 	drive.pinpoint:setHeading(startPos.z);
 	--turret.reset();
 	led:displayArtBoard(1);
+	print("start done");
 end
 
-local function telopUpdate(dt, et)
+function telopUpdate(dt, et)
+	print("update drive");
 	drive.pinpoint:update();
 
 	local x = drive.pinpoint:getX();
@@ -165,6 +166,7 @@ local function telopUpdate(dt, et)
 	--	dist = bTag:getDist()
 	--end
 
+	print("update turret");
 	local dx = 0;
 	local dy = 0;
 
@@ -202,7 +204,7 @@ local function telopUpdate(dt, et)
 		da = 0;
 	end
 
-	angle = angle + turretOffset + turretOffset2 - da * (4 / 8) - vh * (5 / 32);
+	angle = angle + turretOffset - da * (4 / 8) - vh * (5 / 32);
 
 	if (angle > 180) then
 		angle = angle - 360;
@@ -215,6 +217,7 @@ local function telopUpdate(dt, et)
 	dashboard.addDataf("angle deriv", da);
 	--turret.update(0);
 
+	print("update controls");
 	--Forward/stop intake
 	if (gamepad.getRightBumper2()) then
 		if (intake.state == IntakeState.Forward) then
@@ -237,18 +240,24 @@ local function telopUpdate(dt, et)
 
 	if (gamepad.getDpadUp2()) then
 		turretOffset = turretOffset + 1;
-		logFile:write(("%7.2f | x: %6.2f, y: %6.2f, h: %6.4f, angle: %6.2f, offset: %f\n"):format(et, x, y, h, angle,
+		logFile:write(("%7.2f | x: %6.2f, y: %6.2f, h: %6.4f, angle: %6.2f, offset: %d\n"):format(et, x, y, h, angle,
 			turretOffset));
 	end
 	if (gamepad.getDpadDown2()) then
 		turretOffset = turretOffset - 1;
-		logFile:write(("%7.2f | x: %6.2f, y: %6.2f, h: %6.4f, angle: %6.2f, offset: %f\n"):format(et, x, y, h, angle,
+		logFile:write(("%7.2f | x: %6.2f, y: %6.2f, h: %6.4f, angle: %6.2f, offset: %d\n"):format(et, x, y, h, angle,
 			turretOffset));
 	end
 
-	--if (gamepad.getTouchpad2()) then
-	--	shooter:reverse(et);
-	--end
+	if (gamepad.getTouchpad2()) then
+		local p = dashboard.getp();
+		local i = dashboard.geti();
+		local d = dashboard.getd();
+		local f = dashboard.getf();
+		shooter.motorL:setPidf(p, i, d, f);
+		shooter.motorR:setPidf(p, i, d, f);
+		actionPane:addLine(("p: %3.2f, i: %3.2f, d: %3.2f, f: %3.2f"):format(p, i, d, f));
+	end
 
 	if (gamepad.getShare2()) then
 		turret.reset();
@@ -278,29 +287,30 @@ local function telopUpdate(dt, et)
 
 	--Start intake and shooter
 	if (gamepad.getCross2()) then
-		if (y < 48) then
-			limelight:update();
-			local tag = limelight:getTag(24);
-			if (tag ~= nil) then
-				turretOffset2 = turretOffset2 - tag:tx() - 3;
-			else
-				turretOffset2 = turretOffset2 - 6;
-			end
-		end
-		counter.count = 5;
 		intake:forward();
 		logVel = true;
 		shooter:shootNum(et, 1);
+		counter.stopIntake = true;
 	end
 
-	if (gamepad.getTouchpad2()) then
-		limelight:update();
-		local tag = limelight:getTag(24);
-		if (tag ~= nil) then
-			turretOffset2 = turretOffset2 - tag:tx() - 3;
-		end
-	end
+	--if (gamepad.getTouchpad2()) then
+	--	local p = dashboard.getp();
+	--	local i = dashboard.geti();
+	--	local d = dashboard.getd();
+	--	local f = dashboard.getf();
+	--	shooter.motorL:setPidf(p, i, d, f);
+	--	shooter.motorR:setPidf(p, i, d, f);
+  --
+	--	local pidf = shooter.motorL:getPidf();
+  --
+	--	actionPane:addData("p", pidfGetP(pidf));
+	--	actionPane:addData("i", pidfGetI(pidf));
+	--	actionPane:addData("d", pidfGetD(pidf));
+	--	actionPane:addData("f", pidfGetF(pidf));
+	--	--turretMotor:setPidf(p, i, d, f);
+	--end
 
+	print("update leds");
 	local ledState = 1 + counter.count;
 
 	if (ledState ~= prevLedState) then
@@ -308,6 +318,7 @@ local function telopUpdate(dt, et)
 		prevLedState = ledState;
 	end
 
+	print("update shooter");
 	shooter:updateVelocity(x, y, drive.pinpoint:getVelX(), drive.pinpoint:getVelY());
 
 	if (gamepad.getStart()) then
@@ -338,54 +349,48 @@ local function telopUpdate(dt, et)
 		logFile:write(("%7.2f | left vel: %4d, right vel: %4d\n"):format(et, shooter.motorL:getVelocity(),
 			shooter.motorR:getVelocity()));
 	end
-	logFile2:write(("%7.2f, %6.2f, %6.2f, %6.2f, %f, %6.2f\n"):format(et, drive.pinpoint:getX(), drive.pinpoint:getY(),
+	logFile2:write(("%7.2f, %6.2f, %6.2f, %6.2f, %d, %6.2f\n"):format(et, drive.pinpoint:getX(), drive.pinpoint:getY(),
 		drive.pinpoint:getHeading(), turretOffset, angle));
 
 	--Automatically updates
 	if (shooter:update(et)) then
 		logVel = false;
 		counter:reset();
-		if (y < 48) then
-			turretOffset2 = turretOffset2 + 3;
-		end
-	end
-	if(y > 48) then
-		turretOffset2 = 0;
-	elseif(turretOffset2 == 0) then
-		turretOffset2 = 3;
+		counter.stopIntake = true;
 	end
 
 	counter:update(et);
 	--counter:updatLeds(et);
 
-	if (logInterval > logTimer) then
-		robotPane:addData("ms", dt);
-		robotPane:addData("x", drive.pinpoint:getX());
-		robotPane:addData("y", drive.pinpoint:getY());
-		robotPane:addData("h", math.deg(h));
-		robotPane:addData("curPos", turretMotor:getCurrentPosition());
-		robotPane:addData("angle", angle + turretOffset);
-		robotPane:addData("offset", turretOffset);
-		robotPane:addData("ball count", counter.count);
-		robotPane:addData("stopIntake", counter.stopIntake);
+	print("update telemetry");
+	robotPane:addData("dt", dt);
+	robotPane:addData("x", drive.pinpoint:getX());
+	robotPane:addData("y", drive.pinpoint:getY());
+	robotPane:addData("h", math.deg(h));
+	--robotPane:addData("h2", math.deg(h2));
+	--robotPane:addData("tarPos", turretMotor:getTargetPosition());
+	robotPane:addData("curPos", turretMotor:getCurrentPosition());
+	robotPane:addData("angle", angle + turretOffset);
+	robotPane:addData("offset", turretOffset);
+	robotPane:addData("ball count", counter.count);
+	robotPane:addData("stopIntake", counter.stopIntake);
 
-		shooter:telem();
+	shooter:telem();
 
-		robotPane:addData("setVel", shooter.vel);
+	robotPane:addData("setVel", shooter.vel);
 
-		currentPane:addData("fl", drive.frontLeft:getCurrent());
-		currentPane:addData("fr", drive.frontRight:getCurrent());
-		currentPane:addData("bl", drive.backLeft:getCurrent());
-		currentPane:addData("br", drive.backRight:getCurrent());
-		currentPane:addData("sl", shooter.motorL:getCurrent());
-		currentPane:addData("sr", shooter.motorR:getCurrent());
-		currentPane:addData("in", intake.motor:getCurrent());
-		currentPane:addData("tu", turretMotor:getCurrent());
+	currentPane:addData("fl", drive.frontLeft:getCurrent());
+	currentPane:addData("fr", drive.frontRight:getCurrent());
+	currentPane:addData("bl", drive.backLeft:getCurrent());
+	currentPane:addData("br", drive.backRight:getCurrent());
+	currentPane:addData("sl", shooter.motorL:getCurrent());
+	currentPane:addData("sr", shooter.motorR:getCurrent());
+	currentPane:addData("in", intake.motor:getCurrent());
+	currentPane:addData("tu", turretMotor:getCurrent());
 
-		TelemPaneManager:update();
-	end
+	TelemPaneManager:update();
 
-	dashboard.addDataf("ms", dt);
+	dashboard.addDataf("dt", dt);
 	dashboard.addDataf("leftPower", shooter.motorL:getPower());
 	dashboard.addDataf("leftVel", shooter.motorL:getVelocity());
 	dashboard.addDataf("leftCur", shooter.motorL:getCurrent());
@@ -396,18 +401,21 @@ local function telopUpdate(dt, et)
 	dashboard.addDataf("turretTargetPos", turretMotor:getTargetPosition());
 	dashboard.update();
 
+	print("update done");
 	return false;
 end
 
-local function telopStop()
+function telopStop()
+	print("stop");
 	led:displayArtBoard(0);
 	logFile:close();
 	logFile2:close();
+	print("stop done");
 end
 
 ---@type Opmode
 local telopRed = {
-	name = "mainTelopRed",
+	name = "mainTelopStatesRed",
 	type = OpmodeType.Telop,
 	init = telopInit,
 	start = telopStartRed,
@@ -417,7 +425,7 @@ local telopRed = {
 
 ---@type Opmode
 local telopBlue = {
-	name = "mainTelopBlue",
+	name = "mainTelopStatesBlue",
 	type = OpmodeType.Telop,
 	init = telopInit,
 	start = telopStartBlue,

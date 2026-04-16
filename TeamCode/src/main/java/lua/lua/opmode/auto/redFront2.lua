@@ -10,10 +10,11 @@ local config = {
 			RobotActions.ShooterStart.new(680),
 			PathAction.new(
 				path.chain()
-				:add(path.line(-32, 136, -54, 90))
+				:add(path.line(-32, 136, -52, 83))
 				:constantHeading(0)
 				:build()
 			),
+			SleepAction.new(999),
 			RobotActions.Shoot.new(1),
 			Delay.new(0.1)
 		)
@@ -24,11 +25,9 @@ local config = {
 				"line1",
 				PathAction.new(
 					path.chain()
-					:add(path.line(-54, 90, -38, 84))
+					:add(path.line(-52, 83, -15, 83))
 					:constantHeading(0)
-					:add(path.line(-38, 84, -24, 84))
-					:constantHeading(0)
-					:add(path.line(-24, 84, -54, 90))
+					:add(path.line(-15, 83, -52, 83))
 					:constantHeading(0)
 					:build()
 				),
@@ -40,26 +39,25 @@ local config = {
 				"line1",
 				PathAction.new(
 					path.chain()
-					:add(path.line(-54, 90, -38, 87))
-					:constantHeading(0)
-					:add(path.line(-38, 87, -18.25, 87.25))
+					:add(path.line(-52, 83, -15, 83))
 					:constantHeading(0)
 					:build()
 				),
 				PathAction.new(
 					path.chain()
-					:add(path.line(-18.25, 87.25, -23.25, 79))
+					:add(path.line(-15, 83, -24, 71))
 					:constantHeading(0)
-					:add(path.line(-23.25, 79, -18, 79))
+					:add(path.line(-24, 71, -15, 71))
 					:constantHeading(0)
 					:build()
 				),
 				PathAction.new(
 					path.chain()
-					:add(path.line(-18, 79, -54, 90))
+					:add(path.line(-15, 71, -52, 83))
 					:constantHeading(0)
 					:build()
 				),
+				SleepAction.new(999),
 				RobotActions.Shoot.new(1)
 			)
 		end
@@ -70,9 +68,9 @@ local config = {
 				"line2",
 				PathAction.new(
 					path.chain()
-					:add(path.line(-54, 90, -43, 62))
+					:add(path.line(-54, 90, -38, 62))
 					:constantHeading(0)
-					:add(path.line(-43, 62, -18.25, 62))
+					:add(path.line(-38, 62, -18.25, 62))
 					:constantHeading(0)
 					:add(path.line(-18.25, 62, -54, 90))
 					:constantHeading(0)
@@ -122,11 +120,11 @@ local config = {
 			"line3",
 			PathAction.new(
 				path.chain()
-				:add(path.line(-54, 90, -43, 40))
+				:add(path.line(-54, 90, -40, 40))
 				:constantHeading(0)
-				:add(path.line(-43, 40, -15, 40))
+				:add(path.line(-40, 40, -13, 40))
 				:constantHeading(0)
-				:add(path.line(-15, 40, -54, 90))
+				:add(path.line(-13, 40, -54, 90))
 				:constantHeading(0)
 				:build()
 			),
@@ -184,4 +182,4 @@ local config = {
 	end
 };
 
-loadOpmodeConfigs("redFront", config);
+loadOpmodeConfigs("2redFront", config);

@@ -20,6 +20,7 @@ if(path == nil) then
 end
 
 require("opmode.auto.redFront");
+require("opmode.auto.redFront2");
 require("opmode.auto.redBack");
 require("opmode.auto.blueFront");
 require("opmode.auto.blueBack");

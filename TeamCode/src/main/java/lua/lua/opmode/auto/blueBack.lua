@@ -8,8 +8,10 @@ local config = {
 		intake.speed = 0.85;
 		return SeqAction.newl(
 			"preload",
-			RobotActions.ShooterStart.new(880),
+			RobotActions.BeamBreakStopIntake.new(false),
+			RobotActions.ShooterStart.new(870),
 			RobotActions.Shoot.new(1),
+			RobotActions.BeamBreakStopIntake.new(true),
 			SleepAction.new(0.5)
 		)
 	end,
@@ -45,10 +47,6 @@ local config = {
 					path.chain()
 					:add(path.line(55.50, 8, 42, 58))
 					:constantHeading(180)
-					:build()
-				),
-				PathAction.new(
-					path.chain()
 					:add(path.line(42, 56, 23, 56))
 					:constantHeading(180)
 					:add(path.line(23, 56, 25, 65))
@@ -85,15 +83,15 @@ local config = {
 				"line2",
 				PathAction.new(
 					path.chain()
-					:add(path.line(60, 12, 42, 36))
+					:add(path.line(60, 12, 44, 36))
+					:constantHeading(180)
+					:add(path.line(44, 36, 15, 36))
 					:constantHeading(180)
 					:build()
 				),
 				PathAction.new(
 					path.chain()
-					:add(path.line(42, 36, 17, 36))
-					:constantHeading(180)
-					:add(path.line(17, 36, 60, 12))
+					:add(path.line(15, 36, 60, 12))
 					:constantHeading(180)
 					:build()
 				),
@@ -105,28 +103,38 @@ local config = {
 	line3 = function ()
 		return SeqAction.newl(
 			"line3",
+			--PathAction.new(
+			--	path.chain()
+			--	:add(path.line(60, 12, 10, 8))
+			--	:constantHeading(180)
+			--	:build()
+			--),
+			--PathAction.new(
+			--	path.chain()
+			--	:add(path.line(10, 8, 60, 12))
+			--	:constantHeading(180)
+			--	:build()
+			--),
 			PathAction.new(
 				path.chain()
-				:add(path.line(60, 12, 12, 8))
-				:constantHeading(180)
-				:build(),
-				0.5
-			),
-			RobotActions.IntakeStop.new(),
-			PathAction.new(
-				path.chain()
-				:add(path.line(12, 8, 60, 12))
-				:constantHeading(180)
+				:add(path.curve3(60, 12, 35, 20, 10, 12))
+				:linearHeading(180, 225)
 				:build()
 			),
-			Delay.new(0.5),
+			PathAction.new(
+				path.chain()
+				:add(path.line(10, 12, 60, 12))
+				:linearHeading(225, 180)
+				:build()
+			),
+			Delay.new(0.4),
 			RobotActions.Shoot.new(1)
 		)
 	end,
 	park = function ()
 		return PathAction.new(
 			path.chain()
-			:add(path.line(60, 12, 60, 42))
+			:add(path.line(60, 12, 36, 12))
 			:constantHeading(180)
 			:build()
 		)

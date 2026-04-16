@@ -36,6 +36,7 @@ function Shoot:update(dt, et)
 		end
 	else
 		if (shooter:update(et)) then
+			counter:reset();
 			return ActionState.Done;
 		end
 	end
@@ -249,6 +250,62 @@ function TurretTurnAngle:update(dt, et)
 	return ActionState.Done;
 end
 
+---@class BeamBreakWait: Action
+---@field num number
+local BeamBreakWait = {
+	mt = {
+		__tostring = function (self)
+			return ("BeamBreakWait(%d)"):format(self.num);
+		end
+	}
+};
+
+---@return BeamBreakWait
+---@param num number
+function BeamBreakWait.new(num)
+	local a = new(BeamBreakWait);
+	a.num = num;
+	return a;
+end
+
+function BeamBreakWait:start(et)
+	counter:reset();
+end
+
+function BeamBreakWait:update(et)
+	if (counter.ret) then
+		return ActionState.Done;
+	else
+		return ActionState.Running;
+	end
+end
+
+---@class BeamBreakStopIntake: Action
+---@field s boolean
+local BeamBreakStopIntake = {
+	mt = {
+		__tostring = function (self)
+			return ("BeamBreakStopIntake(%s)"):format(tostring(self.s));
+		end
+	}
+};
+
+---@return BeamBreakStopIntake
+---@param stop boolean
+function BeamBreakStopIntake.new(stop)
+	local a = new(BeamBreakStopIntake);
+	a.s = stop;
+	return a;
+end
+
+function BeamBreakStopIntake:start(et)
+	counter.stopIntake = self.s;
+end
+
+function BeamBreakStopIntake:update(et)
+	return ActionState.Done;
+end
+
 RobotActions = {
 	Shoot = Shoot,
 	ShooterDisable = ShooterDisable,
@@ -256,7 +313,9 @@ RobotActions = {
 	Intake = Intake,
 	IntakeStop = IntakeStop,
 	TurretTurnTo = TurretTurnTo,
-	TurretTurnAngle = TurretTurnAngle
+	TurretTurnAngle = TurretTurnAngle,
+	BeamBreakWait = BeamBreakWait,
+	BeamBreakStopIntake = BeamBreakStopIntake
 };
 
 Delay = SleepAction;

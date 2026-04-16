@@ -1,0 +1,1338 @@
+   0.44 | fl:  0.00, fr:  0.00, bl:  0.00, br:  0.00, in:  0.00, sl:  0.00, sr:  0.00, tu:  0.65
+   0.89 | fl:  0.00, fr:  0.00, bl:  0.00, br:  0.00, in:  0.00, sl:  0.00, sr:  0.00, tu:  0.20
+   1.37 | fl:  3.60, fr:  1.91, bl:  4.41, br:  7.52, in:  0.00, sl:  0.00, sr:  0.00, tu:  0.26
+   1.85 | fl:  2.30, fr:  1.02, bl:  3.26, br:  1.42, in:  2.50, sl:  0.00, sr:  0.00, tu:  1.20
+   2.34 | fl:  4.42, fr:  2.30, bl:  1.94, br:  4.41, in:  1.57, sl:  0.00, sr:  0.00, tu:  0.10
+   2.84 | fl:  2.22, fr:  2.97, bl:  3.21, br:  3.11, in:  2.12, sl:  0.00, sr:  0.00, tu:  0.46
+   3.33 | fl:  0.06, fr:  0.70, bl:  0.31, br:  0.01, in:  0.05, sl:  0.00, sr:  0.00, tu:  0.42
+   3.78 | fl:  1.62, fr:  3.60, bl:  7.37, br:  5.59, in:  0.00, sl:  0.00, sr:  0.00, tu:  0.58
+   4.25 | fl:  3.75, fr:  0.49, bl:  0.60, br:  3.81, in:  0.00, sl:  8.07, sr:  7.48, tu:  0.56
+   4.73 | fl:  2.11, fr:  4.98, bl:  1.96, br:  0.23, in:  0.00, sl:  7.27, sr:  7.02, tu:  0.11
+   5.26 | fl:  3.41, fr:  6.11, bl:  2.75, br:  3.74, in:  0.00, sl:  5.91, sr:  5.74, tu:  0.12
+   5.74 | fl:  3.01, fr:  2.08, bl:  2.18, br:  1.16, in:  0.00, sl:  5.63, sr:  5.76, tu:  2.60
+   6.29 | fl:  1.56, fr:  1.61, bl:  0.04, br:  3.15, in:  0.00, sl:  9.65, sr:  9.48, tu:  0.87
+   6.80 | fl:  0.00, fr:  0.01, bl:  0.00, br:  0.01, in:  0.00, sl:  4.21, sr:  2.79, tu:  0.61
+   7.30 | fl:  0.00, fr:  0.00, bl:  0.00, br:  0.00, in:  0.00, sl:  2.80, sr:  6.78, tu:  0.07
+   7.38 | gate open:   left  700 700.000  2.94, right  720 0.287  3.03, bat: 12.42
+   7.38 | left vel:  700, right vel:  700
+   7.49 | left vel:  680, right vel:  700
+   7.60 | left vel:  680, right vel:  680
+   7.68 | left vel:  640, right vel:  640
+   7.78 | left vel:  660, right vel:  680
+   7.86 | fl:  0.00, fr:  0.00, bl:  0.00, br:  0.00, in:  1.68, sl:  7.21, sr:  3.62, tu:  0.01
+   7.86 | left vel:  660, right vel:  640
+   7.95 | left vel:  640, right vel:  640
+   8.03 | left vel:  680, right vel:  700
+   8.12 | left vel:  640, right vel:  640
+   8.20 | left vel:  640, right vel:  640
+   8.30 | left vel:  700, right vel:  680
+   8.37 | fl:  0.00, fr:  0.00, bl:  0.00, br:  0.00, in:  1.74, sl:  3.13, sr:  4.32, tu:  0.03
+   8.37 | left vel:  700, right vel:  720
+   8.45 | left vel:  700, right vel:  720
+   8.53 | left vel:  700, right vel:  680
+   8.61 | left vel:  700, right vel:  700
+   8.70 | left vel:  700, right vel:  720
+   8.70 | gate closed: left  700 700.000  2.91, right  720 0.287  6.33, bat: 12.57
+   8.88 | fl:  0.00, fr:  0.00, bl:  0.00, br:  0.00, in:  1.71, sl:  0.35, sr:  0.58, tu:  0.05
+   9.33 | fl:  0.00, fr:  0.00, bl:  0.00, br:  0.00, in:  0.89, sl:  3.37, sr:  3.42, tu:  0.23
+   9.78 | fl:  0.00, fr:  0.00, bl:  0.00, br:  0.00, in:  1.47, sl:  2.63, sr:  3.19, tu:  0.01
+  10.22 | fl:  0.00, fr:  0.00, bl:  0.00, br:  0.00, in:  1.36, sl:  2.77, sr:  2.70, tu:  0.00
+  10.70 | fl:  2.38, fr:  2.42, bl:  3.17, br:  2.50, in:  1.64, sl:  3.10, sr:  1.78, tu:  0.73
+  11.19 | fl:  5.64, fr:  5.43, bl:  3.52, br:  2.46, in:  1.07, sl:  1.32, sr:  4.89, tu:  0.16
+  11.69 | fl:  0.98, fr:  3.09, bl:  0.67, br:  5.08, in:  1.22, sl:  2.19, sr:  0.35, tu:  4.49
+  12.21 | fl:  2.12, fr:  5.46, bl:  1.85, br:  1.25, in:  1.57, sl:  3.20, sr:  1.56, tu:  1.35
+  12.72 | fl:  0.00, fr:  0.01, bl:  0.00, br:  0.00, in:  2.01, sl:  3.82, sr:  2.91, tu:  0.67
+  13.23 | fl:  0.14, fr:  5.47, bl:  5.43, br:  1.20, in:  1.37, sl:  2.93, sr:  2.91, tu:  0.84
+  13.72 | fl:  2.93, fr:  6.43, bl:  4.54, br:  1.87, in:  1.95, sl:  5.34, sr:  2.14, tu:  1.02
+  14.20 | fl:  4.44, fr:  3.12, bl:  7.68, br:  2.26, in:  2.21, sl:  2.23, sr:  2.11, tu:  1.44
+  14.64 | fl:  0.00, fr:  0.01, bl:  0.01, br:  0.00, in:  0.00, sl:  3.47, sr:  3.37, tu:  2.47
+  15.08 | fl:  4.40, fr:  1.44, bl:  2.52, br:  4.81, in:  0.00, sl:  1.91, sr:  2.74, tu:  0.21
+  15.53 | fl:  2.25, fr:  1.02, bl:  0.04, br:  3.03, in:  0.00, sl:  6.39, sr:  6.54, tu:  0.50
+  16.02 | fl:  0.00, fr:  0.00, bl:  0.00, br:  0.00, in:  0.00, sl:  6.23, sr:  6.77, tu:  0.42
+  16.12 | gate open:   left  680 660.000  2.24, right  680 0.289  0.85, bat: 12.62
+  16.12 | left vel:  680, right vel:  680
+  16.25 | left vel:  680, right vel:  700
+  16.33 | left vel:  700, right vel:  700
+  16.41 | left vel:  600, right vel:  620
+  16.49 | left vel:  640, right vel:  620
+  16.56 | fl:  0.00, fr:  0.00, bl:  0.00, br:  0.00, in:  1.49, sl:  6.86, sr:  6.91, tu:  0.21
+  16.56 | left vel:  640, right vel:  640
+  16.65 | left vel:  600, right vel:  620
+  16.73 | left vel:  640, right vel:  640
+  16.82 | left vel:  680, right vel:  680
+  16.90 | left vel:  620, right vel:  620
+  16.97 | left vel:  660, right vel:  660
+  17.06 | fl:  0.00, fr:  0.00, bl:  0.00, br:  0.00, in:  1.71, sl:  2.92, sr:  5.72, tu:  0.14
+  17.06 | left vel:  700, right vel:  700
+  17.14 | left vel:  720, right vel:  700
+  17.24 | left vel:  700, right vel:  700
+  17.33 | left vel:  700, right vel:  680
+  17.41 | left vel:  700, right vel:  680
+  17.49 | left vel:  660, right vel:  660
+  17.49 | gate closed: left  680 680.000  4.03, right  680 0.287  4.04, bat: 10.14
+  17.61 | fl:  2.43, fr:  5.62, bl:  1.25, br:  2.57, in:  1.73, sl:  1.58, sr:  4.92, tu:  0.61
+  18.11 | fl:  1.21, fr:  0.61, bl:  2.23, br:  2.23, in:  1.31, sl:  4.46, sr:  6.11, tu:  0.63
+  18.58 | fl:  0.17, fr:  3.42, bl:  3.17, br:  0.58, in:  1.28, sl:  5.62, sr:  5.69, tu:  0.72
+  19.10 | fl:  2.60, fr:  1.62, bl:  5.19, br:  0.88, in:  1.18, sl:  4.39, sr:  3.08, tu:  0.78
+  19.59 | fl:  0.26, fr:  1.26, bl:  0.66, br:  0.62, in:  1.96, sl:  5.52, sr:  5.50, tu:  3.42
+  20.07 | fl:  0.58, fr:  2.97, bl:  2.63, br:  0.78, in:  3.90, sl:  1.37, sr:  1.48, tu:  0.11
+  20.55 | fl:  1.63, fr:  3.80, bl:  2.25, br:  4.96, in:  2.12, sl:  2.61, sr:  3.59, tu:  0.66
+  21.06 | fl:  3.43, fr:  2.77, bl:  3.81, br:  5.34, in:  0.00, sl:  3.82, sr:  4.92, tu:  0.06
+  21.52 | fl:  0.05, fr:  0.07, bl:  0.06, br:  0.03, in:  0.00, sl:  3.79, sr:  5.27, tu:  3.17
+  22.00 | fl:  0.01, fr:  0.01, bl:  0.01, br:  0.00, in:  0.00, sl:  1.01, sr:  2.03, tu:  0.46
+  22.49 | gate open:   left  940 940.000  0.77, right  940 0.389  5.28, bat: 11.99
+  22.49 | fl:  0.00, fr:  0.00, bl:  0.00, br:  0.00, in:  4.73, sl:  2.44, sr:  3.12, tu:  0.13
+  22.49 | left vel:  940, right vel:  940
+  22.61 | left vel:  920, right vel:  940
+  22.68 | left vel:  920, right vel:  920
+  22.76 | left vel:  920, right vel:  920
+  22.85 | left vel:  820, right vel:  840
+  22.94 | left vel:  880, right vel:  860
+  23.02 | fl:  0.00, fr:  0.00, bl:  0.00, br:  0.00, in:  1.51, sl:  6.20, sr:  6.13, tu:  0.10
+  23.02 | left vel:  820, right vel:  840
+  23.11 | left vel:  820, right vel:  800
+  23.19 | left vel:  820, right vel:  840
+  23.26 | left vel:  860, right vel:  860
+  23.33 | left vel:  800, right vel:  800
+  23.41 | left vel:  800, right vel:  800
+  23.49 | fl:  0.00, fr:  0.00, bl:  0.00, br:  0.00, in:  1.35, sl:  6.16, sr:  6.16, tu:  0.01
+  23.49 | left vel:  840, right vel:  840
+  23.58 | left vel:  880, right vel:  880
+  23.67 | left vel:  900, right vel:  920
+  23.74 | left vel:  920, right vel:  940
+  23.81 | left vel:  920, right vel:  940
+  23.81 | gate closed: left  920 920.000  1.01, right  920 0.389  4.29, bat: 10.05
+  23.97 | fl:  0.05, fr:  0.06, bl:  0.11, br:  0.07, in:  1.58, sl:  1.73, sr:  5.98, tu:  2.27
+  24.42 | fl:  2.10, fr:  1.92, bl:  2.77, br:  2.42, in:  1.39, sl:  0.94, sr:  5.01, tu:  2.45
+  24.86 | fl:  4.12, fr:  0.02, bl:  4.96, br:  0.02, in:  1.11, sl:  4.91, sr:  4.76, tu:  1.48
+  25.37 | fl:  4.55, fr:  2.24, bl:  2.93, br:  0.02, in:  1.36, sl:  4.82, sr:  4.78, tu:  1.53
+  25.84 | fl:  3.56, fr:  6.03, bl:  3.79, br:  1.56, in:  1.90, sl:  4.28, sr:  4.31, tu:  1.17
+  26.30 | fl:  3.04, fr:  0.38, bl:  0.55, br:  3.34, in:  2.08, sl:  2.71, sr:  1.54, tu:  1.25
+  26.75 | fl:  1.67, fr:  0.94, bl:  2.05, br:  1.73, in:  2.00, sl:  2.42, sr:  3.65, tu:  0.13
+  27.24 | fl:  0.01, fr:  0.03, bl:  0.05, br:  0.07, in:  2.16, sl:  1.41, sr:  4.77, tu:  1.18
+  27.66 | fl:  0.12, fr:  2.20, bl:  4.16, br:  0.12, in:  1.25, sl:  1.33, sr:  4.28, tu:  0.29
+  28.07 | fl:  0.18, fr:  2.76, bl:  4.81, br:  0.18, in:  2.12, sl:  2.33, sr:  3.55, tu:  1.25
+  28.50 | fl:  2.72, fr:  1.50, bl:  6.30, br:  2.70, in:  0.00, sl:  0.88, sr:  2.74, tu:  0.91
+  28.91 | fl:  0.65, fr:  4.03, bl:  2.50, br:  5.35, in:  0.00, sl:  1.91, sr:  0.65, tu:  3.94
+  29.34 | fl:  4.96, fr:  1.79, bl:  2.51, br:  4.27, in:  0.00, sl:  2.06, sr:  3.85, tu:  0.45
+  29.81 | fl:  3.62, fr:  0.01, bl:  1.13, br:  2.62, in:  0.00, sl:  2.34, sr:  4.16, tu:  0.52
+  30.28 | fl:  0.01, fr:  0.09, bl:  0.08, br:  0.00, in:  0.00, sl:  1.01, sr:  4.65, tu:  0.44
+  30.73 | fl:  0.00, fr:  0.01, bl:  0.00, br:  0.01, in:  0.00, sl:  3.46, sr:  4.77, tu:  0.09
+  30.86 | gate open:   left  920 920.000  3.50, right  920 0.389  5.03, bat: 11.36
+  30.86 | left vel:  920, right vel:  940
+  30.95 | left vel:  920, right vel:  940
+  31.04 | left vel:  920, right vel:  920
+  31.13 | left vel:  860, right vel:  860
+  31.22 | fl:  0.00, fr:  0.00, bl:  0.00, br:  0.00, in:  1.65, sl:  5.93, sr:  6.03, tu:  0.01
+  31.22 | left vel:  840, right vel:  820
+  31.31 | left vel:  860, right vel:  860
+  31.38 | left vel:  800, right vel:  800
+  31.45 | left vel:  800, right vel:  800
+  31.52 | left vel:  840, right vel:  840
+  31.60 | left vel:  880, right vel:  880
+  31.68 | fl:  0.00, fr:  0.00, bl:  0.00, br:  0.00, in:  1.24, sl:  6.11, sr:  6.15, tu:  0.01
+  31.68 | left vel:  800, right vel:  800
+  31.78 | left vel:  840, right vel:  820
+  31.85 | left vel:  860, right vel:  860
+  31.92 | left vel:  900, right vel:  880
+  32.01 | left vel:  920, right vel:  940
+  32.09 | left vel:  940, right vel:  940
+  32.17 | fl:  0.00, fr:  0.00, bl:  0.00, br:  0.00, in:  1.22, sl:  3.70, sr:  2.71, tu:  0.15
+  32.17 | left vel:  960, right vel:  940
+  32.17 | gate closed: left  960 960.000  3.58, right  940 0.389  2.81, bat: 12.89
+  32.68 | fl:  0.94, fr:  3.61, bl:  4.09, br:  0.70, in:  1.31, sl:  4.46, sr:  3.38, tu:  0.24
+  33.16 | fl:  1.85, fr:  2.74, bl:  4.57, br:  3.31, in:  1.07, sl:  4.80, sr:  4.92, tu:  0.26
+  33.66 | fl:  4.76, fr:  2.92, bl:  2.52, br:  3.96, in:  2.05, sl:  3.55, sr:  2.01, tu:  0.41
+  34.15 | fl:  1.41, fr:  2.71, bl:  2.78, br:  2.33, in:  2.81, sl:  5.06, sr:  5.04, tu:  0.12
+  34.63 | fl:  0.21, fr:  4.04, bl:  5.06, br:  1.20, in:  0.00, sl:  5.19, sr:  5.16, tu:  0.33
+  35.10 | fl:  0.06, fr:  4.43, bl:  2.81, br:  0.13, in:  0.00, sl:  4.49, sr:  4.91, tu:  0.05
+  35.60 | fl:  0.00, fr:  0.01, bl:  0.01, br:  0.00, in:  0.00, sl:  6.29, sr:  5.37, tu:  0.45
+  35.80 | gate open:   left  840 840.000  5.03, right  860 0.416  5.75, bat: 11.04
+  35.80 | left vel:  880, right vel:  860
+  35.91 | left vel:  880, right vel:  900
+  35.99 | left vel:  900, right vel:  900
+  36.07 | fl:  0.00, fr:  0.00, bl:  0.00, br:  0.00, in:  1.94, sl:  0.57, sr:  3.29, tu:  0.39
+  36.07 | left vel:  800, right vel:  780
+  36.15 | left vel:  780, right vel:  800
+  36.23 | left vel:  820, right vel:  840
+  36.31 | left vel:  760, right vel:  760
+  36.39 | left vel:  780, right vel:  780
+  36.48 | left vel:  800, right vel:  820
+  36.57 | fl:  0.00, fr:  0.00, bl:  0.00, br:  0.00, in:  1.32, sl:  6.01, sr:  6.19, tu:  0.01
+  36.57 | left vel:  780, right vel:  760
+  36.68 | left vel:  760, right vel:  780
+  36.76 | left vel:  820, right vel:  820
+  36.84 | left vel:  860, right vel:  840
+  36.92 | left vel:  880, right vel:  880
+  36.99 | left vel:  900, right vel:  900
+  37.08 | fl:  1.78, fr:  3.16, bl:  6.78, br:  4.35, in:  1.61, sl:  0.93, sr:  2.11, tu:  0.23
+  37.08 | left vel:  880, right vel:  900
+  37.16 | left vel:  880, right vel:  880
+  37.16 | gate closed: left  880 880.000  3.47, right  900 0.372  2.34, bat: 10.79
+  37.57 | fl:  3.67, fr:  0.54, bl:  0.72, br:  3.15, in:  2.65, sl:  0.58, sr:  1.98, tu:  0.57
+  38.08 | fl:  4.85, fr:  4.72, bl:  4.22, br:  1.98, in:  2.25, sl:  4.42, sr:  4.50, tu:  0.49
+  38.56 | fl:  2.23, fr:  4.31, bl:  3.00, br:  1.21, in:  1.94, sl:  4.66, sr:  4.64, tu:  0.90
+  39.03 | fl:  1.08, fr:  4.37, bl:  7.13, br:  4.33, in:  2.16, sl:  4.04, sr:  3.96, tu:  0.50
+  39.48 | fl:  0.09, fr:  2.69, bl:  3.51, br:  3.20, in:  1.73, sl:  3.46, sr:  4.61, tu:  0.23
+  39.93 | fl:  6.28, fr:  0.10, bl:  0.13, br:  6.64, in:  3.29, sl:  3.00, sr:  1.40, tu:  0.44
+  40.37 | fl:  3.73, fr:  4.00, bl:  6.77, br:  3.54, in:  0.00, sl:  2.64, sr:  1.89, tu:  0.01
+  40.82 | fl:  3.18, fr:  2.86, bl:  2.88, br:  2.72, in:  0.00, sl:  4.84, sr:  4.87, tu:  0.02
+  41.30 | fl:  0.00, fr:  0.01, bl:  0.01, br:  0.00, in:  0.00, sl:  5.65, sr:  5.61, tu:  0.18
+  41.62 | gate open:   left  860 860.000  6.84, right  860 0.418  3.48, bat: 11.39
+  41.62 | left vel:  860, right vel:  840
+  41.71 | left vel:  840, right vel:  860
+  41.80 | fl:  0.00, fr:  0.00, bl:  0.00, br:  0.00, in:  2.74, sl:  5.44, sr:  5.48, tu:  0.31
+  41.80 | left vel:  880, right vel:  900
+  41.90 | left vel:  900, right vel:  880
+  41.98 | left vel:  820, right vel:  800
+  42.06 | left vel:  820, right vel:  840
+  42.14 | left vel:  780, right vel:  780
+  42.22 | left vel:  760, right vel:  740
+  42.30 | fl:  0.00, fr:  0.00, bl:  0.00, br:  0.00, in:  1.36, sl:  5.99, sr:  6.01, tu:  0.27
+  42.30 | left vel:  800, right vel:  800
+  42.40 | left vel:  840, right vel:  840
+  42.48 | left vel: 1260, right vel:  780
+  42.56 | left vel:  760, right vel:  760
+  42.63 | left vel:  760, right vel:  760
+  42.70 | left vel:  780, right vel:  800
+  42.78 | fl:  0.40, fr:  1.95, bl:  1.02, br:  1.71, in:  0.95, sl:  5.39, sr:  5.31, tu:  0.01
+  42.78 | left vel:  840, right vel:  840
+  42.88 | left vel:  860, right vel:  860
+  42.96 | left vel: 1040, right vel:  880
+  42.96 | gate closed: left 1040 1040.000  5.29, right  900 0.372  3.04, bat:  9.64
+  43.27 | fl:  3.03, fr:  2.79, bl:  4.65, br:  3.03, in:  1.44, sl:  2.70, sr:  0.54, tu:  0.99
+  43.75 | fl:  1.45, fr:  1.71, bl:  2.26, br:  2.19, in:  1.42, sl:  4.17, sr:  1.69, tu:  0.16
+  44.27 | fl:  6.10, fr:  0.74, bl:  3.02, br:  2.02, in:  1.69, sl:  4.02, sr:  4.93, tu:  0.10
+  44.71 | fl:  3.37, fr:  2.48, bl:  8.16, br:  2.69, in:  1.44, sl:  1.15, sr:  2.89, tu:  0.06
+  45.17 | fl:  2.31, fr:  0.45, bl:  2.15, br:  1.85, in:  1.69, sl:  4.22, sr:  2.08, tu:  0.29
+  45.58 | fl:  2.17, fr:  2.15, bl:  1.77, br:  1.95, in:  2.23, sl:  4.79, sr:  5.57, tu:  0.55
+  45.93 | gate open:   left  680 680.000  0.32, right  700 0.287  2.56, bat: 12.43
+  45.93 | left vel:  680, right vel:  700
+  46.02 | fl:  0.00, fr:  0.00, bl:  0.00, br:  0.00, in:  2.46, sl:  1.83, sr:  4.27, tu:  2.33
+  46.02 | left vel:  700, right vel:  700
+  46.11 | left vel:  720, right vel:  700
+  46.19 | left vel:  680, right vel:  680
+  46.27 | left vel:  600, right vel:  600
+  46.34 | left vel:  640, right vel:  640
+  46.43 | left vel:  700, right vel:  680
+  46.49 | fl:  0.00, fr:  0.00, bl:  0.00, br:  0.00, in:  0.00, sl:  2.79, sr:  3.36, tu:  0.10
+  46.49 | left vel:  700, right vel:  720
+  46.57 | left vel:  720, right vel:  700
+  46.64 | left vel:  700, right vel:  700
+  46.71 | left vel:  700, right vel:  700
+  46.79 | left vel:  700, right vel:  700
+  46.87 | left vel:  700, right vel:  700
+  46.94 | fl:  0.00, fr:  0.00, bl:  0.00, br:  0.00, in:  0.00, sl:  2.13, sr:  2.75, tu:  0.12
+  46.94 | left vel:  700, right vel:  700
+  47.03 | left vel:  700, right vel:  700
+  47.09 | left vel:  700, right vel:  700
+  47.18 | left vel:  700, right vel:  700
+  47.26 | left vel:  700, right vel:  700
+  47.26 | gate closed: left  700 700.000  2.15, right  700 0.287  2.61, bat: 12.81
+  47.42 | fl:  0.00, fr:  0.00, bl:  0.00, br:  0.00, in:  0.00, sl:  5.23, sr:  2.32, tu:  0.46
+  47.84 | fl:  4.09, fr:  4.29, bl:  4.48, br:  4.12, in:  0.00, sl:  1.17, sr:  2.18, tu:  1.03
+  48.27 | fl:  0.00, fr:  0.00, bl:  0.00, br:  0.00, in:  0.00, sl:  1.60, sr:  3.69, tu:  2.01
+  48.62 | gate open:   left  700 700.000  1.33, right  700 0.287  2.10, bat: 11.71
+  48.62 | left vel:  700, right vel:  700
+  48.72 | fl:  0.00, fr:  0.00, bl:  0.00, br:  0.00, in:  2.29, sl:  3.38, sr:  1.98, tu:  2.69
+  48.72 | left vel:  680, right vel:  680
+  48.82 | left vel:  660, right vel:  680
+  48.91 | left vel:  620, right vel:  640
+  49.00 | left vel:  680, right vel:  680
+  49.07 | left vel:  640, right vel:  620
+  49.14 | left vel:  640, right vel:  640
+  49.22 | fl:  0.00, fr:  0.00, bl:  0.00, br:  0.00, in:  1.35, sl:  6.30, sr:  6.05, tu:  1.11
+  49.22 | left vel:  660, right vel:  680
+  49.31 | left vel:  700, right vel:  700
+  49.40 | left vel:  700, right vel:  700
+  49.49 | left vel:  700, right vel:  700
+  49.57 | left vel:  680, right vel:  680
+  49.65 | left vel:  700, right vel:  700
+  49.74 | fl:  0.00, fr:  0.00, bl:  0.00, br:  0.00, in:  1.33, sl:  1.51, sr:  4.04, tu:  2.17
+  49.74 | left vel:  700, right vel:  680
+  49.83 | left vel:  700, right vel:  700
+  49.93 | left vel:  700, right vel:  680
+  49.93 | gate closed: left  700 700.000  2.63, right  720 0.287  3.74, bat: 10.23
+  50.24 | fl:  3.94, fr:  2.13, bl:  4.31, br:  4.41, in:  1.40, sl:  3.21, sr:  2.07, tu:  1.90
+  50.71 | fl:  2.21, fr:  0.21, bl:  2.88, br:  0.09, in:  1.78, sl:  1.71, sr:  1.90, tu:  2.37
+  51.19 | fl:  2.33, fr:  4.77, bl:  0.62, br:  1.31, in:  1.76, sl:  5.36, sr:  5.51, tu:  0.81
+  51.67 | fl:  1.60, fr:  6.87, bl:  5.20, br:  0.05, in:  1.92, sl:  2.54, sr:  3.06, tu:  3.59
+  52.17 | fl:  2.65, fr:  2.92, bl:  3.18, br:  2.92, in:  0.00, sl:  5.11, sr:  5.12, tu:  0.58
+  52.64 | fl:  3.76, fr:  0.75, bl:  0.52, br:  4.25, in:  0.00, sl:  2.10, sr:  2.85, tu:  0.23
+  53.10 | fl:  0.28, fr:  3.68, bl:  3.44, br:  0.21, in:  0.00, sl:  3.80, sr:  1.69, tu:  0.47
+  53.26 | gate open:   left  780 760.000  8.32, right  780 0.304  6.33, bat: 12.02
+  53.26 | left vel:  740, right vel:  740
+  53.37 | left vel:  700, right vel:  700
+  53.44 | left vel:  740, right vel:  720
+  53.52 | left vel:  740, right vel:  720
+  53.60 | fl:  0.00, fr:  0.00, bl:  0.00, br:  0.00, in:  1.25, sl:  5.69, sr:  6.29, tu:  0.63
+  53.60 | left vel:  660, right vel:  680
+  53.69 | left vel:  700, right vel:  700
+  53.77 | left vel:  700, right vel:  700
+  53.84 | left vel:  660, right vel:  640
+  53.92 | left vel:  680, right vel:  680
+  53.99 | left vel:  700, right vel:  720
+  54.06 | fl:  0.00, fr:  0.00, bl:  0.00, br:  0.00, in:  1.68, sl:  2.65, sr:  5.38, tu:  0.34
+  54.06 | left vel:  740, right vel:  740
+  54.14 | left vel:  680, right vel:  660
+  54.21 | left vel:  680, right vel:  660
+  54.29 | left vel:  700, right vel:  700
+  54.36 | left vel:  720, right vel:  740
+  54.44 | left vel:  740, right vel:  740
+  54.52 | fl:  4.74, fr:  0.18, bl:  0.34, br:  6.40, in:  1.10, sl:  1.13, sr:  1.61, tu:  0.09
+  54.52 | left vel:  720, right vel:  740
+  54.61 | left vel:  720, right vel:  720
+  54.61 | gate closed: left  740 720.000  1.11, right  740 0.304  4.36, bat: 10.49
+  55.00 | fl:  3.54, fr:  2.01, bl:  2.40, br:  1.99, in:  1.60, sl:  3.31, sr:  2.11, tu:  1.01
+  55.42 | fl:  2.71, fr:  5.47, bl:  3.27, br:  3.19, in:  1.44, sl:  3.68, sr:  1.47, tu:  1.44
+  55.88 | fl:  2.25, fr:  6.53, bl:  2.97, br:  2.70, in:  1.40, sl:  2.76, sr:  2.13, tu:  0.48
+  56.34 | fl:  3.18, fr:  4.44, bl:  4.96, br:  2.62, in:  1.58, sl:  2.65, sr:  4.16, tu:  0.54
+  56.77 | fl:  4.33, fr:  0.95, bl:  3.24, br:  2.67, in:  2.08, sl:  4.38, sr:  2.13, tu:  0.91
+  57.25 | fl:  5.07, fr:  1.68, bl:  2.06, br:  4.60, in:  2.63, sl:  0.69, sr:  1.67, tu:  2.57
+  57.71 | fl:  4.08, fr:  1.31, bl:  0.94, br:  5.86, in:  0.05, sl:  3.36, sr:  4.36, tu:  2.20
+  58.16 | fl:  5.15, fr:  4.39, bl:  2.64, br:  1.71, in:  0.00, sl:  1.17, sr:  1.67, tu:  1.55
+  58.65 | fl:  0.43, fr:  2.46, bl:  2.44, br:  0.29, in:  0.00, sl:  1.20, sr:  4.37, tu:  0.26
+  58.98 | gate open:   left  800 800.000  0.47, right  820 0.335  2.81, bat: 11.77
+  58.98 | left vel:  800, right vel:  820
+  59.07 | left vel:  800, right vel:  800
+  59.14 | fl:  0.00, fr:  0.00, bl:  0.00, br:  0.00, in:  3.19, sl:  1.53, sr:  2.27, tu:  0.36
+  59.14 | left vel:  780, right vel:  800
+  59.23 | left vel:  760, right vel:  760
+  59.30 | left vel:  620, right vel:  600
+  59.37 | left vel:  620, right vel:  640
+  59.46 | left vel:  600, right vel:  620
+  59.54 | left vel:  580, right vel:  600
+  59.61 | fl:  0.00, fr:  0.00, bl:  0.00, br:  0.00, in:  1.46, sl:  6.30, sr:  6.20, tu:  0.24
+  59.61 | left vel:  640, right vel:  640
+  59.69 | left vel:  660, right vel:  680
+  59.77 | left vel:  700, right vel:  700
+  59.84 | left vel:  660, right vel:  620
+  59.92 | left vel:  700, right vel:  680
+  60.02 | left vel:  720, right vel:  740
+  60.10 | fl:  0.00, fr:  0.00, bl:  0.00, br:  0.00, in:  1.79, sl:  1.79, sr:  1.69, tu:  0.00
+  60.10 | left vel:  740, right vel:  740
+  60.19 | left vel:  740, right vel:  740
+  60.27 | left vel:  720, right vel:  740
+  60.35 | left vel:  740, right vel:  720
+  60.35 | gate closed: left  740 740.000  1.20, right  740 0.304  2.14, bat: 10.78
+  60.62 | fl:  4.42, fr:  2.83, bl:  3.90, br:  2.91, in:  1.33, sl:  1.20, sr:  4.33, tu:  1.01
+  61.10 | fl:  0.46, fr:  5.16, bl:  6.25, br:  3.16, in:  1.26, sl:  0.05, sr:  4.02, tu:  0.05
+  61.58 | fl:  2.56, fr:  3.91, bl:  3.88, br:  1.85, in:  1.39, sl:  2.16, sr:  2.71, tu:  0.15
+  62.05 | fl:  3.79, fr:  6.52, bl:  2.12, br:  0.39, in:  1.61, sl:  1.85, sr:  2.93, tu:  0.50
+  62.54 | fl:  3.00, fr:  3.41, bl:  3.00, br:  3.97, in:  1.74, sl:  2.87, sr:  1.77, tu:  0.17
+  63.01 | fl:  0.90, fr:  3.83, bl:  5.11, br:  0.04, in:  2.68, sl:  3.97, sr:  1.40, tu:  0.10
+  63.50 | fl:  4.53, fr:  1.60, bl:  1.09, br:  4.25, in:  1.34, sl:  3.48, sr:  4.79, tu:  0.17
+  63.97 | fl:  1.45, fr:  3.79, bl:  8.66, br:  3.11, in:  1.54, sl:  4.36, sr:  4.71, tu:  0.19
+  64.43 | fl:  2.59, fr:  2.87, bl:  6.07, br:  3.29, in:  1.78, sl:  3.47, sr:  2.23, tu:  1.20
+  64.92 | fl:  7.26, fr:  8.19, bl:  2.06, br:  2.29, in:  1.97, sl:  2.01, sr:  2.33, tu:  0.44
+  65.38 | fl:  0.07, fr:  3.54, bl:  3.88, br:  0.04, in:  0.00, sl:  5.30, sr:  4.39, tu:  0.07
+  65.46 | gate open:   left  760 760.000  1.59, right  760 0.313  1.62, bat: 10.86
+  65.46 | left vel:  760, right vel:  760
+  65.56 | left vel:  760, right vel:  740
+  65.64 | left vel:  740, right vel:  740
+  65.72 | left vel:  760, right vel:  740
+  65.80 | left vel:  680, right vel:  640
+  65.88 | fl:  0.49, fr:  0.99, bl:  1.05, br:  0.55, in:  1.77, sl:  5.83, sr:  5.78, tu:  0.10
+  65.88 | left vel:  680, right vel:  700
+  65.98 | left vel:  720, right vel:  720
+  66.06 | left vel:  720, right vel:  740
+  66.13 | left vel:  680, right vel:  680
+  66.21 | left vel:  720, right vel:  720
+  66.29 | left vel:  720, right vel:  720
+  66.37 | fl:  0.00, fr:  0.00, bl:  0.00, br:  0.00, in:  1.02, sl:  4.35, sr:  5.15, tu:  0.02
+  66.37 | left vel:  620, right vel:  620
+  66.45 | left vel:  640, right vel:  620
+  66.53 | left vel:  660, right vel:  660
+  66.61 | left vel:  700, right vel:  700
+  66.69 | left vel:  700, right vel:  700
+  66.76 | left vel:  700, right vel:  680
+  66.76 | gate closed: left  700 700.000  1.56, right  680 0.287  2.77, bat: 11.95
+  66.87 | fl:  0.10, fr:  0.00, bl:  0.01, br:  0.12, in:  1.48, sl:  1.51, sr:  2.39, tu:  0.08
+  67.30 | fl:  0.57, fr:  4.10, bl:  6.56, br:  5.74, in:  1.32, sl:  0.84, sr:  1.93, tu:  0.70
+  67.78 | fl:  1.94, fr:  2.79, bl:  4.34, br:  2.56, in:  1.18, sl:  1.86, sr:  2.56, tu:  0.54
+  68.31 | fl:  0.12, fr:  3.83, bl:  0.34, br:  3.28, in:  1.25, sl:  3.06, sr:  0.67, tu:  2.04
+  68.78 | fl:  3.83, fr:  1.57, bl:  0.16, br:  5.06, in:  1.09, sl:  5.16, sr:  5.12, tu:  0.36
+  69.21 | fl:  1.44, fr:  6.34, bl:  4.37, br:  0.16, in:  1.60, sl:  2.70, sr:  0.96, tu:  0.34
+  69.64 | fl:  2.29, fr:  2.19, bl:  2.39, br:  3.98, in:  2.47, sl:  2.61, sr:  3.12, tu:  0.75
+  70.08 | fl:  2.65, fr:  2.25, bl:  3.74, br:  4.12, in:  2.80, sl:  2.32, sr:  2.44, tu:  0.26
+  70.51 | fl:  3.89, fr:  2.24, bl:  1.07, br:  2.20, in:  1.94, sl:  0.79, sr:  1.63, tu:  0.79
+  70.94 | fl:  1.14, fr:  7.47, bl:  2.03, br:  1.29, in:  1.78, sl:  3.58, sr:  3.81, tu:  0.21
+  71.35 | fl:  1.60, fr:  4.60, bl:  7.35, br:  2.75, in:  2.21, sl:  1.91, sr:  3.47, tu:  0.28
+  71.80 | fl:  2.86, fr:  1.76, bl:  3.31, br:  2.44, in:  0.00, sl:  5.07, sr:  5.08, tu:  0.39
+  72.30 | fl:  2.39, fr:  1.50, bl:  1.58, br:  2.78, in:  0.00, sl:  4.94, sr:  4.93, tu:  0.18
+  72.81 | fl:  0.72, fr:  2.37, bl:  3.32, br:  0.08, in:  0.05, sl:  4.79, sr:  4.86, tu:  1.14
+  73.29 | fl:  3.40, fr:  2.43, bl:  4.13, br:  7.08, in:  0.00, sl:  4.65, sr:  3.27, tu:  0.63
+  73.74 | fl:  4.02, fr:  2.05, bl:  4.71, br:  6.39, in:  0.00, sl:  1.92, sr:  4.10, tu:  0.31
+  74.18 | fl:  0.04, fr:  0.03, bl:  0.02, br:  0.03, in:  0.00, sl:  4.04, sr:  3.57, tu:  0.06
+  74.63 | fl:  0.01, fr:  0.01, bl:  0.01, br:  0.01, in:  0.00, sl:  1.28, sr:  2.05, tu:  0.33
+  74.71 | gate open:   left  900 900.000  3.41, right  880 0.372  4.84, bat: 11.33
+  74.71 | left vel:  900, right vel:  900
+  74.83 | left vel:  880, right vel:  900
+  74.91 | left vel:  880, right vel:  900
+  74.99 | left vel:  900, right vel:  880
+  75.05 | left vel:  780, right vel:  760
+  75.14 | fl:  0.00, fr:  0.00, bl:  0.00, br:  0.00, in:  1.75, sl:  5.65, sr:  5.73, tu:  0.10
+  75.14 | left vel:  800, right vel:  800
+  75.24 | left vel:  740, right vel:  760
+  75.32 | left vel:  760, right vel:  740
+  75.40 | left vel:  780, right vel:  780
+  75.47 | left vel:  800, right vel:  820
+  75.55 | left vel:  740, right vel:  740
+  75.62 | fl:  0.00, fr:  0.00, bl:  0.00, br:  0.00, in:  1.36, sl:  5.83, sr:  5.81, tu:  0.07
+  75.62 | left vel:  780, right vel:  780
+  75.72 | left vel:  820, right vel:  800
+  75.79 | left vel:  840, right vel:  840
+  75.86 | left vel:  860, right vel:  880
+  75.94 | left vel:  900, right vel:  900
+  76.02 | left vel:  900, right vel:  920
+  76.02 | gate closed: left  900 900.000  1.98, right  920 0.372  2.22, bat: 12.39
+  76.11 | fl:  0.00, fr:  0.00, bl:  0.00, br:  0.00, in:  1.07, sl:  1.77, sr:  5.09, tu:  0.12
+  76.52 | fl:  3.22, fr:  0.05, bl:  3.98, br:  0.37, in:  1.33, sl:  4.92, sr:  4.89, tu:  1.46
+  76.95 | fl:  0.52, fr:  0.41, bl:  3.73, br:  2.86, in:  1.62, sl:  5.46, sr:  5.03, tu:  0.43
+  77.46 | fl:  2.39, fr:  5.71, bl:  2.68, br:  4.56, in:  1.43, sl:  4.26, sr:  4.40, tu:  0.25
+  77.87 | fl:  1.88, fr:  2.85, bl:  1.26, br:  1.83, in:  1.43, sl:  4.13, sr:  2.31, tu:  0.26
+  78.31 | fl:  0.17, fr:  1.93, bl:  2.61, br:  6.36, in:  1.49, sl:  4.48, sr:  0.42, tu:  0.59
+  78.75 | fl:  0.37, fr:  2.51, bl:  3.81, br:  0.79, in:  1.57, sl:  1.81, sr:  2.20, tu:  0.01
+  79.20 | fl:  0.00, fr:  0.01, bl:  0.00, br:  0.00, in:  2.08, sl:  0.70, sr:  1.84, tu:  0.03
+  79.70 | fl:  1.87, fr:  3.46, bl:  3.87, br:  1.12, in:  1.65, sl:  3.60, sr:  1.56, tu:  0.07
+  80.18 | fl:  0.05, fr:  0.56, bl:  0.31, br:  0.03, in:  3.14, sl:  1.78, sr:  3.93, tu:  0.97
+  80.63 | fl:  0.83, fr:  5.13, bl:  4.87, br:  0.98, in:  2.54, sl:  2.25, sr:  1.43, tu:  0.18
+  81.14 | fl:  0.46, fr:  2.98, bl:  2.96, br:  0.35, in:  0.00, sl:  3.18, sr:  3.60, tu:  0.14
+  81.59 | fl:  2.20, fr:  1.44, bl:  1.49, br:  3.74, in:  0.00, sl:  4.47, sr:  4.35, tu:  0.28
+  81.92 | gate open:   left  880 880.000  5.11, right  880 0.417  5.13, bat: 10.77
+  81.92 | left vel:  900, right vel:  880
+  82.03 | left vel:  900, right vel:  880
+  82.11 | fl:  0.00, fr:  0.00, bl:  0.00, br:  0.00, in:  3.13, sl:  1.43, sr:  0.92, tu:  0.13
+  82.11 | left vel:  900, right vel:  880
+  82.21 | left vel:  860, right vel:  840
+  82.29 | left vel:  800, right vel:  800
+  82.36 | left vel:  820, right vel:  840
+  82.44 | left vel:  800, right vel:  800
+  82.51 | left vel:  760, right vel:  760
+  82.58 | fl:  0.00, fr:  0.00, bl:  0.00, br:  0.00, in:  1.39, sl:  5.75, sr:  5.66, tu:  0.15
+  82.58 | left vel:  800, right vel:  800
+  82.66 | left vel:  800, right vel:  820
+  82.72 | left vel:  840, right vel:  860
+  82.80 | left vel:  800, right vel:  820
+  82.87 | left vel:  780, right vel:  780
+  82.96 | left vel:  820, right vel:  800
+  83.04 | fl:  0.00, fr:  0.00, bl:  0.00, br:  0.00, in:  1.87, sl:  5.49, sr:  5.52, tu:  0.13
+  83.04 | left vel:  840, right vel:  840
+  83.13 | left vel:  860, right vel:  880
+  83.20 | left vel:  900, right vel:  900
+  83.28 | left vel:  900, right vel:  920
+  83.28 | gate closed: left  940 920.000  2.46, right  900 0.372  0.71, bat: 12.30
+  83.52 | fl:  2.44, fr:  3.89, bl:  6.34, br:  5.36, in:  1.35, sl:  1.25, sr:  3.82, tu:  0.22
+  83.99 | fl:  3.10, fr:  2.33, bl:  4.36, br:  4.84, in:  1.43, sl:  4.28, sr:  4.18, tu:  0.10
+  84.46 | fl:  0.72, fr:  4.65, bl:  3.27, br:  2.10, in:  1.77, sl:  3.81, sr:  1.36, tu:  0.36
+  84.93 | fl:  1.30, fr:  1.76, bl:  3.16, br:  3.37, in:  2.35, sl:  4.83, sr:  4.82, tu:  0.03
+  85.33 | fl:  1.06, fr:  1.35, bl:  2.16, br:  3.12, in:  2.68, sl:  3.56, sr:  3.05, tu:  0.37
+  85.74 | x: -19.54, y:   9.51, h: -0.1768, angle:  93.86, offset: -1
+  85.74 | fl:  0.00, fr:  0.00, bl:  0.00, br:  0.00, in:  3.82, sl:  5.27, sr:  5.25, tu:  0.44
+  86.18 | fl:  4.62, fr:  5.96, bl:  3.83, br:  3.64, in:  0.00, sl:  2.61, sr:  1.65, tu:  0.00
+  86.64 | fl:  0.64, fr:  1.11, bl:  2.97, br:  0.04, in:  0.00, sl:  5.13, sr:  5.09, tu:  1.23
+  87.12 | fl:  5.00, fr:  1.39, bl:  1.26, br:  5.00, in:  0.00, sl:  2.26, sr:  2.73, tu:  0.50
+  87.55 | gate open:   left  880 860.000  1.84, right  840 0.418  3.64, bat: 11.68
+  87.55 | fl:  0.00, fr:  0.00, bl:  0.00, br:  0.00, in:  4.80, sl:  0.71, sr:  2.89, tu:  0.37
+  87.55 | left vel:  840, right vel:  820
+  87.66 | left vel:  840, right vel:  840
+  87.74 | left vel:  880, right vel:  880
+  87.83 | left vel:  820, right vel:  840
+  87.91 | left vel:  800, right vel:  800
+  87.98 | left vel:  820, right vel:  820
+  88.05 | fl:  0.00, fr:  0.00, bl:  0.00, br:  0.00, in:  1.47, sl:  5.79, sr:  5.67, tu:  0.07
+  88.05 | left vel:  780, right vel:  780
+  88.13 | left vel:  760, right vel:  780
+  88.20 | left vel:  780, right vel:  800
+  88.28 | left vel:  820, right vel:  800
+  88.35 | left vel:  780, right vel:  720
+  88.42 | left vel:  780, right vel:  760
+  88.49 | fl:  0.00, fr:  0.00, bl:  0.00, br:  0.00, in:  1.41, sl:  5.68, sr:  5.62, tu:  0.02
+  88.49 | left vel:  800, right vel:  800
+  88.57 | left vel:  820, right vel:  820
+  88.64 | left vel:  860, right vel:  860
+  88.71 | left vel:  880, right vel:  900
+  88.79 | left vel:  880, right vel:  880
+  88.88 | left vel:  900, right vel:  900
+  88.88 | gate closed: left  900 900.000  0.94, right  920 0.372  2.63, bat: 12.18
+  88.98 | fl:  1.78, fr:  3.55, bl:  3.29, br:  2.26, in:  0.89, sl:  2.08, sr:  3.28, tu:  0.03
+  89.44 | fl:  0.77, fr:  0.00, bl:  0.02, br:  0.54, in:  0.88, sl:  4.84, sr:  4.99, tu:  0.01
+  89.91 | fl:  1.65, fr:  0.61, bl:  0.92, br:  1.75, in:  1.95, sl:  1.75, sr:  2.48, tu:  0.19
+  90.42 | fl:  0.31, fr:  0.01, bl:  0.05, br:  0.06, in:  1.72, sl:  0.51, sr:  1.09, tu:  1.16
+  90.88 | fl:  2.95, fr:  3.21, bl:  2.52, br:  1.26, in:  1.40, sl:  4.25, sr:  4.25, tu:  0.24
+  91.29 | fl:  1.38, fr:  3.24, bl:  3.04, br:  0.74, in:  1.58, sl:  4.75, sr:  4.35, tu:  0.01
+  91.79 | fl:  1.35, fr:  1.75, bl:  2.77, br:  1.96, in:  1.59, sl:  2.76, sr:  3.71, tu:  0.77
+  92.27 | fl:  2.74, fr:  2.65, bl:  6.04, br:  1.15, in:  1.80, sl:  3.71, sr:  4.36, tu:  0.60
+  92.77 | fl:  4.32, fr:  4.45, bl:  3.23, br:  2.22, in:  2.70, sl:  1.35, sr:  2.38, tu:  0.10
+  93.30 | fl:  1.14, fr:  4.12, bl:  4.35, br:  1.11, in:  0.00, sl:  4.68, sr:  4.62, tu:  0.01
+  93.77 | fl:  0.44, fr:  2.91, bl:  2.79, br:  0.53, in:  0.00, sl:  2.64, sr:  4.16, tu:  0.26
+  94.24 | fl:  0.00, fr:  0.00, bl:  0.00, br:  0.00, in:  0.00, sl:  9.57, sr:  8.86, tu:  0.05
+  94.38 | gate open:   left  860 860.000  5.57, right  840 0.414  5.07, bat: 10.54
+  94.38 | left vel:  860, right vel:  860
+  94.48 | left vel:  880, right vel:  880
+  94.56 | left vel:  880, right vel:  900
+  94.64 | left vel:  860, right vel:  860
+  94.72 | fl:  0.00, fr:  0.00, bl:  0.00, br:  0.00, in:  1.35, sl:  5.57, sr:  5.49, tu:  0.13
+  94.72 | left vel:  800, right vel:  800
+  94.80 | left vel:  840, right vel:  820
+  94.88 | left vel:  840, right vel:  840
+  94.95 | left vel:  780, right vel:  780
+  95.03 | left vel:  800, right vel:  800
+  95.12 | left vel:  840, right vel:  820
+  95.21 | fl:  0.00, fr:  0.00, bl:  0.00, br:  0.00, in:  1.35, sl:  5.78, sr:  5.68, tu:  0.01
+  95.21 | left vel:  800, right vel:  800
+  95.30 | left vel:  780, right vel:  760
+  95.37 | left vel:  780, right vel:  800
+  95.44 | left vel:  820, right vel:  820
+  95.51 | left vel:  840, right vel:  840
+  95.58 | left vel:  880, right vel:  880
+  95.66 | fl:  0.07, fr:  0.04, bl:  0.05, br:  0.02, in:  1.68, sl:  2.33, sr:  2.64, tu:  0.19
+  95.66 | left vel:  900, right vel:  900
+  95.76 | left vel:  900, right vel:  900
+  95.76 | gate closed: left  900 900.000  2.10, right  920 0.372  1.89, bat: 11.47
+  96.16 | fl:  1.92, fr:  2.15, bl:  3.18, br:  1.84, in:  1.75, sl:  0.81, sr:  1.83, tu:  0.05
+  96.61 | fl:  3.31, fr:  2.26, bl:  2.66, br:  3.02, in:  1.26, sl:  3.52, sr:  1.69, tu:  0.33
+  97.08 | fl:  1.42, fr:  0.58, bl:  1.27, br:  0.02, in:  1.58, sl:  1.28, sr:  4.63, tu:  1.59
+  97.57 | fl:  3.09, fr:  1.69, bl:  1.51, br:  2.03, in:  1.24, sl:  0.85, sr:  2.16, tu:  0.08
+  98.03 | fl:  2.48, fr:  2.13, bl:  6.90, br:  4.52, in:  2.15, sl:  0.74, sr:  1.21, tu:  0.07
+  98.50 | fl:  2.74, fr:  5.27, bl:  2.38, br:  2.31, in:  1.74, sl:  3.17, sr:  3.46, tu:  0.73
+  98.93 | fl:  4.75, fr:  6.88, bl:  4.43, br:  2.86, in:  2.12, sl:  0.77, sr:  3.92, tu:  0.05
+  99.37 | fl:  2.91, fr:  0.29, bl:  0.44, br:  2.58, in:  0.00, sl:  5.03, sr:  4.97, tu:  0.08
+  99.82 | fl:  0.07, fr:  1.01, bl:  1.10, br:  2.00, in:  0.00, sl:  1.57, sr:  2.25, tu:  0.40
+ 100.31 | fl:  0.60, fr:  1.00, bl:  0.16, br:  1.89, in:  0.00, sl:  5.39, sr:  5.11, tu:  0.11
+ 100.74 | fl:  3.44, fr:  1.63, bl:  4.96, br:  6.53, in:  0.00, sl:  4.35, sr:  4.32, tu:  0.02
+ 100.97 | gate open:   left  900 900.000  1.38, right  900 0.372  0.48, bat: 11.63
+ 100.97 | left vel:  900, right vel:  900
+ 101.06 | left vel:  900, right vel:  880
+ 101.13 | left vel:  900, right vel:  900
+ 101.20 | fl:  0.00, fr:  0.00, bl:  0.00, br:  0.00, in:  2.34, sl:  1.06, sr:  2.48, tu:  0.04
+ 101.20 | left vel:  880, right vel:  880
+ 101.28 | left vel:  800, right vel:  780
+ 101.35 | left vel:  820, right vel:  800
+ 101.42 | left vel:  820, right vel:  820
+ 101.49 | left vel:  720, right vel:  720
+ 101.56 | left vel:  760, right vel:  760
+ 101.63 | fl:  0.00, fr:  0.00, bl:  0.00, br:  0.00, in:  1.57, sl:  5.68, sr:  5.58, tu:  0.01
+ 101.63 | left vel:  780, right vel:  780
+ 101.73 | left vel:  800, right vel:  780
+ 101.81 | left vel:  720, right vel:  720
+ 101.88 | left vel:  740, right vel:  740
+ 101.96 | left vel:  760, right vel:  760
+ 102.03 | left vel:  800, right vel:  800
+ 102.10 | fl:  0.00, fr:  0.00, bl:  0.00, br:  0.00, in:  1.38, sl:  5.57, sr:  5.46, tu:  0.30
+ 102.10 | left vel:  820, right vel:  840
+ 102.18 | left vel:  860, right vel:  860
+ 102.25 | left vel:  880, right vel:  900
+ 102.32 | left vel:  900, right vel:  900
+ 102.32 | gate closed: left  900 900.000  2.79, right  900 0.372  0.87, bat: 12.08
+ 102.54 | fl:  0.00, fr:  0.00, bl:  0.00, br:  0.00, in:  1.18, sl:  2.34, sr:  4.95, tu:  0.10
+ 102.99 | fl:  5.01, fr:  3.46, bl:  0.96, br:  1.77, in:  1.47, sl:  1.87, sr:  2.28, tu:  0.07
+ 103.41 | fl:  4.80, fr:  0.16, bl:  3.21, br:  4.00, in:  1.38, sl:  1.50, sr:  4.25, tu:  0.01
+ 103.89 | fl:  1.75, fr:  4.66, bl:  3.11, br:  1.12, in:  1.53, sl:  4.56, sr:  4.60, tu:  0.60
+ 104.37 | fl:  0.01, fr:  0.00, bl:  0.00, br:  0.01, in:  2.44, sl:  1.76, sr:  0.55, tu:  0.38
+ 104.84 | fl:  6.65, fr:  3.62, bl:  1.32, br:  3.95, in:  1.99, sl:  1.60, sr:  3.76, tu:  0.33
+ 105.29 | fl:  4.26, fr:  4.09, bl:  3.90, br:  3.12, in:  2.00, sl:  1.67, sr:  2.72, tu:  0.19
+ 105.73 | fl:  5.23, fr:  3.20, bl:  2.56, br:  3.83, in:  2.54, sl:  0.30, sr:  3.56, tu:  0.74
+ 106.22 | fl:  2.15, fr:  2.35, bl:  6.35, br:  0.33, in:  0.00, sl:  1.55, sr:  4.60, tu:  2.01
+ 106.53 | gate open:   left  680 680.000  1.65, right  680 0.279  0.22, bat: 10.12
+ 106.53 | left vel:  680, right vel:  680
+ 106.67 | left vel:  660, right vel:  640
+ 106.75 | fl:  0.05, fr:  0.03, bl:  0.05, br:  0.05, in:  3.19, sl:  2.06, sr:  2.23, tu:  0.76
+ 106.75 | left vel:  660, right vel:  660
+ 106.83 | left vel:  620, right vel:  620
+ 106.90 | left vel:  600, right vel:  580
+ 106.98 | left vel:  640, right vel:  620
+ 107.06 | left vel:  640, right vel:  640
+ 107.13 | left vel:  600, right vel:  600
+ 107.22 | fl:  0.00, fr:  0.00, bl:  0.00, br:  0.00, in:  1.45, sl:  6.01, sr:  5.94, tu:  0.04
+ 107.22 | left vel:  640, right vel:  660
+ 107.34 | left vel:  680, right vel:  700
+ 107.40 | left vel:  720, right vel:  700
+ 107.46 | left vel:  680, right vel:  700
+ 107.53 | left vel:  680, right vel:  660
+ 107.60 | left vel:  600, right vel:  600
+ 107.67 | fl:  0.00, fr:  0.00, bl:  0.00, br:  0.00, in:  1.24, sl:  6.06, sr:  6.09, tu:  0.04
+ 107.67 | left vel:  640, right vel:  620
+ 107.75 | left vel:  680, right vel:  660
+ 107.84 | left vel:  700, right vel:  700
+ 107.84 | gate closed: left  700 700.000  2.31, right  700 0.287  5.85, bat: 11.95
+ 108.12 | fl:  4.80, fr:  0.20, bl:  0.22, br:  5.99, in:  1.17, sl:  1.72, sr:  2.05, tu:  0.27
+ 108.58 | fl:  2.04, fr:  2.88, bl:  2.15, br:  3.61, in:  1.47, sl:  0.93, sr:  3.71, tu:  1.11
+ 109.06 | fl:  1.92, fr:  4.73, bl:  0.18, br:  3.19, in:  1.58, sl:  3.54, sr:  3.66, tu:  0.48
+ 109.50 | fl:  0.88, fr:  0.00, bl:  0.33, br:  0.00, in:  2.94, sl:  3.20, sr:  1.51, tu:  0.35
+ 109.98 | x: -27.16, y: 116.83, h: 0.7130, angle:   0.18, offset: 0
+ 109.98 | fl:  0.00, fr:  0.00, bl:  0.00, br:  0.01, in:  0.06, sl:  5.61, sr:  5.42, tu:  0.06
+ 110.42 | fl:  6.91, fr:  1.74, bl:  1.41, br:  4.37, in:  0.00, sl:  1.43, sr:  1.66, tu:  0.04
+ 110.90 | fl:  3.09, fr:  1.10, bl:  1.73, br:  1.77, in:  0.00, sl:  2.97, sr:  2.25, tu:  0.08
+ 111.39 | fl:  1.23, fr:  0.24, bl:  0.29, br:  0.87, in:  0.00, sl:  2.79, sr:  5.03, tu:  0.34
+ 111.62 | gate open:   left  780 760.000  1.30, right  780 0.323  4.71, bat: 11.04
+ 111.62 | left vel:  780, right vel:  760
+ 111.73 | left vel:  780, right vel:  780
+ 111.81 | left vel:  780, right vel:  780
+ 111.90 | fl:  0.00, fr:  0.00, bl:  0.00, br:  0.00, in:  2.10, sl:  3.99, sr:  3.83, tu:  0.06
+ 111.90 | left vel:  680, right vel:  700
+ 112.00 | left vel:  580, right vel:  580
+ 112.10 | left vel:  620, right vel:  620
+ 112.17 | left vel:  640, right vel:  640
+ 112.25 | left vel:  600, right vel:  580
+ 112.32 | left vel:  600, right vel:  620
+ 112.40 | fl:  0.00, fr:  0.00, bl:  0.00, br:  0.00, in:  1.31, sl:  6.01, sr:  5.99, tu:  0.15
+ 112.40 | left vel:  660, right vel:  660
+ 112.49 | left vel:  680, right vel:  700
+ 112.57 | left vel:  720, right vel:  700
+ 112.66 | left vel:  700, right vel:  700
+ 112.73 | left vel:  700, right vel:  700
+ 112.81 | left vel:  700, right vel:  700
+ 112.88 | fl:  0.00, fr:  0.00, bl:  0.00, br:  0.00, in:  1.44, sl:  2.03, sr:  2.05, tu:  0.00
+ 112.88 | left vel:  700, right vel:  700
+ 112.96 | left vel:  700, right vel:  680
+ 112.96 | gate closed: left  700 700.000  1.85, right  700 0.287  2.02, bat: 12.24
+ 113.38 | fl:  3.03, fr:  6.34, bl:  1.19, br:  1.42, in:  1.56, sl:  1.33, sr:  1.72, tu:  0.05
+ 113.81 | fl:  0.40, fr:  4.11, bl:  3.87, br:  1.83, in:  1.51, sl:  2.89, sr:  0.84, tu:  1.27
+ 114.32 | fl:  0.99, fr:  2.18, bl:  2.40, br:  0.99, in:  1.77, sl:  3.31, sr:  3.57, tu:  0.21
+ 114.79 | fl:  3.05, fr:  2.35, bl:  0.67, br:  0.04, in:  2.15, sl:  1.00, sr:  3.02, tu:  1.05
+ 115.27 | fl:  5.25, fr:  0.02, bl:  0.08, br:  4.87, in:  1.48, sl:  3.50, sr:  4.89, tu:  0.32
+ 115.70 | fl:  5.21, fr:  0.68, bl:  0.70, br:  3.81, in:  2.02, sl:  1.04, sr:  1.25, tu:  0.20
+ 116.16 | fl:  0.05, fr:  3.01, bl:  2.98, br:  0.03, in:  1.57, sl:  2.79, sr:  5.28, tu:  0.47
+ 116.59 | fl:  2.43, fr:  3.44, bl:  6.07, br:  0.84, in:  1.12, sl:  6.86, sr:  7.44, tu:  0.57
+ 117.05 | fl:  0.46, fr:  3.85, bl:  4.27, br:  0.65, in:  2.05, sl:  2.63, sr:  0.20, tu:  0.63
+ 117.53 | fl:  2.83, fr:  5.30, bl:  7.08, br:  0.67, in:  3.81, sl:  3.24, sr:  3.87, tu:  0.86
+ 117.99 | fl:  0.11, fr:  1.54, bl:  3.70, br:  2.00, in:  0.00, sl:  5.83, sr:  3.46, tu:  0.03
+ 118.44 | fl:  1.95, fr:  4.30, bl:  2.85, br:  2.56, in:  0.00, sl:  1.16, sr:  1.25, tu:  1.12
+ 118.88 | fl:  0.91, fr:  1.14, bl:  1.29, br:  1.11, in:  0.00, sl:  1.14, sr:  2.18, tu:  0.22
+ 118.98 | gate open:   left  780 780.000  2.13, right  760 0.309  1.59, bat: 11.59
+ 118.98 | left vel:  780, right vel:  780
+ 119.09 | left vel:  780, right vel:  760
+ 119.19 | left vel:  760, right vel:  760
+ 119.27 | left vel:  680, right vel:  660
+ 119.35 | left vel:  620, right vel:  600
+ 119.43 | fl:  0.00, fr:  0.00, bl:  0.00, br:  0.00, in:  1.54, sl:  6.03, sr:  5.91, tu:  0.04
+ 119.43 | left vel:  640, right vel:  660
+ 119.53 | left vel:  600, right vel:  580
+ 119.60 | left vel:  620, right vel:  620
+ 119.67 | left vel:  640, right vel:  640
+ 119.74 | left vel:  680, right vel:  680
+ 119.81 | left vel:  620, right vel:  620
+ 119.88 | fl:  0.00, fr:  0.00, bl:  0.00, br:  0.00, in:  1.23, sl:  5.99, sr:  6.00, tu:  0.11
+ 119.88 | left vel:  640, right vel:  640
+ 119.97 | left vel:  680, right vel:  680
+ 120.06 | left vel:  700, right vel:  680
+ 120.14 | left vel:  700, right vel:  700
+ 120.21 | left vel:  680, right vel:  680
+ 120.28 | left vel:  680, right vel:  700
+ 120.28 | gate closed: left  680 700.000  4.10, right  700 0.287  1.25, bat: 10.54
+ 120.38 | fl:  3.29, fr:  4.31, bl:  3.15, br:  2.00, in:  1.18, sl:  0.95, sr:  3.47, tu:  0.14
+ 120.81 | fl:  1.65, fr:  4.12, bl:  3.48, br:  4.84, in:  1.16, sl:  0.71, sr:  0.21, tu:  2.30
+ 121.23 | fl:  2.79, fr:  1.10, bl:  2.10, br:  2.06, in:  1.23, sl:  2.70, sr:  3.57, tu:  0.04
+ 121.66 | fl:  6.53, fr:  7.02, bl:  1.66, br:  1.46, in:  2.49, sl:  2.26, sr:  2.74, tu:  0.88
+ 122.10 | fl:  0.45, fr:  3.02, bl:  3.28, br:  0.25, in:  2.13, sl:  2.16, sr:  2.73, tu:  0.49
+ 122.54 | fl:  0.01, fr:  2.21, bl:  0.14, br:  3.82, in:  1.77, sl:  4.67, sr:  4.58, tu:  0.01
+ 123.00 | fl:  0.00, fr:  0.00, bl:  0.00, br:  0.00, in:  1.34, sl:  7.47, sr:  5.27, tu:  1.01
+ 123.08 | gate open:   left  700 700.000  5.99, right  680 0.309  5.83, bat: 10.84
+ 123.08 | left vel:  700, right vel:  700
+ 123.18 | left vel:  720, right vel:  720
+ 123.27 | left vel:  740, right vel:  740
+ 123.33 | left vel:  740, right vel:  740
+ 123.40 | left vel:  680, right vel:  680
+ 123.48 | fl:  0.00, fr:  0.00, bl:  0.00, br:  0.01, in:  1.28, sl:  5.90, sr:  5.89, tu:  0.09
+ 123.48 | left vel:  660, right vel:  640
+ 123.58 | left vel:  700, right vel:  680
+ 123.65 | left vel:  620, right vel:  620
+ 123.72 | left vel:  660, right vel:  660
+ 123.80 | left vel:  680, right vel:  700
+ 123.89 | left vel:  740, right vel:  720
+ 123.97 | fl:  0.00, fr:  0.00, bl:  0.00, br:  0.00, in:  1.57, sl:  1.47, sr:  1.54, tu:  0.00
+ 123.97 | left vel:  740, right vel:  740
+ 124.07 | left vel:  720, right vel:  740
+ 124.15 | left vel:  740, right vel:  740
+ 124.24 | left vel:  720, right vel:  720
+ 124.33 | left vel:  740, right vel:  720
+ 124.41 | left vel:  720, right vel:  720
+ 124.41 | gate closed: left  720 720.000  2.33, right  720 0.304  3.66, bat: 10.13
+ 124.51 | fl:  1.06, fr:  2.98, bl:  2.66, br:  3.54, in:  1.56, sl:  2.05, sr:  1.68, tu:  1.96
+ 124.98 | fl:  2.81, fr:  0.97, bl:  1.29, br:  2.64, in:  1.58, sl:  2.22, sr:  3.13, tu:  0.94
+ 125.42 | fl:  2.47, fr:  2.29, bl:  1.45, br:  1.30, in:  1.60, sl:  3.38, sr:  2.75, tu:  1.67
+ 125.85 | fl:  4.75, fr:  4.06, bl:  4.65, br:  2.81, in:  2.77, sl:  4.07, sr:  4.14, tu:  0.42
+ 126.28 | gate open:   left  780 800.000  1.72, right  780 0.332  3.35, bat: 10.57
+ 126.28 | fl:  1.66, fr:  2.69, bl:  2.74, br:  1.41, in:  2.10, sl:  2.71, sr:  3.32, tu:  0.22
+ 126.28 | left vel:  780, right vel:  780
+ 126.40 | left vel:  780, right vel:  780
+ 126.47 | left vel:  780, right vel:  800
+ 126.54 | left vel:  780, right vel:  780
+ 126.62 | left vel:  780, right vel:  780
+ 126.70 | left vel:  780, right vel:  780
+ 126.79 | fl:  0.00, fr:  0.01, bl:  0.02, br:  0.00, in:  0.00, sl:  2.75, sr:  4.87, tu:  0.36
+ 126.79 | left vel:  800, right vel:  780
+ 126.89 | left vel:  800, right vel:  780
+ 126.98 | left vel:  800, right vel:  800
+ 127.05 | left vel:  780, right vel:  800
+ 127.12 | left vel:  780, right vel:  780
+ 127.20 | left vel:  700, right vel:  700
+ 127.27 | fl:  0.00, fr:  0.00, bl:  0.00, br:  0.00, in:  0.00, sl:  4.28, sr:  6.13, tu:  0.21
+ 127.27 | left vel:  700, right vel:  720
+ 127.37 | left vel:  740, right vel:  740
+ 127.46 | left vel:  740, right vel:  740
+ 127.54 | left vel:  740, right vel:  740
+ 127.61 | left vel:  740, right vel:  720
+ 127.61 | gate closed: left  720 720.000  0.97, right  740 0.304  4.24, bat: 12.10
+ 127.70 | gate open:   left  740 740.000  2.24, right  740 0.304  1.78, bat: 11.41
+ 127.70 | left vel:  740, right vel:  740
+ 127.81 | fl:  0.00, fr:  0.01, bl:  0.00, br:  0.00, in:  3.51, sl:  1.20, sr:  3.77, tu:  0.01
+ 127.81 | left vel:  720, right vel:  740
+ 127.92 | left vel:  740, right vel:  720
+ 128.01 | left vel:  640, right vel:  640
+ 128.08 | left vel:  660, right vel:  660
+ 128.15 | left vel:  700, right vel:  700
+ 128.22 | left vel:  740, right vel:  740
+ 128.30 | fl:  0.00, fr:  0.00, bl:  0.00, br:  0.00, in:  0.00, sl:  3.18, sr:  1.37, tu:  0.01
+ 128.30 | left vel:  740, right vel:  740
+ 128.39 | left vel:  720, right vel:  740
+ 128.48 | left vel:  740, right vel:  720
+ 128.56 | left vel:  740, right vel:  740
+ 128.63 | left vel:  720, right vel:  740
+ 128.70 | left vel:  720, right vel:  720
+ 128.77 | fl:  0.00, fr:  0.00, bl:  0.00, br:  0.00, in:  0.00, sl:  1.86, sr:  1.22, tu:  0.12
+ 128.77 | left vel:  720, right vel:  740
+ 128.86 | left vel:  740, right vel:  720
+ 128.93 | left vel:  720, right vel:  740
+ 129.01 | left vel:  740, right vel:  740
+ 129.01 | gate closed: left  720 740.000  4.29, right  720 0.304  1.11, bat: 12.12
+ 129.27 | fl:  4.04, fr:  4.13, bl:  4.34, br:  3.99, in:  0.00, sl:  2.97, sr:  0.63, tu:  0.01
+ 129.73 | fl:  0.00, fr:  0.00, bl:  0.00, br:  0.00, in:  0.00, sl:  1.16, sr:  4.46, tu:  2.26
+ 130.17 | fl:  0.00, fr:  0.00, bl:  0.00, br:  0.00, in:  0.00, sl:  1.18, sr:  3.90, tu:  2.57
+ 130.59 | fl:  1.58, fr:  1.60, bl:  1.69, br:  1.60, in:  0.00, sl:  3.75, sr:  3.36, tu:  2.76
+ 130.98 | fl:  0.00, fr:  0.00, bl:  0.00, br:  0.00, in:  0.00, sl:  0.85, sr:  4.26, tu:  1.11
+ 131.41 | fl:  0.00, fr:  0.00, bl:  0.00, br:  0.00, in:  0.00, sl:  2.52, sr:  4.05, tu:  1.79
+ 131.67 | gate open:   left  720 720.000  0.89, right  720 0.304  3.59, bat: 11.39
+ 131.67 | left vel:  700, right vel:  720
+ 131.78 | left vel:  720, right vel:  740
+ 131.85 | fl:  0.00, fr:  0.00, bl:  0.00, br:  0.00, in:  1.57, sl:  1.10, sr:  3.97, tu:  2.06
+ 131.85 | left vel:  720, right vel:  720
+ 131.93 | left vel:  740, right vel:  720
+ 132.01 | left vel:  720, right vel:  700
+ 132.07 | left vel:  640, right vel:  620
+ 132.14 | left vel:  640, right vel:  620
+ 132.20 | left vel:  660, right vel:  660
+ 132.27 | fl:  0.00, fr:  0.00, bl:  0.00, br:  0.00, in:  1.50, sl:  5.86, sr:  5.76, tu:  1.92
+ 132.27 | left vel:  700, right vel:  700
+ 132.36 | left vel:  680, right vel:  680
+ 132.44 | left vel:  640, right vel:  660
+ 132.52 | left vel:  700, right vel:  700
+ 132.60 | left vel:  720, right vel:  720
+ 132.68 | left vel:  740, right vel:  740
+ 132.75 | fl:  0.00, fr:  0.00, bl:  0.00, br:  0.00, in:  1.25, sl:  1.48, sr:  3.58, tu:  1.32
+ 132.75 | left vel:  740, right vel:  720
+ 132.85 | left vel:  720, right vel:  740
+ 132.94 | left vel:  720, right vel:  740
+ 133.04 | left vel:  720, right vel:  720
+ 133.04 | gate closed: left  720 720.000  0.98, right  720 0.304  3.26, bat:  9.89
+ 133.28 | fl:  1.73, fr:  1.83, bl:  2.00, br:  1.78, in:  1.46, sl:  0.89, sr:  3.45, tu:  0.49
+ 133.71 | fl:  0.30, fr:  1.25, bl:  4.10, br:  4.45, in:  1.31, sl:  3.13, sr:  2.74, tu:  1.63
+ 134.15 | fl:  2.94, fr:  1.57, bl:  5.50, br:  3.02, in:  1.05, sl:  1.83, sr:  0.93, tu:  0.86
+ 134.62 | fl:  1.33, fr:  1.13, bl:  1.33, br:  1.48, in:  1.46, sl:  1.84, sr:  3.86, tu:  0.79
+ 135.03 | fl:  0.03, fr:  0.96, bl:  0.01, br:  0.36, in:  2.83, sl:  4.16, sr:  1.81, tu:  0.01
+ 135.51 | fl:  1.94, fr:  4.10, bl:  1.78, br:  4.27, in:  2.19, sl:  1.56, sr:  1.88, tu:  0.27
+ 135.97 | fl:  3.10, fr:  2.77, bl:  3.71, br:  3.66, in:  2.76, sl:  0.84, sr:  1.72, tu:  1.13
+ 136.52 | fl:  0.26, fr:  2.73, bl:  1.99, br:  1.37, in:  0.00, sl:  4.36, sr:  1.97, tu:  0.12
+ 136.95 | fl:  0.82, fr:  4.12, bl:  3.15, br:  1.33, in:  0.00, sl:  1.22, sr:  3.12, tu:  5.51
+ 137.39 | fl:  1.15, fr:  1.08, bl:  2.82, br:  2.16, in:  0.00, sl:  1.40, sr:  3.47, tu:  2.12
+ 137.88 | fl:  2.68, fr:  4.06, bl:  3.80, br:  2.73, in:  0.00, sl:  3.80, sr:  1.11, tu:  0.09
+ 138.36 | fl:  3.48, fr:  2.42, bl:  2.30, br:  0.21, in:  0.00, sl:  4.96, sr:  4.91, tu:  0.32
+ 138.84 | fl:  4.10, fr:  0.63, bl:  0.28, br:  6.75, in:  0.00, sl:  2.42, sr:  4.65, tu:  0.50
+ 139.18 | gate open:   left  680 680.000  6.12, right  680 0.282  4.36, bat: 10.61
+ 139.18 | left vel:  680, right vel:  700
+ 139.28 | left vel:  700, right vel:  700
+ 139.35 | fl:  0.00, fr:  0.00, bl:  0.00, br:  0.00, in:  3.13, sl:  1.09, sr:  2.09, tu:  0.08
+ 139.35 | left vel:  700, right vel:  680
+ 139.45 | left vel:  680, right vel:  680
+ 139.52 | left vel:  600, right vel:  620
+ 139.60 | left vel:  640, right vel:  660
+ 139.69 | left vel:  620, right vel:  660
+ 139.76 | left vel:  600, right vel:  620
+ 139.84 | fl:  0.00, fr:  0.00, bl:  0.00, br:  0.00, in:  1.40, sl:  5.95, sr:  5.85, tu:  0.05
+ 139.84 | left vel:  660, right vel:  660
+ 139.93 | left vel:  680, right vel:  680
+ 140.00 | left vel:  640, right vel:  680
+ 140.07 | left vel:  620, right vel:  620
+ 140.15 | left vel:  680, right vel:  660
+ 140.25 | left vel:  700, right vel:  700
+ 140.33 | fl:  0.12, fr:  0.10, bl:  0.13, br:  0.07, in:  1.54, sl:  1.47, sr:  1.70, tu:  0.14
+ 140.33 | left vel:  700, right vel:  700
+ 140.42 | left vel:  680, right vel:  680
+ 140.51 | left vel:  680, right vel:  700
+ 140.51 | gate closed: left  680 680.000  2.46, right  700 0.287  1.65, bat: 10.02
+ 140.83 | fl:  2.35, fr:  0.30, bl:  5.67, br:  1.14, in:  1.01, sl:  3.38, sr:  1.52, tu:  1.96
+ 141.32 | fl:  2.13, fr:  0.02, bl:  2.95, br:  3.80, in:  1.44, sl:  1.18, sr:  1.55, tu:  1.71
+ 141.81 | fl:  2.30, fr:  1.85, bl:  2.10, br:  1.99, in:  1.33, sl:  1.67, sr:  4.10, tu:  0.65
+ 142.28 | fl:  0.83, fr:  0.07, bl:  0.09, br:  0.67, in:  2.14, sl:  1.39, sr:  4.57, tu:  1.26
+ 142.78 | fl:  3.28, fr:  0.23, bl:  0.25, br:  3.39, in:  1.84, sl:  3.62, sr:  1.64, tu:  1.21
+ 143.26 | fl:  0.03, fr:  0.77, bl:  3.46, br:  2.53, in:  1.69, sl:  3.28, sr:  1.24, tu:  0.82
+ 143.74 | fl:  3.49, fr:  1.65, bl:  2.30, br:  5.86, in:  1.75, sl:  0.51, sr:  1.08, tu:  1.07
+ 144.23 | fl:  0.30, fr:  5.13, bl:  2.81, br:  4.72, in:  1.51, sl:  4.71, sr:  4.72, tu:  0.24
+ 144.73 | fl:  4.64, fr:  2.58, bl:  2.72, br:  1.01, in:  1.18, sl:  1.15, sr:  1.73, tu:  1.09
+ 145.18 | fl:  2.92, fr:  3.55, bl:  5.34, br:  2.96, in:  1.94, sl:  0.74, sr:  0.91, tu:  1.25
+ 145.65 | fl:  1.17, fr:  2.13, bl:  3.13, br:  1.62, in:  1.95, sl:  4.29, sr:  4.25, tu:  5.61
+ 146.12 | fl:  2.80, fr:  0.50, bl:  2.20, br:  3.47, in:  1.85, sl:  1.98, sr:  2.92, tu:  1.46
+ 146.60 | fl:  7.27, fr:  2.60, bl:  2.04, br:  4.17, in:  1.56, sl:  7.71, sr:  6.43, tu:  1.31
+ 147.07 | fl:  3.55, fr:  1.29, bl:  5.39, br:  1.85, in:  0.00, sl:  0.99, sr:  3.39, tu:  1.94
+ 147.56 | fl:  0.49, fr:  0.90, bl:  3.10, br:  2.55, in:  0.00, sl:  1.94, sr:  2.22, tu:  0.43
+ 148.03 | fl:  2.93, fr:  0.75, bl:  2.40, br:  3.75, in:  0.00, sl:  1.59, sr:  1.95, tu:  0.08
+ 148.49 | fl:  0.00, fr:  0.01, bl:  0.00, br:  0.01, in:  0.00, sl:  1.43, sr:  1.35, tu:  0.69
+ 148.90 | fl:  0.00, fr:  0.00, bl:  0.00, br:  0.00, in:  0.00, sl:  4.29, sr:  2.36, tu:  0.09
+ 149.36 | fl:  0.00, fr:  0.00, bl:  0.00, br:  0.00, in:  0.00, sl:  1.60, sr:  3.60, tu:  0.00
+ 149.52 | gate open:   left  740 720.000  3.56, right  720 0.304  0.89, bat: 11.36
+ 149.52 | left vel:  720, right vel:  720
+ 149.63 | left vel:  720, right vel:  740
+ 149.70 | left vel:  740, right vel:  720
+ 149.78 | left vel:  720, right vel:  720
+ 149.86 | fl:  0.00, fr:  0.00, bl:  0.00, br:  0.00, in:  1.15, sl:  5.68, sr:  5.69, tu:  0.09
+ 149.86 | left vel:  640, right vel:  640
+ 149.95 | left vel:  660, right vel:  660
+ 150.05 | left vel:  620, right vel:  600
+ 150.14 | left vel:  640, right vel:  640
+ 150.22 | left vel:  680, right vel:  680
+ 150.30 | left vel:  700, right vel:  700
+ 150.38 | fl:  0.00, fr:  0.00, bl:  0.00, br:  0.00, in:  1.30, sl:  5.96, sr:  5.90, tu:  0.15
+ 150.38 | left vel:  640, right vel:  640
+ 150.47 | left vel:  680, right vel:  680
+ 150.57 | left vel:  740, right vel:  720
+ 150.66 | left vel:  740, right vel:  740
+ 150.74 | left vel:  740, right vel:  740
+ 150.81 | left vel:  740, right vel:  760
+ 150.89 | fl:  0.00, fr:  0.00, bl:  0.00, br:  0.00, in:  1.28, sl:  1.24, sr:  4.20, tu:  0.35
+ 150.89 | left vel:  740, right vel:  740
+ 150.89 | gate closed: left  740 740.000  3.18, right  720 0.304  2.78, bat: 11.82
+ 151.41 | fl:  2.73, fr:  0.54, bl:  4.49, br:  0.82, in:  1.30, sl:  3.87, sr:  2.26, tu:  0.51
+ 151.86 | fl:  0.96, fr:  0.84, bl:  2.21, br:  2.64, in:  1.35, sl:  2.24, sr:  2.94, tu:  2.06
+ 152.33 | fl:  3.76, fr:  0.68, bl:  4.99, br:  2.71, in:  1.16, sl:  4.48, sr:  4.41, tu:  0.34
+ 152.82 | fl:  2.19, fr:  2.65, bl:  1.92, br:  2.83, in:  1.43, sl:  3.10, sr:  2.08, tu:  0.92
+ 153.27 | fl:  1.66, fr:  4.82, bl:  0.31, br:  1.99, in:  1.26, sl:  3.98, sr:  2.57, tu:  2.30
+ 153.73 | fl:  5.14, fr:  5.98, bl:  4.33, br:  2.52, in:  1.51, sl:  1.65, sr:  3.94, tu:  1.43
+ 154.19 | fl:  0.61, fr:  2.82, bl:  2.00, br:  5.81, in:  1.52, sl:  3.99, sr:  1.99, tu:  1.31
+ 154.61 | fl:  0.00, fr:  0.00, bl:  0.00, br:  0.00, in:  1.67, sl:  2.07, sr:  1.59, tu:  0.74
+ 155.02 | fl:  0.00, fr:  0.00, bl:  0.00, br:  0.00, in:  1.45, sl:  1.85, sr:  4.14, tu:  0.02
+ 155.46 | fl:  2.65, fr:  3.24, bl:  1.30, br:  3.96, in:  1.24, sl:  1.49, sr:  2.15, tu:  0.10
+ 155.92 | fl:  3.93, fr:  0.49, bl:  4.52, br:  2.02, in:  1.45, sl:  4.53, sr:  4.48, tu:  0.20
+ 156.40 | fl:  0.06, fr:  0.79, bl:  0.89, br:  0.07, in:  2.40, sl:  1.56, sr:  2.13, tu:  0.38
+ 156.87 | fl:  2.04, fr:  1.88, bl:  1.21, br:  4.28, in:  1.67, sl:  3.74, sr:  3.33, tu:  0.17
+ 157.36 | fl:  2.71, fr:  5.61, bl:  5.82, br:  2.46, in:  1.20, sl:  3.13, sr:  1.47, tu:  0.26
+ 157.84 | fl:  3.44, fr:  2.06, bl:  5.39, br:  2.27, in:  1.62, sl:  3.44, sr:  0.86, tu:  0.02
+ 158.31 | fl:  0.00, fr:  0.00, bl:  0.00, br:  0.00, in:  1.65, sl:  2.79, sr:  3.22, tu:  0.24
+ 158.77 | fl:  0.00, fr:  0.00, bl:  0.00, br:  0.00, in:  1.49, sl:  2.90, sr:  3.85, tu:  0.05
+ 159.20 | fl:  0.00, fr:  0.00, bl:  0.00, br:  0.00, in:  1.56, sl:  3.46, sr:  3.15, tu:  0.00
+ 159.64 | fl:  0.00, fr:  0.00, bl:  0.00, br:  0.00, in:  1.78, sl:  3.58, sr:  1.93, tu:  0.00
+ 160.13 | fl:  0.94, fr:  1.51, bl:  2.73, br:  1.67, in:  2.70, sl:  0.15, sr:  0.67, tu:  0.00
+ 160.60 | fl:  3.12, fr:  3.82, bl:  3.21, br:  2.60, in:  0.00, sl:  1.35, sr:  3.12, tu:  0.01
+ 161.07 | fl:  0.00, fr:  0.00, bl:  0.00, br:  0.00, in:  0.00, sl:  3.40, sr:  3.81, tu:  0.01
+ 161.52 | fl:  6.69, fr:  3.24, bl:  1.91, br:  3.23, in:  0.00, sl:  2.27, sr:  3.08, tu:  0.00
+ 162.01 | fl:  2.05, fr:  1.40, bl:  0.27, br:  0.78, in:  0.00, sl:  1.87, sr:  3.96, tu:  0.48
+ 162.50 | fl:  2.83, fr:  0.70, bl:  2.16, br:  3.65, in:  0.00, sl:  3.29, sr:  3.36, tu:  2.19
+ 163.04 | fl:  0.61, fr:  1.91, bl:  2.31, br:  1.63, in:  0.00, sl:  2.06, sr:  2.40, tu:  0.60
+ 163.13 | gate open:   left  660 680.000  4.06, right  660 0.274  2.22, bat: 11.56
+ 163.13 | left vel:  660, right vel:  660
+ 163.26 | left vel:  660, right vel:  660
+ 163.35 | left vel:  660, right vel:  660
+ 163.44 | left vel:  620, right vel:  620
+ 163.52 | left vel:  640, right vel:  640
+ 163.60 | fl:  0.00, fr:  0.00, bl:  0.00, br:  0.00, in:  1.62, sl:  5.88, sr:  5.83, tu:  0.09
+ 163.60 | left vel:  680, right vel:  660
+ 163.72 | left vel:  600, right vel:  600
+ 163.80 | left vel:  640, right vel:  660
+ 163.87 | left vel:  680, right vel:  660
+ 163.96 | left vel:  700, right vel:  720
+ 164.04 | left vel:  620, right vel:  600
+ 164.11 | fl:  0.00, fr:  0.00, bl:  0.00, br:  0.00, in:  1.21, sl:  5.96, sr:  5.88, tu:  0.09
+ 164.11 | left vel:  620, right vel:  640
+ 164.24 | left vel:  680, right vel:  680
+ 164.32 | left vel:  700, right vel:  700
+ 164.40 | left vel:  680, right vel:  680
+ 164.49 | left vel:  700, right vel:  700
+ 164.49 | gate closed: left  700 680.000  0.84, right  680 0.287  3.39, bat:  9.46
+ 164.66 | fl:  0.58, fr:  4.46, bl:  0.30, br:  3.38, in:  1.37, sl:  4.05, sr:  4.33, tu:  0.72
+ 165.15 | fl:  2.73, fr:  1.65, bl:  0.71, br:  2.35, in:  1.17, sl:  2.73, sr:  2.46, tu:  0.24
+ 165.63 | fl:  1.26, fr:  4.08, bl:  2.26, br:  0.48, in:  1.51, sl:  2.65, sr:  1.29, tu:  0.23
+ 166.12 | fl:  4.68, fr:  2.22, bl:  0.81, br:  2.65, in:  1.19, sl:  4.68, sr:  4.60, tu:  0.31
+ 166.60 | fl:  7.29, fr:  0.25, bl:  2.22, br:  2.89, in:  1.44, sl:  1.83, sr:  1.16, tu:  1.62
+ 167.07 | fl:  5.10, fr:  1.46, bl:  1.53, br:  4.18, in:  2.23, sl:  1.16, sr:  1.44, tu:  0.22
+ 167.57 | fl:  3.44, fr:  1.85, bl:  4.22, br:  4.45, in:  1.41, sl:  2.75, sr:  3.24, tu:  0.01
+ 168.05 | fl:  4.02, fr:  2.24, bl:  7.42, br:  2.80, in:  2.34, sl:  2.76, sr:  1.97, tu:  0.14
+ 168.51 | fl:  0.45, fr:  3.95, bl:  3.28, br:  0.60, in:  1.61, sl:  4.31, sr:  4.52, tu:  0.31
+ 168.99 | fl:  0.11, fr:  1.40, bl:  1.09, br:  2.02, in:  2.28, sl:  4.69, sr:  4.65, tu:  0.04
+ 169.46 | fl:  1.21, fr:  3.21, bl:  5.42, br:  1.13, in:  2.06, sl:  1.29, sr:  4.04, tu:  0.01
+ 169.94 | fl:  2.11, fr:  6.80, bl:  3.35, br:  1.84, in:  3.54, sl:  4.16, sr:  3.47, tu:  0.08
+ 170.43 | fl:  0.05, fr:  1.31, bl:  2.92, br:  2.78, in:  0.00, sl:  2.31, sr:  3.24, tu:  1.22
+ 170.91 | fl:  2.92, fr:  2.92, bl:  6.64, br:  5.08, in:  0.00, sl:  1.91, sr:  1.96, tu:  0.12
+ 171.22 | gate open:   left  880 880.000  2.38, right  880 0.412  1.65, bat: 11.10
+ 171.22 | left vel:  880, right vel:  880
+ 171.34 | left vel:  880, right vel:  900
+ 171.42 | fl:  0.00, fr:  0.00, bl:  0.00, br:  0.00, in:  2.90, sl:  1.52, sr:  4.24, tu:  0.05
+ 171.42 | left vel:  880, right vel:  900
+ 171.52 | left vel:  840, right vel:  860
+ 171.60 | left vel:  780, right vel:  800
+ 171.68 | left vel:  800, right vel:  820
+ 171.75 | left vel:  820, right vel:  800
+ 171.83 | left vel:  760, right vel:  740
+ 171.91 | fl:  0.00, fr:  0.00, bl:  0.00, br:  0.00, in:  1.37, sl:  5.49, sr:  5.43, tu:  0.21
+ 171.91 | left vel:  800, right vel:  800
+ 172.00 | left vel:  820, right vel:  800
+ 172.08 | left vel:  780, right vel:  760
+ 172.16 | left vel:  760, right vel:  760
+ 172.25 | left vel:  780, right vel:  800
+ 172.34 | left vel:  820, right vel:  840
+ 172.42 | fl:  0.01, fr:  0.00, bl:  0.04, br:  0.01, in:  1.31, sl:  5.30, sr:  5.17, tu:  0.03
+ 172.42 | left vel:  860, right vel:  860
+ 172.50 | left vel:  880, right vel:  880
+ 172.58 | left vel:  880, right vel:  880
+ 172.58 | gate closed: left  900 900.000  3.82, right  880 0.372  1.45, bat:  8.97
+ 172.88 | fl:  2.51, fr:  3.25, bl:  4.06, br:  3.14, in:  1.34, sl:  0.22, sr:  2.41, tu:  0.07
+ 173.39 | fl:  0.02, fr:  0.02, bl:  0.02, br:  0.03, in:  3.02, sl:  4.32, sr:  1.97, tu:  1.34
+ 173.89 | fl:  1.14, fr:  0.60, bl:  0.31, br:  1.72, in:  2.38, sl:  1.61, sr:  1.75, tu:  0.01
+ 174.34 | fl:  0.95, fr:  1.28, bl:  1.72, br:  0.83, in:  2.75, sl:  2.88, sr:  2.57, tu:  0.88
+ 174.82 | fl:  0.38, fr:  3.08, bl:  3.15, br:  0.34, in:  2.43, sl:  4.44, sr:  4.34, tu:  0.04
+ 175.34 | fl:  3.02, fr:  4.00, bl:  5.64, br:  2.54, in:  0.00, sl:  4.60, sr:  2.13, tu:  0.53
+ 175.80 | fl:  0.58, fr:  3.63, bl:  3.64, br:  0.53, in:  0.00, sl:  4.61, sr:  4.54, tu:  0.06
+ 176.27 | fl:  1.77, fr:  2.28, bl:  1.31, br:  0.81, in:  0.00, sl:  8.86, sr:  8.50, tu:  0.14
+ 176.66 | gate open:   left  900 900.000  2.49, right  900 0.372  2.26, bat: 11.24
+ 176.66 | left vel:  900, right vel:  900
+ 176.77 | fl:  0.00, fr:  0.00, bl:  0.01, br:  0.00, in:  3.20, sl:  0.29, sr:  0.41, tu:  0.34
+ 176.77 | left vel:  880, right vel:  880
+ 176.87 | left vel:  900, right vel:  880
+ 176.95 | left vel:  820, right vel:  820
+ 177.03 | left vel:  800, right vel:  780
+ 177.11 | left vel:  840, right vel:  820
+ 177.20 | left vel:  700, right vel:  740
+ 177.29 | fl:  0.00, fr:  0.00, bl:  0.00, br:  0.00, in:  1.40, sl:  5.51, sr:  5.37, tu:  0.03
+ 177.29 | left vel:  780, right vel:  760
+ 177.38 | left vel:  780, right vel:  800
+ 177.46 | left vel:  780, right vel:  800
+ 177.53 | left vel:  740, right vel:  740
+ 177.62 | left vel:  780, right vel:  760
+ 177.71 | left vel:  820, right vel:  800
+ 177.80 | fl:  2.89, fr:  3.69, bl:  5.67, br:  3.50, in:  1.20, sl:  4.17, sr:  4.09, tu:  0.19
+ 177.80 | left vel:  840, right vel:  820
+ 177.89 | left vel:  840, right vel:  840
+ 177.98 | left vel:  860, right vel:  860
+ 177.98 | gate closed: left  860 860.000  1.60, right  860 0.372  1.61, bat: 10.19
+ 178.34 | fl:  2.21, fr:  2.29, bl:  2.53, br:  1.93, in:  1.70, sl:  1.72, sr:  1.87, tu:  0.58
+ 178.80 | fl:  0.03, fr:  0.00, bl:  0.02, br:  0.00, in:  2.03, sl:  1.91, sr:  2.15, tu:  0.06
+ 179.28 | fl:  2.02, fr:  6.16, bl:  4.70, br:  2.03, in:  1.88, sl:  3.75, sr:  2.81, tu:  0.20
+ 179.75 | fl:  3.28, fr:  4.92, bl:  5.60, br:  1.69, in:  0.00, sl:  3.74, sr:  2.08, tu:  0.59
+ 180.24 | fl:  1.19, fr:  2.47, bl:  2.65, br:  0.97, in:  0.00, sl:  4.82, sr:  4.61, tu:  0.08
+ 180.71 | fl:  4.00, fr:  0.61, bl:  1.10, br:  5.14, in:  0.00, sl:  3.76, sr:  2.66, tu:  0.12
+ 181.15 | gate open:   left  880 860.000  4.82, right  860 0.372  4.82, bat: 10.49
+ 181.15 | left vel:  880, right vel:  860
+ 181.25 | fl:  0.00, fr:  0.00, bl:  0.00, br:  0.00, in:  3.13, sl:  5.21, sr:  2.57, tu:  0.01
+ 181.25 | left vel:  900, right vel:  900
+ 181.34 | left vel:  900, right vel:  900
+ 181.43 | left vel:  860, right vel:  840
+ 181.50 | left vel:  780, right vel:  780
+ 181.59 | left vel:  820, right vel:  820
+ 181.68 | left vel:  780, right vel:  740
+ 181.76 | fl:  0.00, fr:  0.00, bl:  0.00, br:  0.00, in:  1.40, sl:  5.54, sr:  5.46, tu:  0.04
+ 181.76 | left vel:  760, right vel:  740
+ 181.86 | left vel:  780, right vel:  780
+ 181.95 | left vel:  740, right vel:  760
+ 182.02 | left vel:  740, right vel:  720
+ 182.10 | left vel:  760, right vel:  760
+ 182.19 | left vel:  800, right vel:  800
+ 182.27 | fl:  0.01, fr:  0.00, bl:  0.00, br:  0.00, in:  1.34, sl:  5.33, sr:  5.26, tu:  0.08
+ 182.27 | left vel:  820, right vel:  840
+ 182.36 | left vel:  860, right vel:  860
+ 182.44 | left vel:  900, right vel:  900
+ 182.52 | left vel:  880, right vel:  900
+ 182.52 | gate closed: left  900 900.000  3.38, right  900 0.372  1.47, bat:  9.35
+ 182.81 | fl:  1.90, fr:  2.60, bl:  3.11, br:  2.50, in:  1.70, sl:  3.32, sr:  3.34, tu:  0.02
+ 183.29 | fl:  3.83, fr:  2.33, bl:  3.14, br:  4.30, in:  2.13, sl:  1.20, sr:  1.43, tu:  0.20
+ 183.77 | fl:  4.25, fr:  0.16, bl:  0.73, br:  4.40, in:  1.56, sl:  4.48, sr:  4.37, tu:  1.92
+ 184.22 | fl:  2.21, fr:  1.00, bl:  0.28, br:  0.02, in:  2.06, sl:  1.05, sr:  3.69, tu:  0.19
+ 184.64 | fl:  3.70, fr:  1.90, bl:  1.71, br:  3.78, in:  2.22, sl:  0.84, sr:  3.91, tu:  0.59
+ 185.11 | fl:  0.79, fr:  2.03, bl:  5.78, br:  4.92, in:  0.00, sl:  4.28, sr:  4.26, tu:  0.94
+ 185.57 | fl:  1.49, fr:  5.16, bl:  0.83, br:  5.09, in:  0.00, sl:  1.93, sr:  2.07, tu:  1.40
+ 186.07 | fl:  0.58, fr:  2.60, bl:  3.44, br:  0.19, in:  0.00, sl:  4.62, sr:  4.49, tu:  0.50
+ 186.58 | fl:  1.99, fr:  0.67, bl:  0.59, br:  5.48, in:  0.00, sl:  8.13, sr:  6.07, tu:  0.09
+ 186.73 | gate open:   left  860 860.000  5.09, right  880 0.417  4.88, bat: 10.41
+ 186.73 | left vel:  880, right vel:  880
+ 186.85 | left vel:  900, right vel:  900
+ 186.93 | left vel:  900, right vel:  900
+ 187.02 | left vel:  900, right vel:  860
+ 187.10 | fl:  0.00, fr:  0.00, bl:  0.00, br:  0.00, in:  1.34, sl:  5.17, sr:  5.26, tu:  0.01
+ 187.10 | left vel:  800, right vel:  780
+ 187.19 | left vel:  820, right vel:  800
+ 187.27 | left vel:  720, right vel:  720
+ 187.35 | left vel:  740, right vel:  720
+ 187.44 | left vel:  760, right vel:  780
+ 187.53 | left vel:  780, right vel:  780
+ 187.60 | fl:  0.00, fr:  0.00, bl:  0.00, br:  0.00, in:  1.24, sl:  5.54, sr:  5.50, tu:  0.03
+ 187.60 | left vel:  720, right vel:  740
+ 187.71 | left vel:  760, right vel:  740
+ 187.79 | left vel:  780, right vel:  800
+ 187.87 | left vel:  820, right vel:  820
+ 187.96 | left vel:  860, right vel:  860
+ 188.04 | left vel:  880, right vel:  880
+ 188.04 | gate closed: left  880 880.000  4.87, right  880 0.372  4.82, bat: 10.47
+ 188.15 | fl:  2.73, fr:  2.88, bl:  2.78, br:  2.48, in:  1.58, sl:  2.44, sr:  0.66, tu:  0.19
+ 188.63 | fl:  0.05, fr:  0.01, bl:  0.05, br:  0.00, in:  1.43, sl:  5.44, sr:  3.01, tu:  0.15
+ 189.10 | fl:  1.48, fr:  2.89, bl:  6.99, br:  2.37, in:  1.35, sl:  1.58, sr:  1.91, tu:  0.91
+ 189.57 | fl:  2.10, fr:  5.68, bl:  0.71, br:  2.31, in:  1.70, sl:  1.48, sr:  1.59, tu:  0.09
+ 190.04 | fl:  5.35, fr:  3.87, bl:  1.42, br:  0.10, in:  1.80, sl:  1.41, sr:  0.38, tu:  0.41
+ 190.56 | fl:  6.99, fr:  5.58, bl:  4.06, br:  1.61, in:  1.81, sl:  1.80, sr:  1.72, tu:  0.10
+ 191.06 | fl:  3.93, fr:  2.85, bl:  6.88, br:  4.83, in:  0.00, sl:  1.93, sr:  1.91, tu:  0.36
+ 191.49 | fl:  3.10, fr:  4.41, bl:  5.11, br:  3.03, in:  0.00, sl:  3.99, sr:  1.39, tu:  1.41
+ 191.98 | fl:  0.42, fr:  3.95, bl:  1.90, br:  2.43, in:  0.00, sl:  4.68, sr:  4.52, tu:  0.23
+ 192.47 | fl:  4.38, fr:  0.99, bl:  1.47, br:  4.80, in:  0.00, sl:  2.61, sr:  4.46, tu:  0.39
+ 192.95 | fl:  4.26, fr:  3.41, bl:  3.08, br:  2.27, in:  0.00, sl:  3.86, sr:  4.06, tu:  1.68
+ 193.41 | fl:  3.71, fr:  5.65, bl:  2.45, br:  3.67, in:  0.00, sl:  3.02, sr:  2.40, tu:  1.19
+ 193.91 | fl:  3.87, fr:  1.97, bl:  0.70, br:  3.54, in:  0.00, sl:  4.33, sr:  4.59, tu:  0.48
+ 194.40 | fl:  4.99, fr:  0.55, bl:  4.34, br:  2.94, in:  0.00, sl:  4.22, sr:  4.17, tu:  1.13
+ 194.90 | fl:  1.60, fr:  4.54, bl:  2.15, br:  4.48, in:  0.00, sl:  2.14, sr:  2.24, tu:  0.09
+ 195.40 | fl:  2.33, fr:  4.57, bl:  6.64, br:  0.91, in:  0.00, sl:  3.53, sr:  3.49, tu:  0.42
+ 195.90 | fl:  4.01, fr:  1.13, bl:  0.99, br:  2.81, in:  0.00, sl:  5.23, sr:  5.13, tu:  0.27
+ 196.40 | fl:  1.67, fr:  2.21, bl:  0.19, br:  0.87, in:  0.00, sl:  5.13, sr:  5.05, tu:  0.16
+ 196.86 | fl:  3.02, fr:  4.98, bl:  3.24, br:  3.35, in:  2.63, sl:  1.79, sr:  3.87, tu:  0.56
+ 197.35 | fl:  5.31, fr:  2.01, bl:  3.13, br:  1.38, in:  1.94, sl:  4.14, sr:  1.74, tu:  0.16
+ 197.84 | fl:  0.60, fr:  1.79, bl:  0.15, br:  1.95, in:  0.00, sl:  4.80, sr:  1.62, tu:  0.26
+ 198.36 | fl:  0.98, fr:  0.07, bl:  0.74, br:  3.13, in:  0.00, sl:  3.62, sr:  3.44, tu:  0.04
+ 198.82 | fl:  0.00, fr:  0.00, bl:  0.00, br:  0.00, in:  0.00, sl:  4.98, sr:  5.12, tu:  0.09
+ 199.19 | gate open:   left  880 880.000  4.95, right  880 0.372  5.00, bat: 10.51
+ 199.19 | left vel:  880, right vel:  880
+ 199.29 | fl:  0.00, fr:  0.00, bl:  0.00, br:  0.00, in:  3.55, sl:  2.63, sr:  2.96, tu:  0.23
+ 199.29 | left vel:  900, right vel:  900
+ 199.37 | left vel:  900, right vel:  900
+ 199.45 | left vel:  900, right vel:  880
+ 199.53 | left vel:  720, right vel:  800
+ 199.61 | left vel:  800, right vel:  820
+ 199.69 | left vel:  840, right vel:  840
+ 199.76 | fl:  0.00, fr:  0.00, bl:  0.00, br:  0.00, in:  1.41, sl:  5.37, sr:  5.36, tu:  0.22
+ 199.76 | left vel:  840, right vel:  740
+ 199.84 | left vel:  780, right vel:  780
+ 199.92 | left vel:  820, right vel:  820
+ 200.00 | left vel:  780, right vel:  760
+ 200.08 | left vel:  740, right vel:  760
+ 200.16 | left vel:  780, right vel:  780
+ 200.25 | fl:  0.00, fr:  0.00, bl:  0.01, br:  0.00, in:  1.28, sl:  5.40, sr:  5.21, tu:  0.08
+ 200.25 | left vel:  800, right vel:  820
+ 200.34 | left vel:  840, right vel:  860
+ 200.43 | left vel:  880, right vel:  880
+ 200.52 | left vel:  900, right vel:  900
+ 200.52 | gate closed: left  900 900.000  1.91, right  900 0.372  1.90, bat: 10.22
+ 200.79 | fl:  3.47, fr:  3.22, bl:  3.54, br:  0.59, in:  1.53, sl:  0.22, sr:  3.62, tu:  0.13
+ 201.26 | fl:  4.20, fr:  5.54, bl:  3.62, br:  1.20, in:  1.37, sl:  2.96, sr:  2.13, tu:  0.58
+ 201.73 | fl:  0.06, fr:  2.82, bl:  2.90, br:  0.03, in:  1.27, sl:  3.58, sr:  1.40, tu:  0.18
+ 202.22 | fl:  0.12, fr:  2.14, bl:  2.39, br:  0.20, in:  1.52, sl:  1.22, sr:  4.20, tu:  1.30
+ 202.67 | fl:  0.81, fr:  3.43, bl:  3.87, br:  1.25, in:  1.90, sl:  3.99, sr:  1.30, tu:  0.20
+ 203.11 | fl:  1.06, fr:  0.59, bl:  2.66, br:  2.10, in:  1.90, sl:  3.70, sr:  4.04, tu:  0.11
+ 203.61 | fl:  0.73, fr:  4.09, bl:  3.67, br:  0.91, in:  2.44, sl:  3.44, sr:  1.40, tu:  0.21
+ 204.09 | fl:  4.30, fr:  2.73, bl:  2.44, br:  4.29, in:  2.26, sl:  0.67, sr:  2.03, tu:  0.32
+ 204.57 | fl:  0.80, fr:  2.62, bl:  5.08, br:  0.09, in:  2.12, sl:  4.45, sr:  4.36, tu:  0.23
+ 205.09 | fl:  1.65, fr:  2.65, bl:  2.93, br:  1.70, in:  0.00, sl:  3.04, sr:  2.66, tu:  0.03
+ 205.59 | fl:  2.35, fr:  0.93, bl:  2.49, br:  4.04, in:  0.00, sl:  4.30, sr:  1.53, tu:  0.28
+ 206.09 | fl:  0.00, fr:  0.00, bl:  0.00, br:  0.00, in:  0.00, sl:  4.32, sr:  4.82, tu:  0.65
+ 206.26 | gate open:   left  900 900.000  4.29, right  900 0.387  1.74, bat: 11.34
+ 206.26 | left vel:  900, right vel:  900
+ 206.35 | left vel:  900, right vel:  880
+ 206.42 | left vel:  880, right vel:  900
+ 206.51 | left vel:  860, right vel:  860
+ 206.60 | fl:  0.00, fr:  0.00, bl:  0.00, br:  0.00, in:  1.31, sl:  5.19, sr:  5.28, tu:  0.01
+ 206.60 | left vel:  800, right vel:  800
+ 206.70 | left vel:  820, right vel:  840
+ 206.78 | left vel:  780, right vel:  780
+ 206.85 | left vel:  760, right vel:  760
+ 206.92 | left vel:  800, right vel:  800
+ 207.01 | left vel:  820, right vel:  820
+ 207.08 | fl:  0.00, fr:  0.00, bl:  0.00, br:  0.00, in:  1.33, sl:  5.33, sr:  5.41, tu:  0.05
+ 207.08 | left vel:  800, right vel:  740
+ 207.18 | left vel:  760, right vel:  780
+ 207.26 | left vel:  800, right vel:  800
+ 207.34 | left vel:  820, right vel:  840
+ 207.42 | left vel:  860, right vel:  860
+ 207.50 | left vel:  880, right vel:  900
+ 207.59 | fl:  0.07, fr:  0.02, bl:  0.02, br:  0.01, in:  1.58, sl:  1.09, sr:  2.44, tu:  0.00
+ 207.59 | left vel:  920, right vel:  900
+ 207.59 | gate closed: left  900 900.000  0.49, right  900 0.372  2.46, bat: 11.85
+ 208.13 | fl:  0.00, fr:  0.04, bl:  0.06, br:  0.00, in:  1.19, sl:  4.95, sr:  2.19, tu:  0.01
+ 208.59 | fl:  3.87, fr:  2.36, bl:  3.93, br:  2.39, in:  1.40, sl:  1.49, sr:  4.21, tu:  0.07
+ 209.06 | fl:  1.80, fr:  3.44, bl:  1.25, br:  3.39, in:  1.37, sl:  1.36, sr:  1.72, tu:  0.14
+ 209.53 | fl:  1.09, fr:  1.93, bl:  1.99, br:  1.44, in:  1.98, sl:  2.25, sr:  2.53, tu:  0.09
+ 210.00 | fl:  2.12, fr:  3.81, bl:  4.41, br:  1.08, in:  2.00, sl:  1.28, sr:  4.00, tu:  0.09
+ 210.47 | fl:  1.13, fr:  5.78, bl:  6.49, br:  1.74, in:  2.85, sl:  2.24, sr:  2.21, tu:  0.05
+ 210.95 | fl:  0.71, fr:  2.74, bl:  1.24, br:  1.62, in:  2.65, sl:  4.30, sr:  4.53, tu:  0.01
+ 211.47 | fl:  2.26, fr:  4.37, bl:  2.88, br:  0.76, in:  2.63, sl:  4.04, sr:  4.00, tu:  0.29
+ 211.92 | fl:  0.32, fr:  4.13, bl:  4.62, br:  0.07, in:  2.40, sl:  4.24, sr:  4.16, tu:  0.25
+ 212.42 | fl:  1.34, fr:  5.07, bl:  4.86, br:  1.38, in:  0.00, sl:  2.80, sr:  4.35, tu:  0.28
+ 212.91 | fl:  3.51, fr:  3.97, bl:  4.59, br:  5.84, in:  0.00, sl:  3.57, sr:  3.63, tu:  0.56
+ 213.39 | fl:  0.00, fr:  0.00, bl:  0.00, br:  0.00, in:  0.00, sl:  3.48, sr:  2.27, tu:  2.75
+ 213.85 | fl:  0.45, fr:  2.69, bl:  1.34, br:  3.22, in:  0.00, sl:  4.07, sr:  1.76, tu:  2.18
+ 214.33 | fl:  1.48, fr:  1.89, bl:  5.40, br:  4.44, in:  0.00, sl:  4.20, sr:  4.17, tu:  0.75
+ 214.74 | gate open:   left  900 900.000  1.54, right  900 0.372  2.71, bat: 11.33
+ 214.74 | left vel:  900, right vel:  900
+ 214.85 | fl:  0.00, fr:  0.00, bl:  0.00, br:  0.00, in:  2.94, sl:  3.62, sr:  2.05, tu:  0.03
+ 214.85 | left vel:  880, right vel:  900
+ 214.93 | left vel:  900, right vel:  880
+ 215.01 | left vel:  880, right vel:  880
+ 215.08 | left vel:  760, right vel:  760
+ 215.18 | left vel:  800, right vel:  800
+ 215.26 | left vel:  760, right vel:  780
+ 215.34 | fl:  0.00, fr:  0.00, bl:  0.00, br:  0.00, in:  1.45, sl:  5.38, sr:  5.43, tu:  0.24
+ 215.34 | left vel:  740, right vel:  740
+ 215.43 | left vel:  780, right vel:  780
+ 215.50 | left vel:  800, right vel:  800
+ 215.59 | left vel:  740, right vel:  760
+ 215.68 | left vel:  740, right vel:  760
+ 215.77 | left vel:  800, right vel:  800
+ 215.85 | fl:  0.00, fr:  0.00, bl:  0.00, br:  0.00, in:  1.26, sl:  5.29, sr:  5.20, tu:  0.01
+ 215.85 | left vel:  820, right vel:  840
+ 215.94 | left vel:  860, right vel:  860
+ 216.03 | left vel:  880, right vel:  880
+ 216.11 | left vel:  900, right vel:  920
+ 216.11 | gate closed: left  900 900.000  2.77, right  900 0.372  0.53, bat: 11.97
+ 216.35 | fl:  0.00, fr:  0.00, bl:  0.00, br:  0.00, in:  1.17, sl:  3.83, sr:  2.21, tu:  0.09
+ 216.82 | fl:  2.35, fr:  4.44, bl:  5.90, br:  0.72, in:  0.90, sl:  1.34, sr:  3.89, tu:  0.04
+ 217.26 | fl:  2.57, fr:  3.01, bl:  4.25, br:  0.77, in:  1.32, sl:  0.47, sr:  0.49, tu:  1.87
+ 217.74 | fl:  2.20, fr:  1.61, bl:  3.74, br:  1.15, in:  1.13, sl:  3.81, sr:  2.62, tu:  3.34
+ 218.25 | fl:  0.97, fr:  2.24, bl:  0.83, br:  1.82, in:  1.45, sl:  8.83, sr:  7.61, tu:  0.26
+ 218.73 | fl:  6.60, fr:  2.15, bl:  0.49, br:  1.94, in:  2.33, sl:  3.70, sr:  3.66, tu:  0.33
+ 219.23 | fl:  1.22, fr:  5.19, bl:  5.57, br:  2.15, in:  0.00, sl:  4.54, sr:  4.47, tu:  0.32
+ 219.50 | gate open:   left  700 700.000  2.46, right  680 0.279  1.69, bat: 11.30
+ 219.50 | left vel:  700, right vel:  700
+ 219.61 | left vel:  700, right vel:  680
+ 219.69 | left vel:  700, right vel:  700
+ 219.76 | fl:  0.00, fr:  0.00, bl:  0.00, br:  0.00, in:  1.85, sl:  2.03, sr:  2.05, tu:  0.29
+ 219.76 | left vel:  680, right vel:  680
+ 219.85 | left vel:  620, right vel:  600
+ 219.92 | left vel:  640, right vel:  640
+ 220.01 | left vel:  660, right vel:  680
+ 220.09 | left vel:  620, right vel:  620
+ 220.18 | left vel:  640, right vel:  640
+ 220.26 | fl:  0.00, fr:  0.00, bl:  0.00, br:  0.00, in:  1.59, sl:  5.64, sr:  5.53, tu:  0.07
+ 220.26 | left vel:  660, right vel:  680
+ 220.35 | left vel:  620, right vel:  640
+ 220.42 | left vel:  620, right vel:  620
+ 220.49 | left vel:  640, right vel:  660
+ 220.57 | left vel:  700, right vel:  680
+ 220.65 | left vel:  700, right vel:  720
+ 220.73 | fl:  4.37, fr:  4.05, bl:  4.45, br:  4.35, in:  1.28, sl:  1.54, sr:  1.50, tu:  1.17
+ 220.73 | left vel:  700, right vel:  680
+ 220.84 | left vel:  680, right vel:  700
+ 220.84 | gate closed: left  700 700.000  2.85, right  700 0.287  2.25, bat:  9.71
+ 221.21 | fl:  3.63, fr:  2.95, bl:  5.07, br:  4.93, in:  0.91, sl:  1.47, sr:  3.60, tu:  1.79
+ 221.67 | fl:  2.04, fr:  2.63, bl:  3.23, br:  2.38, in:  1.63, sl:  1.66, sr:  1.82, tu:  2.27
+ 222.13 | fl:  5.28, fr:  0.87, bl:  5.03, br:  0.03, in:  1.63, sl:  1.52, sr:  4.08, tu:  0.67
+ 222.58 | fl:  2.42, fr:  3.27, bl:  4.77, br:  1.00, in:  1.62, sl:  4.53, sr:  4.42, tu:  0.44
+ 223.08 | fl:  6.28, fr:  2.85, bl:  1.22, br:  3.95, in:  1.95, sl:  2.89, sr:  1.02, tu:  0.06
+ 223.58 | fl:  3.86, fr:  0.57, bl:  0.71, br:  3.42, in:  0.00, sl:  2.02, sr:  2.22, tu:  0.70
+ 224.07 | fl:  0.56, fr:  1.49, bl:  3.10, br:  4.29, in:  0.00, sl:  0.77, sr:  3.18, tu:  1.76
+ 224.48 | fl:  4.70, fr:  5.55, bl:  2.00, br:  1.81, in:  0.00, sl:  3.81, sr:  2.75, tu:  0.19
+ 224.66 | gate open:   left  800 800.000  4.02, right  820 0.329  3.85, bat:  8.80
+ 224.66 | left vel:  820, right vel:  820
+ 224.78 | left vel:  800, right vel:  780
+ 224.86 | left vel:  740, right vel:  760
+ 224.94 | left vel:  760, right vel:  760
+ 225.02 | fl:  2.48, fr:  2.41, bl:  2.73, br:  3.82, in:  1.80, sl:  2.02, sr:  0.45, tu:  0.01
+ 225.02 | left vel:  660, right vel:  640
+ 225.11 | left vel:  660, right vel:  660
+ 225.20 | left vel:  680, right vel:  680
+ 225.28 | left vel:  620, right vel:  620
+ 225.36 | left vel:  640, right vel:  640
+ 225.43 | left vel:  680, right vel:  680
+ 225.50 | fl:  0.00, fr:  0.00, bl:  0.00, br:  0.00, in:  1.48, sl:  5.57, sr:  5.41, tu:  0.20
+ 225.50 | left vel:  700, right vel:  680
+ 225.58 | left vel:  620, right vel:  620
+ 225.65 | left vel:  640, right vel:  640
+ 225.73 | left vel:  680, right vel:  700
+ 225.82 | left vel:  720, right vel:  720
+ 225.91 | left vel:  760, right vel:  740
+ 225.99 | fl:  1.96, fr:  3.48, bl:  6.88, br:  2.65, in:  1.38, sl:  1.92, sr:  2.03, tu:  0.05
+ 225.99 | left vel:  720, right vel:  740
+ 225.99 | gate closed: left  740 740.000  2.03, right  740 0.304  2.04, bat: 10.18
+ 226.48 | fl:  3.28, fr:  2.52, bl:  3.16, br:  2.83, in:  1.08, sl:  2.65, sr:  3.87, tu:  0.03
+ 226.98 | fl:  0.27, fr:  6.40, bl:  2.04, br:  0.96, in:  1.44, sl:  1.80, sr:  2.43, tu:  1.36
+ 227.43 | fl:  2.26, fr:  4.75, bl:  1.07, br:  4.59, in:  1.22, sl:  3.85, sr:  1.82, tu:  0.31
+ 227.95 | fl:  5.31, fr:  1.78, bl:  2.03, br:  0.08, in:  0.00, sl:  1.96, sr:  2.27, tu:  0.26
+ 228.44 | fl:  3.16, fr:  1.79, bl:  0.26, br:  4.72, in:  0.00, sl:  3.17, sr:  3.21, tu:  0.24
+ 228.92 | fl:  2.26, fr:  1.29, bl:  0.84, br:  4.56, in:  0.00, sl:  1.92, sr:  1.87, tu:  0.36
+ 229.43 | fl:  0.03, fr:  2.64, bl:  0.17, br:  2.18, in:  0.00, sl:  1.57, sr:  2.25, tu:  0.18
+ 229.95 | fl:  5.00, fr:  5.29, bl:  0.92, br:  2.45, in:  0.00, sl:  1.19, sr:  4.35, tu:  0.01
+ 230.39 | fl:  2.25, fr:  2.89, bl:  4.64, br:  4.25, in:  0.00, sl:  3.12, sr:  1.27, tu:  0.48
+ 230.87 | fl:  3.45, fr:  2.13, bl:  3.01, br:  1.74, in:  0.00, sl:  2.78, sr:  0.53, tu:  0.06
+ 231.36 | fl:  1.27, fr:  5.25, bl:  2.93, br:  3.09, in:  0.00, sl:  2.52, sr:  2.68, tu:  1.74
+ 231.82 | fl:  4.36, fr:  0.94, bl:  4.14, br:  2.35, in:  0.00, sl:  3.57, sr:  3.53, tu:  0.99
+ 232.30 | fl:  4.84, fr:  2.00, bl:  1.77, br:  2.16, in:  0.00, sl:  4.34, sr:  1.83, tu:  0.39
+ 232.77 | fl:  2.91, fr:  1.26, bl:  2.15, br:  1.30, in:  0.00, sl:  5.02, sr:  4.87, tu:  0.61
+ 233.27 | fl:  3.09, fr:  0.60, bl:  0.42, br:  1.18, in:  0.88, sl:  6.90, sr:  6.63, tu:  0.18
+ 233.72 | fl:  1.24, fr:  3.77, bl:  5.34, br:  1.52, in:  1.97, sl:  0.56, sr:  3.67, tu:  0.65
+ 234.24 | fl:  5.17, fr:  1.96, bl:  2.19, br:  3.98, in:  1.97, sl:  1.10, sr:  1.31, tu:  0.21
+ 234.73 | fl:  4.18, fr:  0.90, bl:  0.69, br:  3.45, in:  0.00, sl:  3.05, sr:  1.01, tu:  0.18
+ 235.22 | fl:  2.86, fr:  2.31, bl:  2.50, br:  2.49, in:  0.00, sl:  3.24, sr:  3.34, tu:  0.45
+ 235.62 | gate open:   left  760 760.000  4.43, right  760 0.311  4.18, bat: 10.57
+ 235.62 | left vel:  780, right vel:  760
+ 235.73 | fl:  0.01, fr:  0.01, bl:  0.01, br:  0.01, in:  2.91, sl:  1.50, sr:  3.22, tu:  0.43
+ 235.73 | left vel:  780, right vel:  780
+ 235.83 | left vel:  780, right vel:  780
+ 235.90 | left vel:  760, right vel:  760
+ 235.99 | left vel:  660, right vel:  640
+ 236.07 | left vel:  640, right vel:  640
+ 236.14 | left vel:  660, right vel:  680
+ 236.22 | fl:  0.00, fr:  0.00, bl:  0.00, br:  0.00, in:  1.18, sl:  5.67, sr:  5.61, tu:  0.10
+ 236.22 | left vel:  620, right vel:  600
+ 236.31 | left vel:  640, right vel:  660
+ 236.39 | left vel:  660, right vel:  680
+ 236.47 | left vel:  620, right vel:  620
+ 236.56 | left vel:  660, right vel:  640
+ 236.64 | left vel:  680, right vel:  680
+ 236.73 | fl:  0.00, fr:  0.00, bl:  0.00, br:  0.00, in:  1.56, sl:  4.56, sr:  1.55, tu:  0.12
+ 236.73 | left vel:  700, right vel:  720
+ 236.82 | left vel:  700, right vel:  700
+ 236.90 | left vel:  700, right vel:  680
+ 236.97 | left vel:  680, right vel:  700
+ 236.97 | gate closed: left  680 680.000  2.78, right  700 0.287  3.02, bat: 11.66
+ 237.23 | fl:  2.41, fr:  3.67, bl:  3.83, br:  5.21, in:  1.25, sl:  3.35, sr:  3.41, tu:  0.34
+ 237.70 | fl:  0.20, fr:  2.66, bl:  0.62, br:  1.50, in:  1.31, sl:  2.39, sr:  2.49, tu:  1.51
+ 238.23 | fl:  1.74, fr:  2.91, bl:  0.35, br:  3.52, in:  1.38, sl:  2.11, sr:  0.98, tu:  2.47
+ 238.71 | fl:  7.24, fr:  1.11, bl:  0.77, br:  4.73, in:  1.82, sl:  4.64, sr:  3.14, tu:  1.03
+ 239.16 | fl:  4.33, fr:  1.26, bl:  3.91, br:  4.94, in:  1.41, sl:  3.11, sr:  3.21, tu:  1.87
+ 239.64 | fl:  6.90, fr:  1.52, bl:  1.45, br:  2.69, in:  3.12, sl:  3.84, sr:  3.85, tu:  1.67
+ 240.13 | fl:  2.18, fr:  2.15, bl:  3.00, br:  1.37, in:  1.92, sl:  4.61, sr:  4.50, tu:  0.67
+ 240.62 | fl:  3.64, fr:  0.49, bl:  4.95, br:  2.25, in:  1.40, sl:  1.95, sr:  2.16, tu:  3.40
+ 241.12 | fl:  2.18, fr:  2.77, bl:  0.67, br:  3.58, in:  1.68, sl:  3.06, sr:  0.70, tu:  2.75
+ 241.59 | fl:  1.26, fr:  4.20, bl:  1.38, br:  2.77, in:  2.19, sl:  4.10, sr:  4.61, tu:  0.78
+ 242.05 | fl:  0.81, fr:  0.31, bl:  2.54, br:  1.61, in:  0.00, sl:  3.05, sr:  4.18, tu:  0.80
+ 242.50 | fl:  2.93, fr:  2.97, bl:  2.63, br:  4.77, in:  0.00, sl:  0.49, sr:  0.94, tu:  1.77
+ 242.74 | gate open:   left  760 760.000  1.84, right  760 0.320  2.65, bat:  9.88
+ 242.74 | left vel:  760, right vel:  760
+ 242.86 | left vel:  700, right vel:  700
+ 242.95 | left vel:  700, right vel:  700
+ 243.04 | fl:  0.42, fr:  0.56, bl:  0.67, br:  0.63, in:  1.53, sl:  5.33, sr:  5.05, tu:  0.13
+ 243.04 | left vel:  620, right vel:  620
+ 243.16 | left vel:  640, right vel:  640
+ 243.25 | left vel:  660, right vel:  680
+ 243.33 | left vel:  620, right vel:  620
+ 243.42 | left vel:  640, right vel:  640
+ 243.51 | left vel:  680, right vel:  680
+ 243.60 | fl:  0.00, fr:  0.00, bl:  0.00, br:  0.00, in:  1.99, sl:  2.71, sr:  2.67, tu:  0.24
+ 243.60 | left vel:  700, right vel:  700
+ 243.70 | left vel:  700, right vel:  700
+ 243.78 | left vel:  700, right vel:  680
+ 243.86 | left vel:  700, right vel:  700
+ 243.94 | left vel:  680, right vel:  680
+ 244.02 | left vel:  700, right vel:  700
+ 244.10 | fl:  0.00, fr:  0.00, bl:  0.00, br:  0.00, in:  1.26, sl:  4.50, sr:  1.55, tu:  0.01
+ 244.10 | left vel:  640, right vel:  640
+ 244.10 | gate closed: left  640 640.000  5.22, right  640 0.287  4.00, bat: 10.75
+ 244.54 | fl:  0.96, fr:  1.41, bl:  1.94, br:  1.42, in:  1.69, sl:  1.18, sr:  4.54, tu:  0.72
+ 244.95 | fl:  3.33, fr:  1.15, bl:  5.55, br:  2.86, in:  1.16, sl:  2.81, sr:  2.61, tu:  1.21
+ 245.43 | fl:  1.26, fr:  2.48, bl:  2.94, br:  4.04, in:  1.26, sl:  2.50, sr:  0.17, tu:  0.15
+ 245.91 | fl:  1.71, fr:  1.99, bl:  2.28, br:  3.19, in:  1.21, sl:  2.22, sr:  4.83, tu:  1.07
+ 246.39 | fl:  1.96, fr:  2.45, bl:  2.44, br:  2.39, in:  1.26, sl:  3.26, sr:  0.99, tu:  0.23
+ 246.89 | fl:  0.10, fr:  6.31, bl:  5.41, br:  0.01, in:  6.34, sl:  4.14, sr:  4.10, tu:  0.87
+ 247.38 | fl:  2.78, fr:  0.92, bl:  4.53, br:  1.32, in:  1.94, sl:  3.69, sr:  2.55, tu:  0.60
+ 247.82 | fl:  4.48, fr:  3.89, bl:  3.57, br:  4.33, in:  2.81, sl:  1.54, sr:  1.74, tu:  0.25
+ 248.32 | fl:  3.26, fr:  0.21, bl:  0.40, br:  2.87, in:  2.24, sl:  1.52, sr:  4.32, tu:  0.16
+ 248.81 | fl:  1.13, fr:  0.88, bl:  2.40, br:  2.33, in:  2.06, sl:  2.96, sr:  2.71, tu:  0.14
+ 249.31 | fl:  4.80, fr:  1.81, bl:  2.39, br:  1.67, in:  2.28, sl:  3.67, sr:  4.13, tu:  0.15
+ 249.80 | fl:  1.49, fr:  4.69, bl:  5.05, br:  3.99, in:  1.82, sl:  2.66, sr:  4.12, tu:  0.57
+ 250.31 | fl:  4.46, fr:  2.08, bl:  0.62, br:  4.26, in:  0.00, sl:  0.90, sr:  3.87, tu:  0.57
+ 250.82 | fl:  2.36, fr:  1.91, bl:  3.69, br:  6.21, in:  0.00, sl:  2.20, sr:  1.61, tu:  1.49
+ 251.30 | fl:  1.11, fr:  3.16, bl:  3.50, br:  1.58, in:  0.00, sl:  3.50, sr:  4.61, tu:  2.37
+ 251.80 | fl:  0.00, fr:  0.00, bl:  0.00, br:  0.00, in:  0.00, sl:  5.15, sr:  7.89, tu:  1.09
+ 252.23 | fl:  3.07, fr:  3.12, bl:  2.74, br:  2.57, in:  0.00, sl:  3.23, sr:  1.30, tu:  1.56
+ 252.72 | fl:  0.12, fr:  0.05, bl:  0.39, br:  0.07, in:  0.00, sl:  3.40, sr:  4.22, tu:  1.01
+ 253.18 | fl:  2.70, fr:  0.56, bl:  0.38, br:  1.72, in:  0.00, sl:  2.97, sr:  2.02, tu:  0.27
+ 253.66 | fl:  0.37, fr:  1.86, bl:  0.93, br:  1.58, in:  0.00, sl:  0.95, sr:  3.82, tu:  0.59
+ 254.15 | gate open:   left  720 720.000  0.54, right  720 0.304  2.73, bat: 11.21
+ 254.15 | fl:  0.03, fr:  0.00, bl:  0.02, br:  0.00, in:  4.54, sl:  2.54, sr:  1.84, tu:  0.09
+ 254.15 | left vel:  720, right vel:  720
+ 254.28 | left vel:  700, right vel:  700
+ 254.36 | left vel:  720, right vel:  720
+ 254.45 | left vel:  660, right vel:  680
+ 254.54 | left vel:  640, right vel:  660
+ 254.63 | left vel:  680, right vel:  680
+ 254.72 | fl:  0.04, fr:  0.00, bl:  0.03, br:  0.00, in:  1.48, sl:  5.65, sr:  5.67, tu:  0.17
+ 254.72 | left vel:  660, right vel:  640
+ 254.82 | left vel:  680, right vel:  680
+ 254.90 | left vel:  700, right vel:  700
+ 254.99 | left vel:  700, right vel:  700
+ 255.07 | left vel:  640, right vel:  640
+ 255.14 | left vel:  660, right vel:  660
+ 255.22 | fl:  0.04, fr:  0.00, bl:  0.03, br:  0.00, in:  1.37, sl:  5.55, sr:  5.50, tu:  0.04
+ 255.22 | left vel:  700, right vel:  720
+ 255.31 | left vel:  740, right vel:  740
+ 255.39 | left vel:  720, right vel:  720
+ 255.47 | left vel:  740, right vel:  740
+ 255.47 | gate closed: left  740 740.000  4.33, right  720 0.304  1.58, bat: 11.65
+ 255.73 | fl:  1.30, fr:  4.42, bl:  4.02, br:  0.92, in:  1.02, sl:  1.27, sr:  1.54, tu:  0.08
+ 256.19 | fl:  0.63, fr:  3.28, bl:  0.56, br:  4.49, in:  1.24, sl:  0.71, sr:  2.96, tu:  0.45
+ 256.69 | fl:  0.42, fr:  1.14, bl:  4.61, br:  3.01, in:  0.98, sl:  4.77, sr:  3.41, tu:  3.11
+ 257.18 | fl:  2.75, fr:  1.58, bl:  2.43, br:  3.04, in:  1.37, sl:  4.65, sr:  4.65, tu:  0.19
+ 257.64 | fl:  2.72, fr:  1.66, bl:  1.87, br:  2.60, in:  1.43, sl:  2.07, sr:  2.54, tu:  0.09
+ 258.10 | fl:  0.28, fr:  0.71, bl:  1.72, br:  1.30, in:  1.36, sl:  4.87, sr:  4.79, tu:  0.48
+ 258.57 | fl:  1.73, fr:  0.27, bl:  2.47, br:  0.23, in:  1.28, sl:  4.55, sr:  4.45, tu:  0.13
+ 259.04 | fl:  0.00, fr:  0.00, bl:  0.00, br:  0.01, in:  0.00, sl:  3.52, sr:  3.77, tu:  2.53
+ 259.48 | fl:  0.00, fr:  0.00, bl:  0.00, br:  0.00, in:  0.00, sl:  0.00, sr:  0.00, tu:  0.13
+ 259.93 | fl:  3.06, fr:  2.92, bl:  6.19, br:  0.36, in:  0.00, sl:  0.00, sr:  0.00, tu:  1.10
+ 260.39 | fl:  0.11, fr:  2.00, bl:  2.46, br:  0.06, in:  0.00, sl:  0.00, sr:  0.00, tu:  0.41
+ 260.87 | fl:  0.06, fr:  0.00, bl:  0.86, br:  0.00, in:  0.00, sl:  0.00, sr:  0.00, tu:  0.47
+ 261.31 | fl:  1.08, fr:  0.95, bl:  0.33, br:  0.07, in:  0.00, sl:  0.00, sr:  0.00, tu:  0.04
+ 261.77 | fl:  2.19, fr:  1.54, bl:  1.52, br:  1.42, in:  0.00, sl:  0.00, sr:  0.00, tu:  0.20
+ 262.21 | fl:  0.00, fr:  0.00, bl:  0.00, br:  0.00, in:  1.65, sl:  0.00, sr:  0.00, tu:  0.00
+ 262.67 | fl:  0.00, fr:  0.00, bl:  0.00, br:  0.00, in:  0.00, sl:  0.00, sr:  0.00, tu:  0.12
+ 263.13 | fl:  0.00, fr:  0.00, bl:  0.00, br:  0.00, in:  0.02, sl:  0.00, sr:  0.01, tu:  0.24
+ 263.57 | fl:  0.00, fr:  0.00, bl:  0.00, br:  0.00, in:  2.68, sl:  0.00, sr:  0.00, tu:  0.00
+ 263.99 | fl:  0.00, fr:  0.00, bl:  0.00, br:  0.00, in:  0.00, sl:  0.00, sr:  0.00, tu:  0.00
+ 264.41 | fl:  0.00, fr:  0.00, bl:  0.00, br:  0.00, in:  0.00, sl:  0.00, sr:  0.00, tu:  0.00
+ 264.87 | fl:  5.03, fr:  2.54, bl:  2.11, br:  6.01, in:  0.00, sl:  0.00, sr:  0.00, tu:  0.18
+ 265.35 | fl:  0.18, fr:  0.24, bl:  0.35, br:  0.49, in:  0.00, sl:  0.00, sr:  0.00, tu:  1.91
+ 265.80 | fl:  1.28, fr:  1.28, bl:  1.26, br:  0.97, in:  0.00, sl:  0.00, sr:  0.00, tu:  0.02
+ 266.27 | fl:  1.16, fr:  1.32, bl:  1.64, br:  1.35, in:  0.00, sl:  0.00, sr:  0.00, tu:  1.69
+ 266.73 | fl:  0.00, fr:  0.00, bl:  0.00, br:  0.00, in:  0.00, sl:  0.00, sr:  0.00, tu:  2.79
+ 267.19 | fl:  0.87, fr:  1.25, bl:  1.61, br:  1.34, in:  0.00, sl:  0.00, sr:  0.00, tu:  0.36
+ 267.63 | fl:  0.92, fr:  0.89, bl:  1.20, br:  1.01, in:  0.00, sl:  0.00, sr:  0.00, tu:  0.92
+ 268.11 | fl:  0.01, fr:  0.01, bl:  0.01, br:  0.00, in:  0.00, sl:  0.00, sr:  0.00, tu:  1.47
+ 268.57 | fl:  1.16, fr:  1.24, bl:  1.21, br:  1.16, in:  0.00, sl:  0.00, sr:  0.00, tu:  0.41
+ 269.02 | fl:  0.00, fr:  0.00, bl:  0.00, br:  0.00, in:  0.00, sl:  0.00, sr:  0.00, tu:  0.18
+ 269.48 | fl:  0.00, fr:  0.00, bl:  0.00, br:  0.00, in:  0.00, sl:  0.00, sr:  0.00, tu:  0.13
+ 269.95 | fl:  0.00, fr:  0.00, bl:  0.00, br:  0.00, in:  0.00, sl:  0.00, sr:  0.00, tu:  0.00
+ 270.36 | fl:  0.00, fr:  0.00, bl:  0.00, br:  0.00, in:  0.00, sl:  0.00, sr:  0.00, tu:  0.16
+ 270.80 | fl:  0.00, fr:  0.00, bl:  0.00, br:  0.00, in:  0.00, sl:  0.00, sr:  0.00, tu:  0.12
+ 271.25 | fl:  0.00, fr:  0.00, bl:  0.00, br:  0.00, in:  0.00, sl:  0.00, sr:  0.00, tu:  0.04
+ 271.70 | fl:  0.00, fr:  0.00, bl:  0.00, br:  0.00, in:  0.00, sl:  0.00, sr:  0.00, tu:  0.49
+ 272.11 | fl:  0.00, fr:  0.00, bl:  0.00, br:  0.00, in:  0.00, sl:  0.00, sr:  0.00, tu:  0.00
+ 272.57 | fl:  0.00, fr:  0.00, bl:  0.00, br:  0.00, in:  0.00, sl:  0.00, sr:  0.00, tu:  0.47
+ 273.01 | fl:  0.00, fr:  0.00, bl:  0.00, br:  0.00, in:  0.00, sl:  0.00, sr:  0.00, tu:  0.49
+ 273.44 | fl:  0.00, fr:  0.00, bl:  0.00, br:  0.00, in:  0.00, sl:  0.00, sr:  0.00, tu:  0.19
+ 273.87 | fl:  0.00, fr:  0.00, bl:  0.00, br:  0.00, in:  0.00, sl:  0.00, sr:  0.00, tu:  0.00
+ 274.30 | fl:  0.00, fr:  0.00, bl:  0.00, br:  0.00, in:  0.00, sl:  0.00, sr:  0.00, tu:  0.00
+ 274.72 | fl:  0.00, fr:  0.00, bl:  0.00, br:  0.00, in:  0.00, sl:  0.00, sr:  0.00, tu:  0.00
+ 275.20 | fl:  0.00, fr:  0.00, bl:  0.00, br:  0.00, in:  0.03, sl:  0.00, sr:  0.00, tu:  0.00
+ 275.65 | fl:  0.00, fr:  0.00, bl:  0.00, br:  0.00, in:  1.55, sl:  0.00, sr:  0.00, tu:  0.00
+ 276.09 | fl:  0.00, fr:  0.00, bl:  0.00, br:  0.00, in:  2.25, sl:  0.00, sr:  0.00, tu:  0.00
+ 276.56 | fl:  0.00, fr:  0.00, bl:  0.00, br:  0.00, in:  0.00, sl:  0.00, sr:  0.00, tu:  0.16
+ 277.03 | fl:  0.00, fr:  0.00, bl:  0.00, br:  0.00, in:  1.45, sl:  0.00, sr:  0.00, tu:  0.16
+ 277.49 | fl:  0.00, fr:  0.00, bl:  0.00, br:  0.00, in:  0.00, sl:  0.00, sr:  0.00, tu:  0.00
+ 277.94 | fl:  0.00, fr:  0.00, bl:  0.00, br:  0.00, in:  2.36, sl:  0.00, sr:  0.00, tu:  0.13
+ 278.40 | fl:  0.00, fr:  0.00, bl:  0.00, br:  0.00, in:  0.00, sl:  0.00, sr:  0.00, tu:  0.31
+ 278.85 | fl:  0.20, fr:  0.65, bl:  0.46, br:  0.07, in:  0.00, sl:  0.00, sr:  0.00, tu:  0.47
+ 279.35 | fl:  0.05, fr:  1.97, bl:  0.22, br:  1.20, in:  0.00, sl:  0.00, sr:  0.00, tu:  0.40
+ 279.81 | fl:  0.76, fr:  0.65, bl:  0.67, br:  0.74, in:  0.00, sl:  0.00, sr:  0.00, tu:  0.11
+ 280.29 | fl:  1.39, fr:  1.75, bl:  2.38, br:  2.69, in:  0.00, sl:  0.00, sr:  0.00, tu:  1.07
+ 280.77 | fl:  2.68, fr:  0.10, bl:  0.71, br:  1.24, in:  0.00, sl:  0.01, sr:  0.01, tu:  7.47
+ 281.23 | fl:  1.43, fr:  1.48, bl:  2.45, br:  2.86, in:  0.00, sl:  0.00, sr:  0.00, tu:  0.18
+ 281.72 | fl:  2.67, fr:  3.19, bl:  2.64, br:  2.83, in:  1.36, sl:  0.00, sr:  0.00, tu:  0.23
+ 282.15 | fl:  0.17, fr:  0.70, bl:  0.30, br:  1.13, in:  1.35, sl:  0.00, sr:  0.00, tu:  0.00
+ 282.60 | fl:  0.04, fr:  0.04, bl:  0.06, br:  0.05, in:  1.46, sl:  0.00, sr:  0.00, tu:  0.02
+ 283.06 | fl:  1.57, fr:  2.11, bl:  2.69, br:  2.21, in:  1.42, sl:  0.00, sr:  0.00, tu:  0.04
+ 283.53 | fl:  0.00, fr:  0.00, bl:  0.00, br:  0.00, in:  1.68, sl:  0.00, sr:  0.00, tu:  0.22
+ 283.97 | fl:  0.00, fr:  0.00, bl:  0.00, br:  0.00, in:  5.01, sl:  0.00, sr:  0.00, tu:  0.00
+ 284.39 | fl:  0.00, fr:  0.00, bl:  0.00, br:  0.00, in:  1.88, sl:  0.00, sr:  0.00, tu:  0.00
+ 284.87 | fl:  1.42, fr:  3.28, bl:  3.79, br:  6.80, in:  1.27, sl:  0.00, sr:  0.00, tu:  0.11
+ 285.36 | fl:  0.00, fr:  0.00, bl:  0.00, br:  0.00, in:  1.37, sl:  0.00, sr:  0.00, tu:  0.00
+ 285.81 | fl:  0.00, fr:  0.00, bl:  0.00, br:  0.00, in:  1.14, sl:  0.00, sr:  0.00, tu:  4.59
+ 286.22 | fl:  0.00, fr:  0.00, bl:  0.00, br:  0.00, in:  5.37, sl:  0.00, sr:  0.00, tu:  0.31
+ 286.70 | fl:  3.77, fr:  3.72, bl:  4.20, br:  3.59, in:  0.00, sl:  0.00, sr:  0.00, tu:  0.34
+ 287.16 | fl:  0.61, fr:  0.70, bl:  1.60, br:  1.22, in:  0.00, sl:  0.00, sr:  0.00, tu:  0.61
+ 287.64 | fl:  0.24, fr:  1.71, bl:  0.18, br:  2.07, in:  0.00, sl:  0.00, sr:  0.00, tu:  0.15
+ 288.10 | fl:  1.93, fr:  0.56, bl:  0.49, br:  1.14, in:  0.00, sl:  0.00, sr:  0.00, tu:  0.21
+ 288.58 | fl:  1.51, fr:  2.09, bl:  2.06, br:  2.61, in:  0.00, sl:  0.00, sr:  0.00, tu:  0.15
+ 289.04 | fl:  1.78, fr:  1.28, bl:  0.89, br:  1.79, in:  0.00, sl:  0.00, sr:  0.00, tu:  0.40
+ 289.52 | fl:  0.05, fr:  0.01, bl:  0.01, br:  0.07, in:  0.00, sl:  0.00, sr:  0.00, tu:  0.12
+ 289.96 | fl:  0.00, fr:  0.00, bl:  0.00, br:  0.00, in:  0.00, sl:  0.00, sr:  0.00, tu:  0.27
+ 290.40 | fl:  0.00, fr:  0.00, bl:  0.00, br:  0.00, in:  0.00, sl:  0.00, sr:  0.00, tu:  0.00

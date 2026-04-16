@@ -1,13 +1,16 @@
 ---@class counter
 ---@field sensor BeamBreak
 ---@field count number
----@field time number
+---@field debounceTimer number
 ---@field prevState boolean
+---@field ret boolean
 counter = {
 	count = 0,
-	time = 0,
+	debounceTimer = 0,
+	stopIntakeTimer = 0,
 	prevState = false,
-	stoppedIntake = false
+	stoppedIntake = false,
+	stopIntake = true
 };
 
 function counter:init()
@@ -16,52 +19,64 @@ end
 
 ---@param et number
 function counter:update(et)
+	self.ret = false;
 	local state = self.sensor:isPressed();
 
 	if (not self.prevState and state) then
-		if (self.time2 == nil) then
+		if (self.failsafeTimer == nil) then
 			self.count = self.count + 1;
 		end
-		self.time = et;
+		self.debounceTimer = et;
 		self.prevState = true;
-		self.time2 = nil;
+		self.failsafeTimer = nil;
 	end
 
-	if (self.count == 3 or (state and et - self.time > 0.5)) then
+	if (self.count == 3 or (state and et - self.debounceTimer > 0.5)) then
 		if (not self.stoppedIntake) then
-			--intake:stop();
 			self.stoppedIntake = true;
 			if (self.count < 3) then
 				self.count = 3;
 			end
-			gamepad.vibrate(1, 1, 500);
+			self.stopIntakeTimer = et;
+			if (gamepad ~= nil) then
+				gamepad.vibrate(1, 1, 500);
+			end
 		end
+	end
+
+	if (et - self.stopIntakeTimer > 0.1 and self.stopIntakeTimer > 0) then
+		if (self.stopIntake) then
+			intake:stop();
+		end
+		self.ret = true;
+		self.stopIntakeTimer = 0;
 	end
 
 	if (not state and self.prevState) then
 		self.prevState = false;
-		self.time2 = et;
+		self.failsafeTimer = et;
 	end
 
-	if (self.time2 ~= nil) then
-		if (et - self.time2 > 0) then
-			self.time2 = nil;
+	if (self.failsafeTimer ~= nil) then
+		if (et - self.failsafeTimer > 0) then
+			self.failsafeTimer = nil;
 		end
 	end
 end
 
 function counter:reset()
 	self.count = 0;
+	self.failsafeTimer = 0;
 	self.stoppedIntake = false;
 end
 
 ---@param et number
 function counter:updatLeds(et)
-	if (et - self.time > 1) then
+	if (et - self.debounceTimer > 1) then
 		self.count = self.count + 1;
 		if (self.count == 4) then
 			self.count = 0;
 		end
-		self.time = et;
+		self.debounceTimer = et;
 	end
 end

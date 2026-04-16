@@ -3,13 +3,15 @@ require("opmode.auto.autoBase");
 ---@type AutoPaths
 local config = {
 	start = { x = -55.25, y = 7.75, z = 0 },
-	turretTarget = { x = -6, y = 144 },
+	turretTarget = { x = 0, y = 144 },
 	preload = function ()
 		intake.speed = 0.85;
 		return SeqAction.newl(
 			"preload",
-			RobotActions.ShooterStart.new(880),
+			RobotActions.BeamBreakStopIntake.new(false),
+			RobotActions.ShooterStart.new(860),
 			RobotActions.Shoot.new(1),
+			RobotActions.BeamBreakStopIntake.new(true),
 			SleepAction.new(0.5)
 		)
 	end,
@@ -19,19 +21,19 @@ local config = {
 				"line1",
 				PathAction.new(
 					path.chain()
-					:add(path.line(-55.50, 8.00, -42.00, 58.00))
+					:add(path.line(-55.50, 8, -42, 58))
 					:constantHeading(0)
 					:build()
 				),
 				PathAction.new(
 					path.chain()
-					:add(path.line(-42.00, 58.00, -14.00, 58.00))
+					:add(path.line(-42, 58, -14, 58))
 					:constantHeading(0)
 					:build()
 				),
 				PathAction.new(
 					path.chain()
-					:add(path.curve3(-16.00, 58.00, -60.00, 48.00, -60.00, 12.00))
+					:add(path.curve3(-16, 58, -60, 48, -60, 12))
 					:constantHeading(0)
 					:build()
 				),
@@ -43,22 +45,18 @@ local config = {
 				"line1",
 				PathAction.new(
 					path.chain()
-					:add(path.line(-55.50, 8.00, -42.00, 58.00))
+					:add(path.line(-55.50, 8, -42, 58))
 					:constantHeading(0)
-					:build()
-				),
-				PathAction.new(
-					path.chain()
-					:add(path.line(-42.00, 56.00, -23.00, 56.00))
+					:add(path.line(-42, 56, -23, 56))
 					:constantHeading(0)
-					:add(path.line(-23.00, 56.00, -25.00, 65.00))
+					:add(path.line(-23, 56, -25, 65))
 					:constantHeading(0)
 					:build()
 				),
 				WaitForFirstAction.new(
 					PathAction.new(
 						path.chain()
-						:add(path.line(-25.00, 65.00, -17.00, 65.00))
+						:add(path.line(-25, 65, -17, 65))
 						:constantHeading(0)
 						:build()
 					),
@@ -67,7 +65,7 @@ local config = {
 				Delay.new(0.5),
 				PathAction.new(
 					path.chain()
-					:add(path.curve3(-17.00, 65.00, -60.00, 48.00, -60.00, 12.00))
+					:add(path.curve3(-17, 65, -60, 48, -60, 12))
 					:constantHeading(0)
 					:build()
 				),
@@ -78,22 +76,18 @@ local config = {
 	},
 	line2 = {
 		gate = function ()
-			return SeqAction.newl("empty", SleepAction.new(10000))
+			return SeqAction.newl("empty", SleepAction.new(00))
 		end,
 		noGate = function ()
 			return SeqAction.newl(
 				"line2",
 				PathAction.new(
 					path.chain()
-					:add(path.line(-60.00, 12.00, -42.00, 36.00))
+					:add(path.line(-60, 12, -42, 36))
 					:constantHeading(0)
-					:build()
-				),
-				PathAction.new(
-					path.chain()
-					:add(path.line(-42.00, 36.00, -17.00, 36.00))
+					:add(path.line(-42, 36, -17, 36))
 					:constantHeading(0)
-					:add(path.line(-17.00, 36.00, -60.00, 12.00))
+					:add(path.line(-17, 36, -60, 12))
 					:constantHeading(0)
 					:build()
 				),
@@ -107,14 +101,13 @@ local config = {
 			"line3",
 			PathAction.new(
 				path.chain()
-				:add(path.line(-60.00, 12.00, -12.00, 8.00))
+				:add(path.line(-60, 12, -10, 8))
 				:constantHeading(0)
 				:build()
 			),
-			RobotActions.IntakeStop.new(),
 			PathAction.new(
 				path.chain()
-				:add(path.line(-12.00, 8.00, -60.00, 12.00))
+				:add(path.line(-10, 8, -60, 12))
 				:constantHeading(0)
 				:build()
 			),
@@ -125,7 +118,7 @@ local config = {
 	park = function ()
 		return PathAction.new(
 			path.chain()
-			:add(path.line(-60.00, 12.00, -60.00, 42.00))
+			:add(path.line(-60, 12, -60, 42))
 			:constantHeading(0)
 			:build()
 		)

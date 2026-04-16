@@ -3,6 +3,8 @@ require("modules.action.robot");
 
 require("modules.telemPanes");
 
+require("opmode.auto.config");
+
 ---@alias AutoPathFunc fun(): Action
 
 ---@class AutoPathGate
@@ -51,19 +53,19 @@ local turretTarget = nil;
 local turretMotor = nil;
 
 function autoUpdate(dt, et)
+	counter:update(et);
 	local ledState = 1 + counter.count;
 
 	if (ledState ~= prevLedState) then
 		led:displayArtBoard(ledState);
 		prevLedState = ledState;
 	end
-	counter:updatLeds(et);
 
-	local tps = 1 / dt;
-	robotPane:addData("tps", tps);
+	robotPane:addData("ms", dt);
 	robotPane:addData("x", follower.getPositionX());
 	robotPane:addData("y", follower.getPositionY());
 	robotPane:addData("h", follower.getPositionH());
+	robotPane:addData("count", counter.count);
 	--currentPane:addData("fl", drive.frontLeft:getCurrent());
 	--currentPane:addData("fr", drive.frontRight:getCurrent());
 	--currentPane:addData("bl", drive.backLeft:getCurrent());
@@ -118,6 +120,7 @@ function autoStart()
 	shooter:updateVelocity(follower.getPositionX(), follower.getPositionY());
 	action:start(0);
 	led:displayArtBoard(0);
+	counter:reset();
 end
 
 function autoStop()
@@ -128,47 +131,6 @@ function autoStop()
 	save.saveb("resetTurret", false);
 	logFile:close();
 end
-
-local genPathFuncs = {
-	---@param config AutoPaths
-	---@return Action
-	[3] = function (config)
-		return SeqAction.new(config.preload(), config.park(), SleepAction.new(2));
-	end,
-	---@param config AutoPaths
-	---@return Action
-	[6] = function (config)
-		return SeqAction.new(config.preload(), config.line1.noGate(), config.park(), SleepAction.new(2));
-	end,
-	---@param config AutoPaths
-	---@return Action
-	[9] = function (config)
-		return SeqAction.new(config.preload(), config.line1.gate(), config.line2.noGate(), config.park(), SleepAction.new(2));
-	end,
-	---@param config AutoPaths
-	---@return Action
-	[12] = function (config)
-		return SeqAction.new(config.preload(), config.line1.gate(), config.line2.noGate(), config.line3(), config.park(),
-			SleepAction.new(2));
-	end,
-	---@param config AutoPaths
-	---@return Action
-	[15] = function (config)
-		return SeqAction.new(config.preload(), config.line1.noGate(), config.line2.gate(), config.line3(), config.line4(),
-			config.park(), SleepAction.new(2));
-	end,
-	cycle = function (config)
-		return SeqAction.new(config.preload(), config.line2.noGate(), config.cycle(), config.cycle(), config.line1.noGate(),
-			config.park(), SleepAction.new(2));
-	end,
-	partner = function (config)
-		if (config.start.y >= 24) then
-			return SeqAction.new(config.preload(), config.line1.gate(), config.line2.gate(), config.park(), SleepAction.new(2));
-		end
-		return SeqAction.new(config.preload(), config.line2.noGate(), config.line3(), config.line3(), config.line3(),
-			config.park(), SleepAction.new(2));
-	end
-};
 
 ---@param name string
 ---@param prefix number | string

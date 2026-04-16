@@ -25,9 +25,9 @@ shooterState = {
 ---@field velocityDataPoints number[]
 ---@field running boolean
 shooter = {
-	gateOpen = 0.3,
-	gateClosed = 0,
-	openDelay = 1.1, -- 0.16
+	gateOpen = 0,
+	gateClosed = 0.25,
+	openDelay = 1.3, -- 0.16
 	openDelayEnd = 1,
 	closeDelay = 0.35,
 	state = shooterState.Close,
@@ -52,6 +52,7 @@ function shooter:start(vel)
 	self.vel = vel;
 	self.motorL:setVelocity(vel);
 	self.motorR:setVelocity(vel);
+	self:close();
 end
 
 --local shooterVelMap = {
@@ -62,14 +63,24 @@ end
 --	{ 0970, 0970, -001, 0780, 0780, 0780 },
 --	{ -001, -001, -001, -001, 0780, 0780 }
 --};
+
 local shooterVelMap = {
 	{ -001, -001, -001, -001, 0660, 0660 },
 	{ 0880, 0880, -001, 0660, 0660, 0660 },
 	{ 0880, 0880, 0680, 0680, 0660, 0660 },
-	{ 0940, 0940, 0720, 0720, 0700, 0700 },
-	{ 0940, 0940, -001, 0780, 0780, 0780 },
+  { 0940, 0940, 0720, 0720, 0700, 0700 },
+  { 0940, 0940, -001, 0780, 0780, 0780 },
 	{ -001, -001, -001, -001, 0780, 0780 }
 };
+
+--local shooterVelMap = {
+--	{ -001, -001, -001, -001, 0740, 0740 },
+--	{ 0960, 0940, -001, 0740, 0740, 0740 },
+--	{ 0960, 0960, 0760, 0740, 0740, 0740 },
+--	{ 1000, 1000, 0760, 0760, 0780, 0780 },
+--	{ 1000, 1000, -001, 0920, 0960, 0860 },
+--	{ -001, -001, -001, -001, 0960, 0860 }
+--};
 
 ---@param x number
 ---@param y number
@@ -138,7 +149,7 @@ function shooter:updateVelocity(x, y, vx, vy)
 	end
 	if (vel ~= self.vel) then
 		if (self.running) then
-			if (vel > 1000) then
+			if (vel > 3) then
 				intake.speed = 0.9;
 			else
 				intake.speed = 1.0;
