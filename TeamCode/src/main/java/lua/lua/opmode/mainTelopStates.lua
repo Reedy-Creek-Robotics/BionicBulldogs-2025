@@ -81,10 +81,10 @@ function telopInit()
 	--local i = dashboard.geti();
 	--local d = dashboard.getd();
 	--local f = dashboard.getf();
-	local p = 640;
+	local p = 1280;
 	local i = 3;
 	local d = 0;
-	local f = 0;
+	local f = 2;
 	--local pid = newPIDF(p, i, d, f);
 	shooter.motorL:setPidf(p, i, d, f);
 	shooter.motorR:setPidf(p, i, d, f);
@@ -166,7 +166,6 @@ function telopUpdate(dt, et)
 	--	dist = bTag:getDist()
 	--end
 
-	print("update turret");
 	local dx = 0;
 	local dy = 0;
 
@@ -204,7 +203,8 @@ function telopUpdate(dt, et)
 		da = 0;
 	end
 
-	angle = angle + turretOffset - da * (4 / 8) - vh * (5 / 32);
+	--angle = angle + turretOffset - da * (4 / 8) - vh * (5 / 32);
+	angle = angle + turretOffset;
 
 	if (angle > 180) then
 		angle = angle - 360;
@@ -217,7 +217,6 @@ function telopUpdate(dt, et)
 	dashboard.addDataf("angle deriv", da);
 	--turret.update(0);
 
-	print("update controls");
 	--Forward/stop intake
 	if (gamepad.getRightBumper2()) then
 		if (intake.state == IntakeState.Forward) then
@@ -257,6 +256,9 @@ function telopUpdate(dt, et)
 		shooter.motorL:setPidf(p, i, d, f);
 		shooter.motorR:setPidf(p, i, d, f);
 		actionPane:addLine(("p: %3.2f, i: %3.2f, d: %3.2f, f: %3.2f"):format(p, i, d, f));
+		intake.speed = dashboard.getIntakePower();
+		shooter:start(dashboard.getvel());
+		shooterAutomatic = false;
 	end
 
 	if (gamepad.getShare2()) then
@@ -287,30 +289,13 @@ function telopUpdate(dt, et)
 
 	--Start intake and shooter
 	if (gamepad.getCross2()) then
-		intake:forward();
 		logVel = true;
 		shooter:shootNum(et, 1);
-		counter.stopIntake = true;
+		counter.stopIntake = false;
 	end
 
-	--if (gamepad.getTouchpad2()) then
-	--	local p = dashboard.getp();
-	--	local i = dashboard.geti();
-	--	local d = dashboard.getd();
-	--	local f = dashboard.getf();
-	--	shooter.motorL:setPidf(p, i, d, f);
-	--	shooter.motorR:setPidf(p, i, d, f);
-  --
-	--	local pidf = shooter.motorL:getPidf();
-  --
-	--	actionPane:addData("p", pidfGetP(pidf));
-	--	actionPane:addData("i", pidfGetI(pidf));
-	--	actionPane:addData("d", pidfGetD(pidf));
-	--	actionPane:addData("f", pidfGetF(pidf));
-	--	--turretMotor:setPidf(p, i, d, f);
-	--end
+	intake:updateStats();
 
-	print("update leds");
 	local ledState = 1 + counter.count;
 
 	if (ledState ~= prevLedState) then
@@ -318,8 +303,10 @@ function telopUpdate(dt, et)
 		prevLedState = ledState;
 	end
 
-	print("update shooter");
-	shooter:updateVelocity(x, y, drive.pinpoint:getVelX(), drive.pinpoint:getVelY());
+	if(shooterAutomatic) then
+		--shooter:updateVelocity(x, y, vx, vy);
+		shooter:updateVelocity(x, y);
+	end
 
 	if (gamepad.getStart()) then
 		drive.pinpoint:setPosX(initPos.x);
@@ -386,7 +373,8 @@ function telopUpdate(dt, et)
 	currentPane:addData("sl", shooter.motorL:getCurrent());
 	currentPane:addData("sr", shooter.motorR:getCurrent());
 	currentPane:addData("in", intake.motor:getCurrent());
-	currentPane:addData("tu", turretMotor:getCurrent());
+	--currentPane:addData("tu", turretMotor:getCurrent());
+	currentPane:addData("avg", intake.avg);
 
 	TelemPaneManager:update();
 
@@ -399,6 +387,7 @@ function telopUpdate(dt, et)
 	dashboard.addDataf("rightCur", shooter.motorR:getCurrent());
 	dashboard.addDataf("turretPos", turretMotor:getCurrentPosition());
 	dashboard.addDataf("turretTargetPos", turretMotor:getTargetPosition());
+	dashboard.addDataf("intakeCur", intake.motor:getCurrent());
 	dashboard.update();
 
 	print("update done");

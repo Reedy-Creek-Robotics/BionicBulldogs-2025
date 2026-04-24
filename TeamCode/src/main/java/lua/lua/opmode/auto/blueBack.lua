@@ -5,9 +5,12 @@ local config = {
 	start = { x = 55.25, y = 7.75, z = 180 },
 	turretTarget = { x = 0, y = 144 },
 	preload = function ()
-		intake.speed = 0.85;
 		return SeqAction.newl(
 			"preload",
+			CallbackAction.new(function ()
+				shooter:setInBack(true);
+			end
+			),
 			RobotActions.BeamBreakStopIntake.new(false),
 			RobotActions.ShooterStart.new(870),
 			RobotActions.Shoot.new(1),
@@ -103,30 +106,30 @@ local config = {
 	line3 = function ()
 		return SeqAction.newl(
 			"line3",
-			--PathAction.new(
-			--	path.chain()
-			--	:add(path.line(60, 12, 10, 8))
-			--	:constantHeading(180)
-			--	:build()
-			--),
-			--PathAction.new(
-			--	path.chain()
-			--	:add(path.line(10, 8, 60, 12))
-			--	:constantHeading(180)
-			--	:build()
-			--),
 			PathAction.new(
 				path.chain()
-				:add(path.curve3(60, 12, 35, 20, 10, 12))
-				:linearHeading(180, 225)
+				:add(path.line(60, 12, 10, 8))
+				:constantHeading(180)
 				:build()
 			),
 			PathAction.new(
 				path.chain()
-				:add(path.line(10, 12, 60, 12))
-				:linearHeading(225, 180)
+				:add(path.line(10, 8, 60, 12))
+				:constantHeading(180)
 				:build()
 			),
+			--PathAction.new(
+			--	path.chain()
+			--	:add(path.curve3(60, 12, 35, 20, 10, 12))
+			--	:linearHeading(180, 225)
+			--	:build()
+			--),
+			--PathAction.new(
+			--	path.chain()
+			--	:add(path.line(10, 12, 60, 12))
+			--	:linearHeading(225, 180)
+			--	:build()
+			--),
 			Delay.new(0.4),
 			RobotActions.Shoot.new(1)
 		)

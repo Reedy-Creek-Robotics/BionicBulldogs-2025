@@ -118,6 +118,7 @@ function autoStart()
 	--turret.reset();
 	shooter:start(0);
 	shooter:updateVelocity(follower.getPositionX(), follower.getPositionY());
+	shooter:setInBack(false);
 	action:start(0);
 	led:displayArtBoard(0);
 	counter:reset();
@@ -153,6 +154,7 @@ function addConfig(name, prefix, config)
 			turretMotor = turret.getMotor();
 			led:displayArtBoard(0);
 			counter:init();
+			shooter:close();
 		end,
 		start = autoStart,
 		update = autoUpdate,

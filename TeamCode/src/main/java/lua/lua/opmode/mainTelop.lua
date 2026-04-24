@@ -349,9 +349,9 @@ local function telopUpdate(dt, et)
 			turretOffset2 = turretOffset2 + 3;
 		end
 	end
-	if(y > 48) then
+	if (y > 48) then
 		turretOffset2 = 0;
-	elseif(turretOffset2 == 0) then
+	elseif (turretOffset2 == 0) then
 		turretOffset2 = 3;
 	end
 

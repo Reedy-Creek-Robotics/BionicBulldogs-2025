@@ -27,7 +27,7 @@ genPathFuncs = {
 			config.park(), SleepAction.new(2));
 	end,
 	cycle = function (config)
-		return SeqAction.new(config.preload(), config.line2.noGate(), config.cycle(), config.cycle(), config.line1.noGate(),
+		return SeqAction.new(config.preload(), config.line2.noGate(), config.cycle(), config.cycle(), IfAction.new(function(et) return et < 30 - (6.6 + 4 + 1.07) end, config.cycle()), config.line1.noGate(),
 			config.park(), SleepAction.new(2));
 	end,
 	partner = function (config)

@@ -29,13 +29,14 @@ shooter = {
 	gateClosed = 0.25,
 	openDelay = 1.3, -- 0.16
 	openDelayEnd = 1,
-	closeDelay = 0.35,
+	closeDelay = 0.0, -- 0.35
 	state = shooterState.Close,
 	waitForReady = false,
 	velocityDataPoints = { 0, 0, 0, 0, 0 },
 	running = false,
 	onField = true,
-	vel = 0
+	vel = 0,
+	velOff = 0
 }
 
 function shooter:init()
@@ -50,9 +51,8 @@ end
 ---@param vel number
 function shooter:start(vel)
 	self.vel = vel;
-	self.motorL:setVelocity(vel);
-	self.motorR:setVelocity(vel);
-	self:close();
+	self.motorL:setVelocity(vel + self.velOff);
+	self.motorR:setVelocity(vel + self.velOff);
 end
 
 --local shooterVelMap = {
@@ -68,8 +68,8 @@ local shooterVelMap = {
 	{ -001, -001, -001, -001, 0660, 0660 },
 	{ 0880, 0880, -001, 0660, 0660, 0660 },
 	{ 0880, 0880, 0680, 0680, 0660, 0660 },
-  { 0940, 0940, 0720, 0720, 0700, 0700 },
-  { 0940, 0940, -001, 0780, 0780, 0780 },
+	{ 0940, 0940, 0720, 0720, 0700, 0700 },
+	{ 0940, 0940, -001, 0780, 0780, 0780 },
 	{ -001, -001, -001, -001, 0780, 0780 }
 };
 
@@ -82,11 +82,19 @@ local shooterVelMap = {
 --	{ -001, -001, -001, -001, 0960, 0860 }
 --};
 
+local inBack = false;
+
+---@param b boolean
+function shooter:setInBack(b)
+	inBack = b;
+end
+
 ---@param x number
 ---@param y number
----@param vx number
----@param vy number
+---@param vx number?
+---@param vy number?
 function shooter:updateVelocity(x, y, vx, vy)
+	dashboard.addDataf("targetVel", self.vel + self.velOff);
 	if (self.state == shooterState.Rev) then
 		return;
 	end
@@ -99,6 +107,9 @@ function shooter:updateVelocity(x, y, vx, vy)
 	local vel = 0;
 	local tx = math.floor(x / 24);
 	local ty = math.floor(y / 24);
+
+	dashboard.addDataf("tx", tx);
+	dashboard.addDataf("ty", ty);
 
 	local v1 = { tx, ty };
 	local v2 = { vx, vy };
@@ -116,6 +127,7 @@ function shooter:updateVelocity(x, y, vx, vy)
 		end
 	end
 
+	inBack = (ty < 2);
 
 	if (tx < 0 or tx >= 6 or ty < 0 or ty >= 6) then
 		if (self.onField == true) then
@@ -148,13 +160,6 @@ function shooter:updateVelocity(x, y, vx, vy)
 		vel = 0;
 	end
 	if (vel ~= self.vel) then
-		if (self.running) then
-			if (vel > 3) then
-				intake.speed = 0.9;
-			else
-				intake.speed = 1.0;
-			end
-		end
 		self:start(vel);
 	end
 end
@@ -182,7 +187,11 @@ function shooter:shoot(et)
 	self.gate:setPosition(self.gateOpen);
 	self.time = et;
 	self.delay = self.openDelay;
-	intake:forward();
+	if (inBack) then
+		intake:forward(0.75);
+	else
+		intake:forward();
+	end
 end
 
 ---@param et number
@@ -203,6 +212,11 @@ function shooter:shootNum(et, count)
 	self.gate:setPosition(self.gateOpen);
 	self.time = et;
 	self.delay = self.openDelay;
+	if (inBack) then
+		intake:forward(0.75);
+	else
+		intake:forward();
+	end
 end
 
 ---@param et number
@@ -212,6 +226,11 @@ function shooter:update(et)
 		return false;
 	end
 
+	--if(self.motorL:getVelocity() < self.vel - 40) then
+	--	self.velOff = 300;
+	--	self:start(self.vel);
+	--	actionPane:addLine("velOff = 40");
+	--end
 	if (self.time + self.delay <= et) then
 		if (self.state == shooterState.Rev) then
 			intake:stop();
@@ -234,6 +253,10 @@ function shooter:update(et)
 				if (self.count == 1) then
 					self.count = 0;
 					self.time = nil;
+					self.velOff = 0;
+					self:start(self.vel);
+					actionPane:addLine("velOff = 0");
+					intake:forward();
 					return true;
 				end
 			end
@@ -245,6 +268,10 @@ function shooter:update(et)
 			if (self.count == 1) then
 				self.count = 0;
 				self.time = nil;
+				self.velOff = 0;
+				self:start(self.vel);
+				actionPane:addLine("velOff = 0");
+				intake:forward();
 				return true;
 			else
 				self:shootNum(et, self.count - 1);

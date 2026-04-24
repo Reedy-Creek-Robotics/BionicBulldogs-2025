@@ -43,6 +43,16 @@ function Shoot:update(dt, et)
 	return ActionState.Running;
 end
 
+function Shoot:error()
+	shooter:close();
+	counter:reset();
+end
+
+function Shoot:finish()
+	shooter:close();
+	counter:reset();
+end
+
 --function Shoot:update(dt, et)
 --	if (shooter:update(et)) then
 --		return ActionState.Done;
@@ -90,8 +100,8 @@ function ShooterEnable:start(et)
 		telemetry.update();
 	else
 		shooter:start(self.vel);
-		shooter.motorL:setPidf(320, 3, 0, 0);
-		shooter.motorR:setPidf(320, 3, 0, 0);
+		shooter.motorL:setPidf(1280, 3, 0, 2);
+		shooter.motorR:setPidf(1280, 3, 0, 2);
 	end
 end
 

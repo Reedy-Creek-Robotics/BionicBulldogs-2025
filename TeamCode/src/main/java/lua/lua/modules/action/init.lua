@@ -4,3 +4,4 @@ require("modules.action.parallelAction");
 require("modules.action.conditionalAction");
 require("modules.action.waitForFirst");
 require("modules.action.profiler");
+require("modules.action.ifAction");

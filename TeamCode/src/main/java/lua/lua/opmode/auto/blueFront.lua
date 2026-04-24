@@ -14,7 +14,10 @@ local config = {
 				:constantHeading(180)
 				:build()
 			),
-			RobotActions.Shoot.new(1),
+			WaitForFirstAction.new(
+				SleepAction.new(0.9),
+				RobotActions.Shoot.new(1)
+			),
 			Delay.new(0.1)
 		)
 	end,
@@ -32,7 +35,10 @@ local config = {
 					:constantHeading(180)
 					:build()
 				),
-				RobotActions.Shoot.new(1)
+				WaitForFirstAction.new(
+					SleepAction.new(0.9),
+					RobotActions.Shoot.new(1)
+				)
 			)
 		end,
 		gate = function ()
@@ -60,7 +66,10 @@ local config = {
 					:constantHeading(180)
 					:build()
 				),
-				RobotActions.Shoot.new(1)
+				WaitForFirstAction.new(
+					SleepAction.new(0.9),
+					RobotActions.Shoot.new(1)
+				)
 			)
 		end
 	},
@@ -70,15 +79,18 @@ local config = {
 				"line2",
 				PathAction.new(
 					path.chain()
-					:add(path.line(54, 90, 38, 62))
+					:add(path.curve3(54, 90, 51, 68.5, 38, 62))
 					:constantHeading(180)
 					:add(path.line(38, 62, 18.25, 62))
 					:constantHeading(180)
-					:add(path.line(18.25, 62, 54, 90))
+					:add(path.curve3(18.25, 62, 51, 68.5, 54, 90))
 					:constantHeading(180)
 					:build()
 				),
-				RobotActions.Shoot.new(1)
+				WaitForFirstAction.new(
+					SleepAction.new(0.9),
+					RobotActions.Shoot.new(1)
+				)
 			)
 		end,
 		gate = function ()
@@ -113,7 +125,10 @@ local config = {
 					:constantHeading(180)
 					:build()
 				),
-				RobotActions.Shoot.new(1)
+				WaitForFirstAction.new(
+					SleepAction.new(0.9),
+					RobotActions.Shoot.new(1)
+				)
 			)
 		end
 	},
@@ -130,7 +145,10 @@ local config = {
 				:constantHeading(180)
 				:build()
 			),
-			RobotActions.Shoot.new(1)
+			WaitForFirstAction.new(
+				SleepAction.new(0.9),
+				RobotActions.Shoot.new(1)
+			)
 		)
 	end,
 	line4 = function ()
@@ -151,7 +169,10 @@ local config = {
 				:linearHeading(270, 180)
 				:build()
 			),
-			RobotActions.Shoot.new(1)
+			WaitForFirstAction.new(
+				SleepAction.new(0.9),
+				RobotActions.Shoot.new(1)
+			)
 		)
 	end,
 	cycle = function ()
@@ -163,7 +184,10 @@ local config = {
 				:linearHeading(180, 180 - 30.5)
 				:build()
 			),
-			Delay.new(2.0),
+			WaitForFirstAction.new(
+				Delay.new(2.0),
+				RobotActions.BeamBreakWait.new(3)
+			),
 			RobotActions.IntakeStop.new(),
 			PathAction.new(
 				path.chain()
@@ -171,7 +195,10 @@ local config = {
 				:linearHeading(180 - 30.5, 180)
 				:build()
 			),
-			RobotActions.Shoot.new(1)
+			WaitForFirstAction.new(
+				SleepAction.new(0.9),
+				RobotActions.Shoot.new(1)
+			)
 		);
 	end,
 	park = function ()
