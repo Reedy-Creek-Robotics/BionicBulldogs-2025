@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.pedroPathing;
 
+import com.pedropathing.control.PredictiveBrakingCoefficients
 import com.pedropathing.follower.Follower
 import com.pedropathing.follower.FollowerConstants
 import com.pedropathing.ftc.FollowerBuilder
@@ -14,9 +15,10 @@ import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit
 object Constants
 {
 	val followerConstants: FollowerConstants = FollowerConstants()
-		.mass(12.6)
-		.forwardZeroPowerAcceleration(-34.059)
-		.lateralZeroPowerAcceleration(-70.539);
+		.mass(13.6)
+		//.predictiveBrakingCoefficients(PredictiveBrakingCoefficients(0.05, 0.161305444118233, 0.001180107091674471))
+		.predictiveBrakingCoefficients(PredictiveBrakingCoefficients(0.175, 0.1298466321462225, 0.0016410515980214186))
+		.centripetalScaling(0.0);
 
 	val mecanumConstants: MecanumConstants = MecanumConstants()
 		.maxPower(1.0)
@@ -35,8 +37,10 @@ object Constants
 
 
 	val localizerConstants: PinpointConstants = PinpointConstants()
-		.forwardPodY(-6.5)
-		.strafePodX(0.0)
+		//.forwardPodY(-6.5)
+		//.strafePodX(0.0)
+		.forwardPodY(-6.713445227915848)
+		.strafePodX(0.24920990711122215)
 		.distanceUnit(DistanceUnit.INCH)
 		.hardwareMapName("pinpoint")
 		.encoderResolution(GoBildaPinpointDriver.GoBildaOdometryPods.goBILDA_4_BAR_POD)
@@ -60,7 +64,7 @@ object Constants
 	//	.forwardTicksToInches(0.0020127)
 	//	.strafeTicksToInches(0.002023);
 
-	val pathConstraints = PathConstraints(0.99, 100.0, 0.4, 1.0);
+	val pathConstraints = PathConstraints(0.95, 100.0, 0.4, 1.0);
 
 	@JvmStatic
 	fun createFollower(hardwaremap: HardwareMap): Follower =

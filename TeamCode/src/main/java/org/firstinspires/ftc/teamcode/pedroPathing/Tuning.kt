@@ -1,10 +1,7 @@
 package org.firstinspires.ftc.teamcode.pedroPathing
 
 import android.annotation.SuppressLint
-import com.bylazar.configurables.PanelsConfigurables.refreshClass
-import com.bylazar.configurables.annotations.Configurable
 import com.bylazar.configurables.annotations.IgnoreConfigurable
-import com.bylazar.field.FieldManager.update
 import com.bylazar.field.PanelsField.field
 import com.bylazar.field.PanelsField.presets
 import com.bylazar.field.Style
@@ -14,20 +11,20 @@ import com.pedropathing.follower.Follower
 import com.pedropathing.geometry.BezierCurve
 import com.pedropathing.geometry.BezierLine
 import com.pedropathing.geometry.Pose
+import com.pedropathing.math.MathFunctions
 import com.pedropathing.math.Vector
 import com.pedropathing.paths.HeadingInterpolator
 import com.pedropathing.paths.Path
 import com.pedropathing.paths.PathChain
-import com.pedropathing.telemetry.SelectScope
-import com.pedropathing.telemetry.SelectableOpMode
 import com.pedropathing.util.PoseHistory
 import com.qualcomm.robotcore.eventloop.opmode.OpMode
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp
+import com.qualcomm.robotcore.hardware.DcMotor
+import com.qualcomm.robotcore.hardware.DcMotorSimple
+import com.qualcomm.robotcore.hardware.HardwareMap
 import com.qualcomm.robotcore.util.ElapsedTime
+import org.firstinspires.ftc.teamcode.modules.LuaDefines
 import org.firstinspires.ftc.teamcode.pedroPathing.Constants.createFollower
-import java.lang.Double
-import java.util.function.Consumer
-import java.util.function.Supplier
 import kotlin.DoubleArray
 import kotlin.Exception
 import kotlin.Long
@@ -35,126 +32,59 @@ import kotlin.RuntimeException
 import kotlin.String
 import kotlin.collections.ArrayList
 import kotlin.collections.MutableList
-import kotlin.collections.get
 import kotlin.collections.indices
-import kotlin.collections.minus
-import kotlin.collections.plus
-import kotlin.compareTo
-import kotlin.div
 import kotlin.doubleArrayOf
 import kotlin.math.abs
 import kotlin.math.pow
-import kotlin.plus
-import kotlin.sequences.minus
-import kotlin.sequences.plus
-import kotlin.text.compareTo
 import kotlin.text.format
 
-/**
- * This is the Tuning class. It contains a selection menu for various tuning OpModes.
- *
- * @author Baron Henderson - 20077 The Indubitables
- * @version 1.0, 6/26/2025
- */
-@Configurable
-@TeleOp(name = "Tuning", group = "Pedro Pathing")
-class Tuning :
-	SelectableOpMode("Select a Tuning OpMode", Consumer { s: SelectScope<Supplier<OpMode?>?>? ->
-		s!!.folder("Localization", Consumer { l: SelectScope<Supplier<OpMode?>?>? ->
-			l!!.add("Localization Test", Supplier { LocalizationTest() })
-			l.add("Offsets Tuner", Supplier { OffsetsTuner() })
-			l.add("Forward Tuner", Supplier { ForwardTuner() })
-			l.add("Lateral Tuner", Supplier { LateralTuner() })
-			l.add("Turn Tuner", Supplier { TurnTuner() })
-		})
-		s.folder("Automatic", Consumer { a: SelectScope<Supplier<OpMode?>?>? ->
-			a!!.add("Forward Velocity Tuner", Supplier { ForwardVelocityTuner() })
-			a.add("Lateral Velocity Tuner", Supplier { LateralVelocityTuner() })
-			a.add(
-				"Forward Zero Power Acceleration Tuner",
-				Supplier { ForwardZeroPowerAccelerationTuner() })
-			a.add(
-				"Lateral Zero Power Acceleration Tuner",
-				Supplier { LateralZeroPowerAccelerationTuner() })
-			a.add("Predictive Braking", Supplier { PredictiveBrakingTuner() })
-		})
-		s.folder("Manual", Consumer { p: SelectScope<Supplier<OpMode?>?>? ->
-			p!!.add("Translational Tuner", Supplier { TranslationalTuner() })
-			p.add("Heading Tuner", Supplier { HeadingTuner() })
-			p.add("Drive Tuner", Supplier { DriveTuner() })
-			p.add("Line Tuner", Supplier { Line() })
-			p.add("Centripetal Tuner", Supplier { CentripetalTuner() })
-		})
-		s.folder("Tests", Consumer { p: SelectScope<Supplier<OpMode?>?>? ->
-			p!!.add("Line", Supplier { Line() })
-			p.add("Triangle", Supplier { Triangle() })
-			p.add("Circle", Supplier { Circle() })
-		})
-	})
+fun onSelect(hardwareMap: HardwareMap)
 {
-	public override fun onSelect()
+	follower = createFollower(hardwareMap)
+
+	follower!!.setStartingPose(Pose())
+
+	poseHistory = follower!!.poseHistory
+
+	telemetryM = PanelsTelemetry.telemetry
+
+	Drawing.init()
+}
+
+var follower: Follower? = null
+
+@IgnoreConfigurable
+var poseHistory: PoseHistory? = null
+
+@IgnoreConfigurable
+var telemetryM: TelemetryManager? = null
+
+@IgnoreConfigurable
+var changes: ArrayList<String?> = ArrayList()
+
+fun drawOnlyCurrent()
+{
+	try
 	{
-		if (follower == null)
-		{
-			follower = createFollower(hardwareMap)
-			refreshClass(this)
-		}
-		else
-		{
-			follower = createFollower(hardwareMap)
-		}
-
-		follower!!.setStartingPose(Pose())
-
-		poseHistory = follower!!.getPoseHistory()
-
-		telemetryM = PanelsTelemetry.telemetry
-
-		Drawing.init()
+		Drawing.drawRobot(follower!!.pose)
+		Drawing.sendPacket()
 	}
-
-	public override fun onLog(lines: MutableList<String?>?)
+	catch (e: Exception)
 	{
+		throw RuntimeException("Drawing failed $e")
 	}
+}
 
-	companion object
-	{
-		var follower: Follower? = null
+fun draw()
+{
+	Drawing.drawDebug(follower!!)
+}
 
-		@IgnoreConfigurable
-		var poseHistory: PoseHistory? = null
-
-		@IgnoreConfigurable
-		var telemetryM: TelemetryManager? = null
-
-		@IgnoreConfigurable
-		var changes: ArrayList<String?> = ArrayList<String?>()
-
-		fun drawOnlyCurrent()
-		{
-			try
-			{
-				drawRobot(follower!!.getPose())
-				Drawing.sendPacket()
-			}
-			catch (e: Exception)
-			{
-				throw RuntimeException("Drawing failed " + e)
-			}
-		}
-
-		fun draw()
-		{
-			Drawing.drawDebug(follower!!)
-		}
-
-		/** This creates a full stop of the robot by setting the drive motors to run at 0 power.  */
-		fun stopRobot()
-		{
-			follower!!.startTeleopDrive(true)
-			follower!!.setTeleOpDrive(0.0, 0.0, 0.0, true)
-		}
-	}
+/** This creates a full stop of the robot by setting the drive motors to run at 0 power.  */
+fun stopRobot()
+{
+	follower!!.startTeleopDrive(true)
+	follower!!.setTeleOpDrive(0.0, 0.0, 0.0, true)
 }
 
 /**
@@ -166,29 +96,31 @@ class Tuning :
  * @author Baron Henderson - 20077 The Indubitables
  * @version 1.0, 5/6/2024
  */
-internal class LocalizationTest : OpMode()
+@TeleOp(group = "tuning")
+class LocalizationTest : OpMode()
 {
 	override fun init()
 	{
-		follower.setStartingPose(Pose(72.0, 72.0))
+		onSelect(hardwareMap);
+		follower!!.setStartingPose(Pose(72.0, 72.0))
 	}
 
 	/** This initializes the PoseUpdater, the mecanum drive motors, and the Panels telemetry.  */
 	override fun init_loop()
 	{
-		telemetryM.debug(
+		telemetryM!!.debug(
 			"This will print your robot's position to telemetry while "
 							+ "allowing robot control through a basic mecanum drive on gamepad 1."
 		)
-		telemetryM.update(telemetry)
-		follower.update()
+		telemetryM!!.update(telemetry)
+		follower!!.update()
 		drawOnlyCurrent()
 	}
 
 	override fun start()
 	{
-		follower.startTeleopDrive()
-		follower.update()
+		follower!!.startTeleopDrive(true);
+		follower!!.update()
 	}
 
 	/**
@@ -197,19 +129,19 @@ internal class LocalizationTest : OpMode()
 	 */
 	override fun loop()
 	{
-		follower.setTeleOpDrive(
-			-gamepad1.left_stick_y,
-			-gamepad1.left_stick_x,
-			-gamepad1.right_stick_x,
+		follower!!.setTeleOpDrive(
+			-gamepad1.left_stick_y.toDouble(),
+			-gamepad1.left_stick_x.toDouble(),
+			-gamepad1.right_stick_x.toDouble(),
 			true
 		)
-		follower.update()
+		follower!!.update()
 
-		telemetryM.debug("x:" + follower.getPose().getX())
-		telemetryM.debug("y:" + follower.getPose().getY())
-		telemetryM.debug("heading:" + follower.getPose().getHeading())
-		telemetryM.debug("total heading:" + follower.getTotalHeading())
-		telemetryM.update(telemetry)
+		telemetryM!!.debug("x:" + follower!!.pose.x)
+		telemetryM!!.debug("y:" + follower!!.pose.y)
+		telemetryM!!.debug("heading:" + follower!!.pose.heading)
+		telemetryM!!.debug("total heading:" + follower!!.totalHeading)
+		telemetryM!!.update(telemetry)
 
 		draw()
 	}
@@ -228,20 +160,22 @@ internal class LocalizationTest : OpMode()
  * @author Baron Henderson - 20077 The Indubitables
  * @version 1.0, 5/6/2024
  */
-internal class ForwardTuner : OpMode()
+@TeleOp(group = "tuning")
+class ForwardTuner : OpMode()
 {
 	override fun init()
 	{
-		follower.setStartingPose(Pose(72.0, 72.0))
-		follower.update()
+		onSelect(hardwareMap);
+		follower!!.setStartingPose(Pose(72.0, 72.0))
+		follower!!.update()
 		drawOnlyCurrent()
 	}
 
 	/** This initializes the PoseUpdater as well as the Panels telemetry.  */
 	override fun init_loop()
 	{
-		telemetryM.debug("Pull your robot forward " + DISTANCE + " inches. Your forward ticks to inches will be shown on the telemetry.")
-		telemetryM.update(telemetry)
+		telemetryM!!.debug("Pull your robot forward $DISTANCE inches. Your forward ticks to inches will be shown on the telemetry.")
+		telemetryM!!.update(telemetry)
 		drawOnlyCurrent()
 	}
 
@@ -251,15 +185,15 @@ internal class ForwardTuner : OpMode()
 	 */
 	override fun loop()
 	{
-		follower.update()
+		follower!!.update()
 
-		telemetryM.debug("Distance Moved: " + (follower.getPose().getX() - 72))
-		telemetryM.debug("The multiplier will display what your forward ticks to inches should be to scale your current distance to " + DISTANCE + " inches.")
-		telemetryM.debug(
-			"Multiplier: " + (DISTANCE / ((follower.getPose().getX() - 72) / follower.getPoseTracker()
-				.getLocalizer().getForwardMultiplier()))
+		telemetryM!!.debug("Distance Moved: " + (follower!!.pose.x - 72))
+		telemetryM!!.debug("The multiplier will display what your forward ticks to inches should be to scale your current distance to $DISTANCE inches.")
+		telemetryM!!.debug(
+			"Multiplier: " + (DISTANCE / ((follower!!.pose.x - 72) / follower!!.getPoseTracker()
+				.localizer.forwardMultiplier))
 		)
-		telemetryM.update(telemetry)
+		telemetryM!!.update(telemetry)
 
 		draw()
 	}
@@ -283,20 +217,22 @@ internal class ForwardTuner : OpMode()
  * @author Baron Henderson - 20077 The Indubitables
  * @version 2.0, 6/26/2025
  */
-internal class LateralTuner : OpMode()
+@TeleOp(group = "tuning")
+class LateralTuner : OpMode()
 {
 	override fun init()
 	{
-		follower.setStartingPose(Pose(72.0, 72.0))
-		follower.update()
+		onSelect(hardwareMap);
+		follower!!.setStartingPose(Pose(72.0, 72.0))
+		follower!!.update()
 		drawOnlyCurrent()
 	}
 
 	/** This initializes the PoseUpdater as well as the Panels telemetry.  */
 	override fun init_loop()
 	{
-		telemetryM.debug("Pull your robot to the right " + DISTANCE + " inches. Your strafe ticks to inches will be shown on the telemetry.")
-		telemetryM.update(telemetry)
+		telemetryM!!.debug("Pull your robot to the right $DISTANCE inches. Your strafe ticks to inches will be shown on the telemetry.")
+		telemetryM!!.update(telemetry)
 		drawOnlyCurrent()
 	}
 
@@ -306,15 +242,15 @@ internal class LateralTuner : OpMode()
 	 */
 	override fun loop()
 	{
-		follower.update()
+		follower!!.update()
 
-		telemetryM.debug("Distance Moved: " + (follower.getPose().getY() - 72))
-		telemetryM.debug("The multiplier will display what your strafe ticks to inches should be to scale your current distance to " + DISTANCE + " inches.")
-		telemetryM.debug(
-			"Multiplier: " + (DISTANCE / ((follower.getPose().getY() - 72) / follower.getPoseTracker()
-				.getLocalizer().getLateralMultiplier()))
+		telemetryM!!.debug("Distance Moved: " + (follower!!.pose.y - 72))
+		telemetryM!!.debug("The multiplier will display what your strafe ticks to inches should be to scale your current distance to $DISTANCE inches.")
+		telemetryM!!.debug(
+			"Multiplier: " + (DISTANCE / ((follower!!.pose.y - 72) / follower!!.getPoseTracker()
+				.localizer.lateralMultiplier))
 		)
-		telemetryM.update(telemetry)
+		telemetryM!!.update(telemetry)
 
 		draw()
 	}
@@ -338,20 +274,22 @@ internal class LateralTuner : OpMode()
  * @author Baron Henderson - 20077 The Indubitables
  * @version 1.0, 5/6/2024
  */
-internal class TurnTuner : OpMode()
+@TeleOp(group = "tuning")
+class TurnTuner : OpMode()
 {
 	override fun init()
 	{
-		follower.setStartingPose(Pose(72.0, 72.0))
-		follower.update()
+		onSelect(hardwareMap);
+		follower!!.setStartingPose(Pose(72.0, 72.0))
+		follower!!.update()
 		drawOnlyCurrent()
 	}
 
 	/** This initializes the PoseUpdater as well as the Panels telemetry.  */
 	override fun init_loop()
 	{
-		telemetryM.debug("Turn your robot " + ANGLE + " radians. Your turn ticks to inches will be shown on the telemetry.")
-		telemetryM.update(telemetry)
+		telemetryM!!.debug("Turn your robot $ANGLE radians. Your turn ticks to inches will be shown on the telemetry.")
+		telemetryM!!.update(telemetry)
 
 		drawOnlyCurrent()
 	}
@@ -362,15 +300,15 @@ internal class TurnTuner : OpMode()
 	 */
 	override fun loop()
 	{
-		follower.update()
+		follower!!.update()
 
-		telemetryM.debug("Total Angle: " + follower.getTotalHeading())
-		telemetryM.debug("The multiplier will display what your turn ticks to inches should be to scale your current angle to " + ANGLE + " radians.")
-		telemetryM.debug(
-			"Multiplier: " + (ANGLE / (follower.getTotalHeading() / follower.getPoseTracker()
-				.getLocalizer().getTurningMultiplier()))
+		telemetryM!!.debug("Total Angle: " + follower!!.totalHeading)
+		telemetryM!!.debug("The multiplier will display what your turn ticks to inches should be to scale your current angle to $ANGLE radians.")
+		telemetryM!!.debug(
+			"Multiplier: " + (ANGLE / (follower!!.totalHeading / follower!!.getPoseTracker()
+				.localizer.turningMultiplier))
 		)
-		telemetryM.update(telemetry)
+		telemetryM!!.update(telemetry)
 
 		draw()
 	}
@@ -396,26 +334,28 @@ internal class TurnTuner : OpMode()
  * @author Baron Henderson - 20077 The Indubitables
  * @version 1.0, 3/13/2024
  */
-internal class ForwardVelocityTuner : OpMode()
+@TeleOp(group = "tuning")
+class ForwardVelocityTuner : OpMode()
 {
 	private val velocities = ArrayList<Double?>()
 	private var end = false
 
 	override fun init()
 	{
-		follower.setStartingPose(Pose(72.0, 72.0))
+		onSelect(hardwareMap);
+		follower!!.setStartingPose(Pose(72.0, 72.0))
 	}
 
 	/** This initializes the drive motors as well as the cache of velocities and the Panels telemetry.  */
 	override fun init_loop()
 	{
-		telemetryM.debug("The robot will run at 1 power until it reaches " + DISTANCE + " inches forward.")
-		telemetryM.debug("Make sure you have enough room, since the robot has inertia after cutting power.")
-		telemetryM.debug("After running the distance, the robot will cut power from the drivetrain and display the forward velocity.")
-		telemetryM.debug("Press B on game pad 1 to stop.")
-		telemetryM.debug("pose", follower.getPose())
-		telemetryM.update(telemetry)
-		follower.update()
+		telemetryM!!.debug("The robot will run at 1 power until it reaches $DISTANCE inches forward.")
+		telemetryM!!.debug("Make sure you have enough room, since the robot has inertia after cutting power.")
+		telemetryM!!.debug("After running the distance, the robot will cut power from the drivetrain and display the forward velocity.")
+		telemetryM!!.debug("Press B on game pad 1 to stop.")
+		telemetryM!!.debug("pose", follower!!.pose)
+		telemetryM!!.update(telemetry)
+		follower!!.update()
 		drawOnlyCurrent()
 	}
 
@@ -428,8 +368,8 @@ internal class ForwardVelocityTuner : OpMode()
 			velocities.add(0.0)
 			i++
 		}
-		follower.startTeleopDrive(true)
-		follower.update()
+		follower!!.startTeleopDrive(true)
+		follower!!.update()
 		end = false
 	}
 
@@ -447,23 +387,23 @@ internal class ForwardVelocityTuner : OpMode()
 			requestOpModeStop()
 		}
 
-		follower.update()
+		follower!!.update()
 		draw()
 
 
 		if (!end)
 		{
-			if (Math.abs(follower.getPose().getX()) > (DISTANCE + 72))
+			if (abs(follower!!.pose.x) > (DISTANCE + 72))
 			{
 				end = true
 				stopRobot()
 			}
 			else
 			{
-				follower.setTeleOpDrive(1, 0, 0, true)
-				//double currentVelocity = Math.abs(follower.getVelocity().getXComponent());
+				follower!!.setTeleOpDrive(1.0, 0.0, 0.0, true)
+				//double currentVelocity = Math.abs(follower!!.getVelocity().getXComponent());
 				val currentVelocity: Double =
-					Math.abs(follower.poseTracker.getLocalizer().getVelocity().getX())
+					abs(follower!!.poseTracker.localizer.velocity.x)
 				velocities.add(currentVelocity)
 				velocities.removeAt(0)
 			}
@@ -477,22 +417,22 @@ internal class ForwardVelocityTuner : OpMode()
 				average += velocity!!
 			}
 			average /= velocities.size.toDouble()
-			telemetryM.debug("Forward Velocity: " + average)
-			telemetryM.debug("\n")
-			telemetryM.debug("Press A to set the Forward Velocity temporarily (while robot remains on).")
+			telemetryM!!.debug("Forward Velocity: $average")
+			telemetryM!!.debug("\n")
+			telemetryM!!.debug("Press A to set the Forward Velocity temporarily (while robot remains on).")
 
 			for (i in velocities.indices)
 			{
-				telemetry.addData(i.toString(), velocities.get(i))
+				telemetry.addData(i.toString(), velocities[i])
 			}
 
-			telemetryM.update(telemetry)
+			telemetryM!!.update(telemetry)
 			telemetry.update()
 
 			if (gamepad1.aWasPressed())
 			{
-				follower.setXVelocity(average)
-				val message = "XMovement: " + average
+				follower!!.setXVelocity(average)
+				val message = "XMovement: $average"
 				changes.add(message)
 			}
 		}
@@ -520,7 +460,8 @@ internal class ForwardVelocityTuner : OpMode()
  * @author Baron Henderson - 20077 The Indubitables
  * @version 1.0, 3/13/2024
  */
-internal class LateralVelocityTuner : OpMode()
+@TeleOp(group = "tuning")
+class LateralVelocityTuner : OpMode()
 {
 	private val velocities = ArrayList<Double?>()
 
@@ -528,21 +469,22 @@ internal class LateralVelocityTuner : OpMode()
 
 	override fun init()
 	{
-		follower.setStartingPose(Pose(72.0, 72.0))
+		onSelect(hardwareMap);
+		follower!!.setStartingPose(Pose(72.0, 72.0))
 	}
 
 	/**
 	 * This initializes the drive motors as well as the cache of velocities and the Panels
-	 * telemetryM.
+	 * telemetryM!!.
 	 */
 	override fun init_loop()
 	{
-		telemetryM.debug("The robot will run at 1 power until it reaches " + DISTANCE + " inches to the left.")
-		telemetryM.debug("Make sure you have enough room, since the robot has inertia after cutting power.")
-		telemetryM.debug("After running the distance, the robot will cut power from the drivetrain and display the strafe velocity.")
-		telemetryM.debug("Press B on Gamepad 1 to stop.")
-		telemetryM.update(telemetry)
-		follower.update()
+		telemetryM!!.debug("The robot will run at 1 power until it reaches $DISTANCE inches to the left.")
+		telemetryM!!.debug("Make sure you have enough room, since the robot has inertia after cutting power.")
+		telemetryM!!.debug("After running the distance, the robot will cut power from the drivetrain and display the strafe velocity.")
+		telemetryM!!.debug("Press B on Gamepad 1 to stop.")
+		telemetryM!!.update(telemetry)
+		follower!!.update()
 		drawOnlyCurrent()
 	}
 
@@ -555,8 +497,8 @@ internal class LateralVelocityTuner : OpMode()
 			velocities.add(0.0)
 			i++
 		}
-		follower.startTeleopDrive(true)
-		follower.update()
+		follower!!.startTeleopDrive(true)
+		follower!!.update()
 	}
 
 	/**
@@ -573,20 +515,21 @@ internal class LateralVelocityTuner : OpMode()
 			requestOpModeStop()
 		}
 
-		follower.update()
+		follower!!.update()
 		draw()
 
 		if (!end)
 		{
-			if (Math.abs(follower.getPose().getY()) > (DISTANCE + 72))
+			if (abs(follower!!.pose.y) > (DISTANCE + 72))
 			{
 				end = true
 				stopRobot()
 			}
 			else
 			{
-				follower.setTeleOpDrive(0, 1, 0, true)
-				val currentVelocity: Double = Math.abs(follower.getVelocity().dot(Vector(1.0, Math.PI / 2)))
+				follower!!.setTeleOpDrive(0.0, 1.0, 0.0, true)
+				val currentVelocity: Double =
+					abs(follower!!.velocity.dot(Vector(1.0, Math.PI / 2)))
 				velocities.add(currentVelocity)
 				velocities.removeAt(0)
 			}
@@ -601,15 +544,15 @@ internal class LateralVelocityTuner : OpMode()
 			}
 			average /= velocities.size.toDouble()
 
-			telemetryM.debug("Strafe Velocity: " + average)
-			telemetryM.debug("\n")
-			telemetryM.debug("Press A to set the Lateral Velocity temporarily (while robot remains on).")
-			telemetryM.update(telemetry)
+			telemetryM!!.debug("Strafe Velocity: $average")
+			telemetryM!!.debug("\n")
+			telemetryM!!.debug("Press A to set the Lateral Velocity temporarily (while robot remains on).")
+			telemetryM!!.update(telemetry)
 
 			if (gamepad1.aWasPressed())
 			{
-				follower.setYVelocity(average)
-				val message = "YMovement: " + average
+				follower!!.setYVelocity(average)
+				val message = "YMovement: $average"
 				changes.add(message)
 			}
 		}
@@ -637,7 +580,8 @@ internal class LateralVelocityTuner : OpMode()
  * @author Harrison Womack - 10158 Scott's Bots
  * @version 1.0, 3/13/2024
  */
-internal class ForwardZeroPowerAccelerationTuner : OpMode()
+@TeleOp(group = "tuning")
+class ForwardZeroPowerAccelerationTuner : OpMode()
 {
 	private val accelerations = ArrayList<Double?>()
 	private var previousVelocity = 0.0
@@ -648,28 +592,29 @@ internal class ForwardZeroPowerAccelerationTuner : OpMode()
 
 	override fun init()
 	{
-		follower.setStartingPose(Pose(72.0, 72.0))
+		onSelect(hardwareMap);
+		follower!!.setStartingPose(Pose(72.0, 72.0))
 	}
 
-	/** This initializes the drive motors as well as the Panels telemetryM.  */
+	/** This initializes the drive motors as well as the Panels telemetryM!!.  */
 	override fun init_loop()
 	{
-		telemetryM.debug("The robot will run forward until it reaches " + VELOCITY + " inches per second.")
-		telemetryM.debug("Then, it will cut power from the drivetrain and roll to a stop.")
-		telemetryM.debug("Make sure you have enough room.")
-		telemetryM.debug("After stopping, the forward zero power acceleration (natural deceleration) will be displayed.")
-		telemetryM.debug("Press B on Gamepad 1 to stop.")
-		telemetryM.update(telemetry)
-		follower.update()
+		telemetryM!!.debug("The robot will run forward until it reaches $VELOCITY inches per second.")
+		telemetryM!!.debug("Then, it will cut power from the drivetrain and roll to a stop.")
+		telemetryM!!.debug("Make sure you have enough room.")
+		telemetryM!!.debug("After stopping, the forward zero power acceleration (natural deceleration) will be displayed.")
+		telemetryM!!.debug("Press B on Gamepad 1 to stop.")
+		telemetryM!!.update(telemetry)
+		follower!!.update()
 		drawOnlyCurrent()
 	}
 
 	/** This starts the OpMode by setting the drive motors to run forward at full power.  */
 	override fun start()
 	{
-		follower.startTeleopDrive(false)
-		follower.update()
-		follower.setTeleOpDrive(1, 0, 0, true)
+		follower!!.startTeleopDrive(false)
+		follower!!.update()
+		follower!!.setTeleOpDrive(1.0, 0.0, 0.0, true)
 	}
 
 	/**
@@ -686,25 +631,25 @@ internal class ForwardZeroPowerAccelerationTuner : OpMode()
 			requestOpModeStop()
 		}
 
-		follower.update()
+		follower!!.update()
 		draw()
 
-		val heading = Vector(1.0, follower.getPose().getHeading())
+		val heading = Vector(1.0, follower!!.pose.heading)
 		if (!end)
 		{
 			if (!stopping)
 			{
-				if (follower.getVelocity().dot(heading) > VELOCITY)
+				if (follower!!.velocity.dot(heading) > VELOCITY)
 				{
-					previousVelocity = follower.getVelocity().dot(heading)
+					previousVelocity = follower!!.velocity.dot(heading)
 					previousTimeNano = System.nanoTime()
 					stopping = true
-					follower.setTeleOpDrive(0, 0, 0, true)
+					follower!!.setTeleOpDrive(0.0, 0.0, 0.0, true)
 				}
 			}
 			else
 			{
-				val currentVelocity: Double = follower.getVelocity().dot(heading)
+				val currentVelocity: Double = follower!!.velocity.dot(heading)
 				accelerations.add(
 					(currentVelocity - previousVelocity) / ((System.nanoTime() - previousTimeNano) / 10.0.pow(
 						9.0
@@ -712,7 +657,7 @@ internal class ForwardZeroPowerAccelerationTuner : OpMode()
 				)
 				previousVelocity = currentVelocity
 				previousTimeNano = System.nanoTime()
-				if (currentVelocity < follower.getConstraints().getVelocityConstraint())
+				if (currentVelocity < follower!!.constraints.velocityConstraint)
 				{
 					end = true
 				}
@@ -727,15 +672,15 @@ internal class ForwardZeroPowerAccelerationTuner : OpMode()
 			}
 			average /= accelerations.size.toDouble()
 
-			telemetryM.debug("Forward Zero Power Acceleration (Deceleration): " + average)
-			telemetryM.debug("\n")
-			telemetryM.debug("Press A to set the Forward Zero Power Acceleration temporarily (while robot remains on).")
-			telemetryM.update(telemetry)
+			telemetryM!!.debug("Forward Zero Power Acceleration (Deceleration): $average")
+			telemetryM!!.debug("\n")
+			telemetryM!!.debug("Press A to set the Forward Zero Power Acceleration temporarily (while robot remains on).")
+			telemetryM!!.update(telemetry)
 
 			if (gamepad1.aWasPressed())
 			{
-				follower.getConstants().setForwardZeroPowerAcceleration(average)
-				val message = "Forward Zero Power Acceleration: " + average
+				follower!!.getConstants().setForwardZeroPowerAcceleration(average)
+				val message = "Forward Zero Power Acceleration: $average"
 				changes.add(message)
 			}
 		}
@@ -762,7 +707,8 @@ internal class ForwardZeroPowerAccelerationTuner : OpMode()
  * @author Baron Henderson - 20077 The Indubitables
  * @version 1.0, 3/13/2024
  */
-internal class LateralZeroPowerAccelerationTuner : OpMode()
+@TeleOp(group = "tuning")
+class LateralZeroPowerAccelerationTuner : OpMode()
 {
 	private val accelerations = ArrayList<Double?>()
 	private var previousVelocity = 0.0
@@ -772,28 +718,29 @@ internal class LateralZeroPowerAccelerationTuner : OpMode()
 
 	override fun init()
 	{
-		follower.setStartingPose(Pose(72.0, 72.0))
+		onSelect(hardwareMap);
+		follower!!.setStartingPose(Pose(72.0, 72.0))
 	}
 
 	/** This initializes the drive motors as well as the Panels telemetry.  */
 	override fun init_loop()
 	{
-		telemetryM.debug("The robot will run to the left until it reaches " + VELOCITY + " inches per second.")
-		telemetryM.debug("Then, it will cut power from the drivetrain and roll to a stop.")
-		telemetryM.debug("Make sure you have enough room.")
-		telemetryM.debug("After stopping, the lateral zero power acceleration (natural deceleration) will be displayed.")
-		telemetryM.debug("Press B on game pad 1 to stop.")
-		telemetryM.update(telemetry)
-		follower.update()
+		telemetryM!!.debug("The robot will run to the left until it reaches $VELOCITY inches per second.")
+		telemetryM!!.debug("Then, it will cut power from the drivetrain and roll to a stop.")
+		telemetryM!!.debug("Make sure you have enough room.")
+		telemetryM!!.debug("After stopping, the lateral zero power acceleration (natural deceleration) will be displayed.")
+		telemetryM!!.debug("Press B on game pad 1 to stop.")
+		telemetryM!!.update(telemetry)
+		follower!!.update()
 		drawOnlyCurrent()
 	}
 
 	/** This starts the OpMode by setting the drive motors to run forward at full power.  */
 	override fun start()
 	{
-		follower.startTeleopDrive(false)
-		follower.update()
-		follower.setTeleOpDrive(0, 1, 0, true)
+		follower!!.startTeleopDrive(false)
+		follower!!.update()
+		follower!!.setTeleOpDrive(0.0, 1.0, 0.0, true)
 	}
 
 	/**
@@ -810,25 +757,25 @@ internal class LateralZeroPowerAccelerationTuner : OpMode()
 			requestOpModeStop()
 		}
 
-		follower.update()
+		follower!!.update()
 		draw()
 
-		val heading = Vector(1.0, follower.getPose().getHeading() - Math.PI / 2)
+		val heading = Vector(1.0, follower!!.pose.heading - Math.PI / 2)
 		if (!end)
 		{
 			if (!stopping)
 			{
-				if (Math.abs(follower.getVelocity().dot(heading)) > VELOCITY)
+				if (abs(follower!!.velocity.dot(heading)) > VELOCITY)
 				{
-					previousVelocity = Math.abs(follower.getVelocity().dot(heading))
+					previousVelocity = abs(follower!!.velocity.dot(heading))
 					previousTimeNano = System.nanoTime()
 					stopping = true
-					follower.setTeleOpDrive(0, 0, 0, true)
+					follower!!.setTeleOpDrive(0.0, 0.0, 0.0, true)
 				}
 			}
 			else
 			{
-				val currentVelocity: Double = Math.abs(follower.getVelocity().dot(heading))
+				val currentVelocity: Double = abs(follower!!.velocity.dot(heading))
 				accelerations.add(
 					(currentVelocity - previousVelocity) / ((System.nanoTime() - previousTimeNano) / 10.0.pow(
 						9.0
@@ -836,7 +783,7 @@ internal class LateralZeroPowerAccelerationTuner : OpMode()
 				)
 				previousVelocity = currentVelocity
 				previousTimeNano = System.nanoTime()
-				if (currentVelocity < follower.getConstraints().getVelocityConstraint())
+				if (currentVelocity < follower!!.constraints.velocityConstraint)
 				{
 					end = true
 				}
@@ -851,15 +798,15 @@ internal class LateralZeroPowerAccelerationTuner : OpMode()
 			}
 			average /= accelerations.size.toDouble()
 
-			telemetryM.debug("Lateral Zero Power Acceleration (Deceleration): " + average)
-			telemetryM.debug("\n")
-			telemetryM.debug("Press A to set the Lateral Zero Power Acceleration temporarily (while robot remains on).")
-			telemetryM.update(telemetry)
+			telemetryM!!.debug("Lateral Zero Power Acceleration (Deceleration): $average")
+			telemetryM!!.debug("\n")
+			telemetryM!!.debug("Press A to set the Lateral Zero Power Acceleration temporarily (while robot remains on).")
+			telemetryM!!.update(telemetry)
 
 			if (gamepad1.aWasPressed())
 			{
-				follower.getConstants().setLateralZeroPowerAcceleration(average)
-				val message = "Lateral Zero Power Acceleration: " + average
+				follower!!.getConstants().setLateralZeroPowerAcceleration(average)
+				val message = "Lateral Zero Power Acceleration: $average"
 				changes.add(message)
 			}
 		}
@@ -881,7 +828,8 @@ internal class LateralZeroPowerAccelerationTuner : OpMode()
  * @author Harrison Womack - 10158 Scott's Bots
  * @version 1.0, 3/12/2024
  */
-internal class TranslationalTuner : OpMode()
+@TeleOp(group = "tuning")
+class TranslationalTuner : OpMode()
 {
 	private var forward = true
 
@@ -890,56 +838,63 @@ internal class TranslationalTuner : OpMode()
 
 	override fun init()
 	{
-		follower.setStartingPose(Pose(72.0, 72.0))
+		onSelect(hardwareMap);
+		follower!!.setStartingPose(Pose(72.0, 72.0))
 	}
 
 	/** This initializes the Follower and creates the forward and backward Paths.  */
 	override fun init_loop()
 	{
-		telemetryM.debug("This will activate the translational PIDF(s)")
-		telemetryM.debug("The robot will try to stay in place while you push it laterally.")
-		telemetryM.debug("You can adjust the PIDF values to tune the robot's translational PIDF(s).")
-		telemetryM.update(telemetry)
-		follower.update()
+		telemetryM!!.debug("This will activate the translational PIDF(s)")
+		telemetryM!!.debug("The robot will try to stay in place while you push it laterally.")
+		telemetryM!!.debug("You can adjust the PIDF values to tune the robot's translational PIDF(s).")
+		telemetryM!!.update(telemetry)
+		follower!!.update()
 		drawOnlyCurrent()
 	}
 
 	override fun start()
 	{
-		follower.deactivateAllPIDFs()
-		follower.activateTranslational()
+		follower!!.deactivateAllPIDFs()
+		follower!!.activateTranslational()
 		forwards = Path(BezierLine(Pose(72.0, 72.0), Pose(DISTANCE + 72, 72.0)))
 		forwards!!.setConstantHeadingInterpolation(0.0)
 		backwards = Path(BezierLine(Pose(DISTANCE + 72, 72.0), Pose(72.0, 72.0)))
 		backwards!!.setConstantHeadingInterpolation(0.0)
-		follower.followPath(forwards)
+		follower!!.followPath(forwards)
 	}
 
 	/** This runs the OpMode, updating the Follower as well as printing out the debug statements to the Telemetry  */
 	override fun loop()
 	{
-		follower.update()
+		follower!!.update()
 		draw()
 
-		if (!follower.isBusy())
+		if (!follower!!.isBusy)
 		{
 			if (forward)
 			{
 				forward = false
-				follower.followPath(backwards)
+				follower!!.followPath(backwards)
 			}
 			else
 			{
 				forward = true
-				follower.followPath(forwards)
+				follower!!.followPath(forwards)
 			}
 		}
 
-		telemetryM.debug("Push the robot laterally to test the Translational PIDF(s).")
-		telemetryM.addData("Zero Line", 0)
-		telemetryM.addData("Error X", follower.errorCalculator.getTranslationalError().getXComponent())
-		telemetryM.addData("Error Y", follower.errorCalculator.getTranslationalError().getYComponent())
-		telemetryM.update(telemetry)
+		telemetryM!!.debug("Push the robot laterally to test the Translational PIDF(s).")
+		telemetryM!!.addData("Zero Line", 0)
+		telemetryM!!.addData(
+			"Error X",
+			follower!!.errorCalculator.translationalError.xComponent
+		)
+		telemetryM!!.addData(
+			"Error Y",
+			follower!!.errorCalculator.translationalError.yComponent
+		)
+		telemetryM!!.update(telemetry)
 	}
 
 	companion object
@@ -959,7 +914,8 @@ internal class TranslationalTuner : OpMode()
  * @author Harrison Womack - 10158 Scott's Bots
  * @version 1.0, 3/12/2024
  */
-internal class HeadingTuner : OpMode()
+@TeleOp(group = "tuning")
+class HeadingTuner : OpMode()
 {
 	private var forward = true
 
@@ -968,7 +924,8 @@ internal class HeadingTuner : OpMode()
 
 	override fun init()
 	{
-		follower.setStartingPose(Pose(72.0, 72.0))
+		onSelect(hardwareMap);
+		follower!!.setStartingPose(Pose(72.0, 72.0))
 	}
 
 	/**
@@ -977,23 +934,23 @@ internal class HeadingTuner : OpMode()
 	 */
 	override fun init_loop()
 	{
-		telemetryM.debug("This will activate the heading PIDF(s).")
-		telemetryM.debug("The robot will try to stay at a constant heading while you try to turn it.")
-		telemetryM.debug("You can adjust the PIDF values to tune the robot's heading PIDF(s).")
-		telemetryM.update(telemetry)
-		follower.update()
+		telemetryM!!.debug("This will activate the heading PIDF(s).")
+		telemetryM!!.debug("The robot will try to stay at a constant heading while you try to turn it.")
+		telemetryM!!.debug("You can adjust the PIDF values to tune the robot's heading PIDF(s).")
+		telemetryM!!.update(telemetry)
+		follower!!.update()
 		drawOnlyCurrent()
 	}
 
 	override fun start()
 	{
-		follower.deactivateAllPIDFs()
-		follower.activateHeading()
+		follower!!.deactivateAllPIDFs()
+		follower!!.activateHeading()
 		forwards = Path(BezierLine(Pose(72.0, 72.0), Pose(DISTANCE + 72, 72.0)))
 		forwards!!.setConstantHeadingInterpolation(0.0)
 		backwards = Path(BezierLine(Pose(DISTANCE + 72, 72.0), Pose(72.0, 72.0)))
 		backwards!!.setConstantHeadingInterpolation(0.0)
-		follower.followPath(forwards)
+		follower!!.followPath(forwards)
 	}
 
 	/**
@@ -1002,27 +959,27 @@ internal class HeadingTuner : OpMode()
 	 */
 	override fun loop()
 	{
-		follower.update()
+		follower!!.update()
 		draw()
 
-		if (!follower.isBusy())
+		if (!follower!!.isBusy)
 		{
 			if (forward)
 			{
 				forward = false
-				follower.followPath(backwards)
+				follower!!.followPath(backwards)
 			}
 			else
 			{
 				forward = true
-				follower.followPath(forwards)
+				follower!!.followPath(forwards)
 			}
 		}
 
-		telemetryM.debug("Turn the robot manually to test the Heading PIDF(s).")
-		telemetryM.addData("Zero Line", 0)
-		telemetryM.addData("Error", follower.errorCalculator.getHeadingError())
-		telemetryM.update(telemetry)
+		telemetryM!!.debug("Turn the robot manually to test the Heading PIDF(s).")
+		telemetryM!!.addData("Zero Line", 0)
+		telemetryM!!.addData("Error", follower!!.errorCalculator.headingError)
+		telemetryM!!.update(telemetry)
 	}
 
 	companion object
@@ -1040,7 +997,8 @@ internal class HeadingTuner : OpMode()
  * @author Harrison Womack - 10158 Scott's Bots
  * @version 1.0, 3/12/2024
  */
-internal class DriveTuner : OpMode()
+@TeleOp(group = "tuning")
+class DriveTuner : OpMode()
 {
 	private var forward = true
 
@@ -1049,7 +1007,8 @@ internal class DriveTuner : OpMode()
 
 	override fun init()
 	{
-		follower.setStartingPose(Pose(72.0, 72.0))
+		onSelect(hardwareMap);
+		follower!!.setStartingPose(Pose(72.0, 72.0))
 	}
 
 	/**
@@ -1058,32 +1017,32 @@ internal class DriveTuner : OpMode()
 	 */
 	override fun init_loop()
 	{
-		telemetryM.debug("This will run the robot in a straight line going " + DISTANCE + "inches forward.")
-		telemetryM.debug("The robot will go forward and backward continuously along the path.")
-		telemetryM.debug("Make sure you have enough room.")
-		telemetryM.update(telemetry)
-		follower.update()
+		telemetryM!!.debug("This will run the robot in a straight line going " + DISTANCE + "inches forward.")
+		telemetryM!!.debug("The robot will go forward and backward continuously along the path.")
+		telemetryM!!.debug("Make sure you have enough room.")
+		telemetryM!!.update(telemetry)
+		follower!!.update()
 		drawOnlyCurrent()
 	}
 
 	override fun start()
 	{
-		follower.deactivateAllPIDFs()
-		follower.activateDrive()
+		follower!!.deactivateAllPIDFs()
+		follower!!.activateDrive()
 
-		forwards = follower.pathBuilder()
+		forwards = follower!!.pathBuilder()
 			.setGlobalDeceleration()
 			.addPath(BezierLine(Pose(72.0, 72.0), Pose(DISTANCE + 72, 72.0)))
-			.setConstantHeadingInterpolation(0)
+			.setConstantHeadingInterpolation(0.0)
 			.build()
 
-		backwards = follower.pathBuilder()
+		backwards = follower!!.pathBuilder()
 			.setGlobalDeceleration()
 			.addPath(BezierLine(Pose(DISTANCE + 72, 72.0), Pose(72.0, 72.0)))
-			.setConstantHeadingInterpolation(0)
+			.setConstantHeadingInterpolation(0.0)
 			.build()
 
-		follower.followPath(forwards)
+		follower!!.followPath(forwards)
 	}
 
 	/**
@@ -1092,27 +1051,27 @@ internal class DriveTuner : OpMode()
 	 */
 	override fun loop()
 	{
-		follower.update()
+		follower!!.update()
 		draw()
 
-		if (!follower.isBusy())
+		if (!follower!!.isBusy)
 		{
 			if (forward)
 			{
 				forward = false
-				follower.followPath(backwards)
+				follower!!.followPath(backwards)
 			}
 			else
 			{
 				forward = true
-				follower.followPath(forwards)
+				follower!!.followPath(forwards)
 			}
 		}
 
-		telemetryM.debug("Driving forward?: " + forward)
-		telemetryM.addData("Zero Line", 0)
-		telemetryM.addData("Error", follower.errorCalculator.getDriveErrors()[1])
-		telemetryM.update(telemetry)
+		telemetryM!!.debug("Driving forward?: $forward")
+		telemetryM!!.addData("Zero Line", 0)
+		telemetryM!!.addData("Error", follower!!.errorCalculator.driveErrors[1])
+		telemetryM!!.update(telemetry)
 	}
 
 	companion object
@@ -1131,7 +1090,8 @@ internal class DriveTuner : OpMode()
  * @author Harrison Womack - 10158 Scott's Bots
  * @version 1.0, 3/12/2024
  */
-internal class Line : OpMode()
+@TeleOp(group = "tuning")
+class Line : OpMode()
 {
 	private var forward = true
 
@@ -1140,52 +1100,53 @@ internal class Line : OpMode()
 
 	override fun init()
 	{
-		follower.setStartingPose(Pose(72.0, 72.0))
+		onSelect(hardwareMap);
+		follower!!.setStartingPose(Pose(72.0, 72.0))
 	}
 
 	/** This initializes the Follower and creates the forward and backward Paths.  */
 	override fun init_loop()
 	{
-		telemetryM.debug("This will activate all the PIDF(s)")
-		telemetryM.debug("The robot will go forward and backward continuously along the path while correcting.")
-		telemetryM.debug("You can adjust the PIDF values to tune the robot's drive PIDF(s).")
-		telemetryM.update(telemetry)
-		follower.update()
+		telemetryM!!.debug("This will activate all the PIDF(s)")
+		telemetryM!!.debug("The robot will go forward and backward continuously along the path while correcting.")
+		telemetryM!!.debug("You can adjust the PIDF values to tune the robot's drive PIDF(s).")
+		telemetryM!!.update(telemetry)
+		follower!!.update()
 		drawOnlyCurrent()
 	}
 
 	override fun start()
 	{
-		follower.activateAllPIDFs()
+		follower!!.activateAllPIDFs()
 		forwards = Path(BezierLine(Pose(72.0, 72.0), Pose(DISTANCE + 72, 72.0)))
 		forwards!!.setConstantHeadingInterpolation(0.0)
 		backwards = Path(BezierLine(Pose(DISTANCE + 72, 72.0), Pose(72.0, 72.0)))
 		backwards!!.setConstantHeadingInterpolation(0.0)
-		follower.followPath(forwards)
+		follower!!.followPath(forwards)
 	}
 
 	/** This runs the OpMode, updating the Follower as well as printing out the debug statements to the Telemetry  */
 	override fun loop()
 	{
-		follower.update()
+		follower!!.update()
 		draw()
 
-		if (!follower.isBusy())
+		if (!follower!!.isBusy)
 		{
 			if (forward)
 			{
 				forward = false
-				follower.followPath(backwards)
+				follower!!.followPath(backwards)
 			}
 			else
 			{
 				forward = true
-				follower.followPath(forwards)
+				follower!!.followPath(forwards)
 			}
 		}
 
-		telemetryM.debug("Driving Forward?: " + forward)
-		telemetryM.update(telemetry)
+		telemetryM!!.debug("Driving Forward?: $forward")
+		telemetryM!!.update(telemetry)
 	}
 
 	companion object
@@ -1207,7 +1168,8 @@ internal class Line : OpMode()
  * @author Harrison Womack - 10158 Scott's Bots
  * @version 1.0, 3/13/2024
  */
-internal class CentripetalTuner : OpMode()
+@TeleOp(group = "tuning")
+class CentripetalTuner : OpMode()
 {
 	private var forward = true
 
@@ -1216,7 +1178,8 @@ internal class CentripetalTuner : OpMode()
 
 	override fun init()
 	{
-		follower.setStartingPose(Pose(72.0, 72.0))
+		onSelect(hardwareMap);
+		follower!!.setStartingPose(Pose(72.0, 72.0))
 	}
 
 	/**
@@ -1225,17 +1188,17 @@ internal class CentripetalTuner : OpMode()
 	 */
 	override fun init_loop()
 	{
-		telemetryM.debug("This will run the robot in a curve going " + DISTANCE + " inches to the left and the same number of inches forward.")
-		telemetryM.debug("The robot will go continuously along the path.")
-		telemetryM.debug("Make sure you have enough room.")
-		telemetryM.update(telemetry)
-		follower.update()
+		telemetryM!!.debug("This will run the robot in a curve going $DISTANCE inches to the left and the same number of inches forward.")
+		telemetryM!!.debug("The robot will go continuously along the path.")
+		telemetryM!!.debug("Make sure you have enough room.")
+		telemetryM!!.update(telemetry)
+		follower!!.update()
 		drawOnlyCurrent()
 	}
 
 	override fun start()
 	{
-		follower.activateAllPIDFs()
+		follower!!.activateAllPIDFs()
 		forwards = Path(
 			BezierCurve(
 				Pose(72.0, 72.0), Pose(abs(DISTANCE) + 72, 72.0), Pose(
@@ -1256,7 +1219,7 @@ internal class CentripetalTuner : OpMode()
 		backwards!!.setTangentHeadingInterpolation()
 		backwards!!.reverseHeadingInterpolation()
 
-		follower.followPath(forwards)
+		follower!!.followPath(forwards)
 	}
 
 	/**
@@ -1265,24 +1228,24 @@ internal class CentripetalTuner : OpMode()
 	 */
 	override fun loop()
 	{
-		follower.update()
+		follower!!.update()
 		draw()
-		if (!follower.isBusy())
+		if (!follower!!.isBusy)
 		{
 			if (forward)
 			{
 				forward = false
-				follower.followPath(backwards)
+				follower!!.followPath(backwards)
 			}
 			else
 			{
 				forward = true
-				follower.followPath(forwards)
+				follower!!.followPath(forwards)
 			}
 		}
 
-		telemetryM.debug("Driving away from the origin along the curve?: " + forward)
-		telemetryM.update(telemetry)
+		telemetryM!!.debug("Driving away from the origin along the curve?: $forward")
+		telemetryM!!.update(telemetry)
 	}
 
 	companion object
@@ -1299,7 +1262,8 @@ internal class CentripetalTuner : OpMode()
  * @author Samarth Mahapatra - 1002 CircuitRunners Robotics Surge
  * @version 1.0, 12/30/2024
  */
-internal class Triangle : OpMode()
+@TeleOp(group = "tuning")
+class Triangle : OpMode()
 {
 	private val startPose = Pose(72.0, 72.0, Math.toRadians(0.0))
 	private val interPose = Pose((24 + 72).toDouble(), (-24 + 72).toDouble(), Math.toRadians(90.0))
@@ -1313,44 +1277,45 @@ internal class Triangle : OpMode()
 	 */
 	override fun loop()
 	{
-		follower.update()
+		follower!!.update()
 		draw()
 
-		if (follower.atParametricEnd())
+		if (follower!!.atParametricEnd())
 		{
-			follower.followPath(triangle, true)
+			follower!!.followPath(triangle, true)
 		}
 	}
 
 	override fun init()
 	{
-		follower.setStartingPose(Pose(72.0, 72.0))
+		onSelect(hardwareMap);
+		follower!!.setStartingPose(Pose(72.0, 72.0))
 	}
 
 	override fun init_loop()
 	{
-		telemetryM.debug("This will run in a roughly triangular shape, starting on the bottom-middle point.")
-		telemetryM.debug("So, make sure you have enough space to the left, front, and right to run the OpMode.")
-		telemetryM.update(telemetry)
-		follower.update()
+		telemetryM!!.debug("This will run in a roughly triangular shape, starting on the bottom-middle point.")
+		telemetryM!!.debug("So, make sure you have enough space to the left, front, and right to run the OpMode.")
+		telemetryM!!.update(telemetry)
+		follower!!.update()
 		drawOnlyCurrent()
 	}
 
 	/** Creates the PathChain for the "triangle". */
 	override fun start()
 	{
-		follower.setStartingPose(startPose)
+		follower!!.setStartingPose(startPose)
 
-		triangle = follower.pathBuilder()
+		triangle = follower!!.pathBuilder()
 			.addPath(BezierLine(startPose, interPose))
-			.setLinearHeadingInterpolation(startPose.getHeading(), interPose.getHeading())
+			.setLinearHeadingInterpolation(startPose.heading, interPose.heading)
 			.addPath(BezierLine(interPose, endPose))
-			.setLinearHeadingInterpolation(interPose.getHeading(), endPose.getHeading())
+			.setLinearHeadingInterpolation(interPose.heading, endPose.heading)
 			.addPath(BezierLine(endPose, startPose))
-			.setLinearHeadingInterpolation(endPose.getHeading(), startPose.getHeading())
+			.setLinearHeadingInterpolation(endPose.heading, startPose.heading)
 			.build()
 
-		follower.followPath(triangle)
+		follower!!.followPath(triangle)
 	}
 }
 
@@ -1365,13 +1330,14 @@ internal class Triangle : OpMode()
  * @author Harrison Womack - 10158 Scott's Bots
  * @version 1.0, 3/12/2024
  */
-internal class Circle : OpMode()
+@TeleOp(group = "tuning")
+class Circle : OpMode()
 {
 	private var circle: PathChain? = null
 
 	override fun start()
 	{
-		circle = follower.pathBuilder()
+		circle = follower!!.pathBuilder()
 			.addPath(
 				BezierCurve(
 					Pose(72.0, 72.0),
@@ -1405,22 +1371,23 @@ internal class Circle : OpMode()
 			)
 			.setHeadingInterpolation(HeadingInterpolator.facingPoint(72.0, RADIUS + 72))
 			.build()
-		follower.followPath(circle)
+		follower!!.followPath(circle)
 	}
 
 	override fun init_loop()
 	{
-		telemetryM.debug("This will run in a roughly circular shape of radius " + RADIUS + ", starting on the right-most edge. ")
-		telemetryM.debug("So, make sure you have enough space to the left, front, and back to run the OpMode.")
-		telemetryM.debug("It will also continuously face the center of the circle to test your heading and centripetal correction.")
-		telemetryM.update(telemetry)
-		follower.update()
+		telemetryM!!.debug("This will run in a roughly circular shape of radius $RADIUS, starting on the right-most edge. ")
+		telemetryM!!.debug("So, make sure you have enough space to the left, front, and back to run the OpMode.")
+		telemetryM!!.debug("It will also continuously face the center of the circle to test your heading and centripetal correction.")
+		telemetryM!!.update(telemetry)
+		follower!!.update()
 		drawOnlyCurrent()
 	}
 
 	override fun init()
 	{
-		follower.setStartingPose(Pose(72.0, 72.0))
+		onSelect(hardwareMap);
+		follower!!.setStartingPose(Pose(72.0, 72.0))
 	}
 
 	/**
@@ -1429,12 +1396,12 @@ internal class Circle : OpMode()
 	 */
 	override fun loop()
 	{
-		follower.update()
+		follower!!.update()
 		draw()
 
-		if (follower.atParametricEnd())
+		if (follower!!.atParametricEnd())
 		{
-			follower.followPath(circle)
+			follower!!.followPath(circle)
 		}
 	}
 
@@ -1452,21 +1419,23 @@ internal class Circle : OpMode()
  * @author Havish Sripada - 12808 RevAmped Robotics
  * @author Baron Henderson
  */
-internal class OffsetsTuner : OpMode()
+@TeleOp(group = "tuning")
+class OffsetsTuner : OpMode()
 {
 	override fun init()
 	{
-		follower.setStartingPose(Pose(72.0, 72.0))
-		follower.update()
+		onSelect(hardwareMap);
+		follower!!.setStartingPose(Pose(72.0, 72.0))
+		follower!!.update()
 		drawOnlyCurrent()
 	}
 
 	/** This initializes the PoseUpdater as well as the Panels telemetry.  */
 	override fun init_loop()
 	{
-		telemetryM.debug("Prerequisite: Make sure both your offsets are set to 0 in your localizer constants.")
-		telemetryM.debug("Turn your robot " + Math.PI + " radians. Your offsets in inches will be shown on the telemetry.")
-		telemetryM.update(telemetry)
+		telemetryM!!.debug("Prerequisite: Make sure both your offsets are set to 0 in your localizer constants.")
+		telemetryM!!.debug("Turn your robot " + Math.PI + " radians. Your offsets in inches will be shown on the telemetry.")
+		telemetryM!!.update(telemetry)
 
 		drawOnlyCurrent()
 	}
@@ -1477,14 +1446,14 @@ internal class OffsetsTuner : OpMode()
 	 */
 	override fun loop()
 	{
-		follower.update()
+		follower!!.update()
 
-		telemetryM.debug("Total Angle: " + follower.getTotalHeading())
+		telemetryM!!.debug("Total Angle: " + follower!!.totalHeading)
 
-		telemetryM.debug("The following values are the offsets in inches that should be applied to your localizer.")
-		telemetryM.debug("strafeX: " + ((72.0 - follower.getPose().getX()) / 2.0))
-		telemetryM.debug("forwardY: " + ((72.0 - follower.getPose().getY()) / 2.0))
-		telemetryM.update(telemetry)
+		telemetryM!!.debug("The following values are the offsets in inches that should be applied to your localizer.")
+		telemetryM!!.debug("strafeX: " + ((72.0 - follower!!.pose.x) / 2.0))
+		telemetryM!!.debug("forwardY: " + ((72.0 - follower!!.pose.y) / 2.0))
+		telemetryM!!.update(telemetry)
 
 		draw()
 	}
@@ -1502,7 +1471,8 @@ internal class OffsetsTuner : OpMode()
  * @author Jacob Ophoven - 18535 Frozen Code
  * @version 1.0, 12/26/2025
  */
-internal class PredictiveBrakingTuner : OpMode()
+@TeleOp(group = "tuning")
+class PredictiveBrakingTuner : OpMode()
 {
 	private enum class State
 	{
@@ -1525,36 +1495,37 @@ internal class PredictiveBrakingTuner : OpMode()
 	private var startPosition: Vector? = null
 	private var measuredVelocity = 0.0
 
-	private val velocityToBrakingDistance: MutableList<DoubleArray?> = ArrayList<DoubleArray?>()
+	private val velocityToBrakingDistance: MutableList<DoubleArray?> = ArrayList()
 	private val brakeData: MutableList<BrakeRecord> = ArrayList<BrakeRecord>()
 
 	override fun init()
 	{
+		onSelect(hardwareMap);
 	}
 
 	override fun init_loop()
 	{
-		telemetryM.debug("The robot will move forwards and backwards starting at max speed and slowing down.")
-		telemetryM.debug("Make sure you have enough room. Leave at least 4-5 feet.")
-		telemetryM.debug("After stopping, kFriction and kBraking will be displayed.")
-		telemetryM.debug("Make sure to turn the timer off.")
-		telemetryM.debug("Press B on game pad 1 to stop.")
-		telemetryM.update(telemetry)
-		follower.update()
+		telemetryM!!.debug("The robot will move forwards and backwards starting at max speed and slowing down.")
+		telemetryM!!.debug("Make sure you have enough room. Leave at least 4-5 feet.")
+		telemetryM!!.debug("After stopping, kFriction and kBraking will be displayed.")
+		telemetryM!!.debug("Make sure to turn the timer off.")
+		telemetryM!!.debug("Press B on game pad 1 to stop.")
+		telemetryM!!.update(telemetry)
+		follower!!.update()
 		drawOnlyCurrent()
 	}
 
 	override fun start()
 	{
 		timer.reset()
-		follower.update()
-		follower.startTeleOpDrive(true)
+		follower!!.update()
+		follower!!.startTeleOpDrive(true)
 	}
 
 	@SuppressLint("DefaultLocale")
 	override fun loop()
 	{
-		follower.update()
+		follower!!.update()
 
 		if (gamepad1.b)
 		{
@@ -1570,18 +1541,19 @@ internal class PredictiveBrakingTuner : OpMode()
 				if (iteration >= TEST_POWERS.size)
 				{
 					state = State.DONE
-					break
+					telemetry.update();
+					return;
 				}
 
 				val currentPower = TEST_POWERS[iteration]
-				follower.setMaxPower(currentPower)
+				follower!!.setMaxPower(currentPower)
 				if (iteration % 2 != 0)
 				{
-					follower.setTeleOpDrive(-1, 0, 0, true)
+					follower!!.setTeleOpDrive(-1.0, 0.0, 0.0, true)
 				}
 				else
 				{
-					follower.setTeleOpDrive(1, 0, 0, true)
+					follower!!.setTeleOpDrive(1.0, 0.0, 0.0, true)
 				}
 
 				timer.reset()
@@ -1592,8 +1564,8 @@ internal class PredictiveBrakingTuner : OpMode()
 			{
 				if (timer.milliseconds() >= DRIVE_TIME_MS)
 				{
-					measuredVelocity = follower.getVelocity().getMagnitude()
-					startPosition = follower.getPose().getAsVector()
+					measuredVelocity = follower!!.velocity.magnitude
+					startPosition = follower!!.pose.getAsVector()
 					state = State.APPLY_BRAKE
 				}
 			}
@@ -1609,12 +1581,12 @@ internal class PredictiveBrakingTuner : OpMode()
 			State.WAIT_BRAKE_TIME ->
 			{
 				val t = timer.milliseconds()
-				val currentPose: Pose = follower.getPose()
-				val currentVelocity: Double = follower.getVelocity().getMagnitude()
+				val currentPose: Pose = follower!!.pose
+				val currentVelocity: Double = follower!!.velocity.magnitude
 
 				brakeData.add(BrakeRecord(t, currentPose, currentVelocity))
 
-				if (timer.milliseconds() >= BRAKE_WAIT_MS || follower.getVelocity().getMagnitude() <= .05)
+				if (timer.milliseconds() >= BRAKE_WAIT_MS || follower!!.velocity.magnitude <= .05)
 				{
 					state = State.RECORD
 				}
@@ -1622,19 +1594,19 @@ internal class PredictiveBrakingTuner : OpMode()
 
 			State.RECORD ->
 			{
-				val endPosition: Vector = follower.getPose().getAsVector()
-				val brakingDistance = endPosition.minus(startPosition).getMagnitude()
+				val endPosition: Vector = follower!!.pose.getAsVector()
+				val brakingDistance = endPosition.minus(startPosition).magnitude
 
 				velocityToBrakingDistance.add(doubleArrayOf(measuredVelocity, brakingDistance))
 
-				telemetryM.debug(
-					"Test " + iteration,
+				telemetryM!!.debug(
+					"Test $iteration",
 					String.format(
 						"v=%.3f  d=%.3f", measuredVelocity,
 						brakingDistance
 					)
 				)
-				telemetryM.update(telemetry)
+				telemetryM!!.update(telemetry)
 
 				iteration++
 				state = State.START_MOVE
@@ -1644,30 +1616,30 @@ internal class PredictiveBrakingTuner : OpMode()
 			{
 				stopRobot()
 
-				val coefficients: DoubleArray = quadraticFit(velocityToBrakingDistance)
+				val coefficients = MathFunctions.quadraticFit(velocityToBrakingDistance)
 
-				telemetryM.debug("Tuning Complete")
-				telemetryM.debug("Braking Profile:")
-				telemetryM.debug("kQuadratic", coefficients[1])
-				telemetryM.debug("kLinear", coefficients[0])
-				telemetryM.update(telemetry)
-				telemetryM.debug("Tuning Complete")
-				telemetryM.debug("Braking Profile:")
-				telemetryM.debug("kQuadraticFriction", coefficients[1])
-				telemetryM.debug("kLinearBraking", coefficients[0])
+				telemetryM!!.debug("Tuning Complete")
+				telemetryM!!.debug("Braking Profile:")
+				telemetryM!!.debug("kQuadratic", coefficients[1])
+				telemetryM!!.debug("kLinear", coefficients[0])
+				telemetryM!!.update(telemetry)
+				telemetryM!!.debug("Tuning Complete")
+				telemetryM!!.debug("Braking Profile:")
+				telemetryM!!.debug("kQuadraticFriction", coefficients[1])
+				telemetryM!!.debug("kLinearBraking", coefficients[0])
 				for (record in brakeData)
 				{
 					val p = record.pose
-					telemetryM.debug(
+					telemetryM!!.debug(
 						String.format(
 							"t=%.0f ms, x=%.2f, y=%.2f, θ=%.2f, v=%.2f",
-							record.timeMs, p.getX(), p.getY(),
-							p.getHeading(),
+							record.timeMs, p.x, p.y,
+							p.heading,
 							record.velocity
 						)
 					)
 				}
-				telemetryM.update()
+				telemetryM!!.update()
 			}
 		}
 
@@ -1690,7 +1662,7 @@ internal class PredictiveBrakingTuner : OpMode()
  * @author Lazar - 19234
  * @version 1.1, 5/19/2025
  */
-internal object Drawing
+object Drawing
 {
 	const val ROBOT_RADIUS: Double = 9.0 // woah
 	private val panelsField = field
@@ -1707,7 +1679,7 @@ internal object Drawing
 	 */
 	fun init()
 	{
-		panelsField.setOffsets(presets.getPEDRO_PATHING())
+		panelsField.setOffsets(presets.PEDRO_PATHING)
 	}
 
 	/**
@@ -1718,33 +1690,26 @@ internal object Drawing
 	 */
 	fun drawDebug(follower: Follower)
 	{
-		if (follower.getCurrentPath() != null)
+		if (follower.currentPath != null)
 		{
-			drawPath(follower.getCurrentPath(), robotLook)
+			drawPath(follower.currentPath, robotLook)
 			val closestPoint =
-				follower.getPointFromPath(follower.getCurrentPath().getClosestPointTValue())
+				follower.getPointFromPath(follower.currentPath.closestPointTValue)
 			drawRobot(
 				Pose(
-					closestPoint.getX(),
-					closestPoint.getY(),
-					follower.getCurrentPath()
-						.getHeadingGoal(follower.getCurrentPath().getClosestPointTValue())
+					closestPoint.x,
+					closestPoint.y,
+					follower.currentPath
+						.getHeadingGoal(follower.currentPath.closestPointTValue)
 				), robotLook
 			)
 		}
-		drawPoseHistory(follower.getPoseHistory(), historyLook)
-		drawRobot(follower.getPose(), historyLook)
+		drawPoseHistory(follower.poseHistory, historyLook)
+		drawRobot(follower.pose, historyLook)
 
 		sendPacket()
 	}
 
-	/**
-	 * This draws a robot at a specified Pose with a specified
-	 * look. The heading is represented as a line.
-	 *
-	 * @param pose  the Pose to draw the robot at
-	 * @param style the parameters used to draw the robot with
-	 */
 	/**
 	 * This draws a robot at a specified Pose. The heading is represented as a line.
 	 *
@@ -1753,21 +1718,19 @@ internal object Drawing
 	@JvmOverloads
 	fun drawRobot(pose: Pose?, style: Style = robotLook)
 	{
-		if (pose == null || Double.isNaN(pose.getX()) || Double.isNaN(pose.getY()) || Double.isNaN(pose.getHeading()))
-		{
+		if (pose == null || pose.x.isNaN() || pose.y.isNaN() || pose.heading.isNaN())
 			return
-		}
 
 		panelsField.setStyle(style)
-		panelsField.moveCursor(pose.getX(), pose.getY())
+		panelsField.moveCursor(pose.x, pose.y)
 		panelsField.circle(ROBOT_RADIUS)
 
-		val v = pose.getHeadingAsUnitVector()
-		v.setMagnitude(v.getMagnitude() * ROBOT_RADIUS)
-		val x1 = pose.getX() + v.getXComponent() / 2
-		val y1 = pose.getY() + v.getYComponent() / 2
-		val x2 = pose.getX() + v.getXComponent()
-		val y2 = pose.getY() + v.getYComponent()
+		val v = pose.headingAsUnitVector
+		v.magnitude = v.magnitude * ROBOT_RADIUS
+		val x1 = pose.x + v.xComponent / 2
+		val y1 = pose.y + v.yComponent / 2
+		val x2 = pose.x + v.xComponent
+		val y2 = pose.y + v.yComponent
 
 		panelsField.setStyle(style)
 		panelsField.moveCursor(x1, y1)
@@ -1782,16 +1745,14 @@ internal object Drawing
 	 */
 	fun drawPath(path: Path, style: Style)
 	{
-		val points = path.getPanelsDrawingPoints()
+		val points = path.panelsDrawingPoints
 
 		for (i in points[0]!!.indices)
 		{
 			for (j in points.indices)
 			{
-				if (Double.isNaN(points[j]!![i]))
-				{
+				if (points[j]!![i].isNaN())
 					points[j]!![i] = 0.0
-				}
 			}
 		}
 
@@ -1819,28 +1780,22 @@ internal object Drawing
 	 * This draws the pose history of the robot.
 	 *
 	 * @param poseTracker the PoseHistory to get the pose history from
-	 * @param style       the parameters used to draw the pose history with
-	 */
-	/**
-	 * This draws the pose history of the robot.
-	 *
-	 * @param poseTracker the PoseHistory to get the pose history from
 	 */
 	@JvmOverloads
 	fun drawPoseHistory(poseTracker: PoseHistory, style: Style = historyLook)
 	{
 		panelsField.setStyle(style)
 
-		val size = poseTracker.getXPositionsArray().size
+		val size = poseTracker.xPositionsArray.size
 		for (i in 0..<size - 1)
 		{
 			panelsField.moveCursor(
-				poseTracker.getXPositionsArray()[i],
-				poseTracker.getYPositionsArray()[i]
+				poseTracker.xPositionsArray[i],
+				poseTracker.yPositionsArray[i]
 			)
 			panelsField.line(
-				poseTracker.getXPositionsArray()[i + 1],
-				poseTracker.getYPositionsArray()[i + 1]
+				poseTracker.xPositionsArray[i + 1],
+				poseTracker.yPositionsArray[i + 1]
 			)
 		}
 	}

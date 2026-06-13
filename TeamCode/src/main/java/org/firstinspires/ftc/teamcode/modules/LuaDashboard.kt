@@ -19,6 +19,8 @@ object LuaDashboard
 	var f = 0.0;
 	@JvmField
 	var vel = 0;
+	@JvmField
+	var intakePower = 1.0;
 
 	val telem: Telemetry = FtcDashboard.getInstance().telemetry;
 
@@ -80,4 +82,7 @@ object LuaDashboard
 	@JvmStatic
 	@OpmodeLoaderFunction
 	fun getvel() = vel;
+	@JvmStatic
+	@OpmodeLoaderFunction
+	fun getIntakePower() = intakePower;
 }

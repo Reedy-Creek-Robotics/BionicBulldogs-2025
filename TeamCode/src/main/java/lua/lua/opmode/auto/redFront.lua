@@ -14,7 +14,10 @@ local config = {
 				:constantHeading(0)
 				:build()
 			),
-			RobotActions.Shoot.new(1),
+			WaitForFirstAction.new(
+				SleepAction.new(0.9),
+				RobotActions.Shoot.new(1)
+			),
 			Delay.new(0.1)
 		)
 	end,
@@ -32,7 +35,10 @@ local config = {
 					:constantHeading(0)
 					:build()
 				),
-				RobotActions.Shoot.new(1)
+				WaitForFirstAction.new(
+					SleepAction.new(0.9),
+					RobotActions.Shoot.new(1)
+				)
 			)
 		end,
 		gate = function ()
@@ -60,7 +66,10 @@ local config = {
 					:constantHeading(0)
 					:build()
 				),
-				RobotActions.Shoot.new(1)
+				WaitForFirstAction.new(
+					SleepAction.new(0.9),
+					RobotActions.Shoot.new(1)
+				)
 			)
 		end
 	},
@@ -70,15 +79,18 @@ local config = {
 				"line2",
 				PathAction.new(
 					path.chain()
-					:add(path.line(-54, 90, -43, 62))
+					:add(path.curve3(-54, 90, -51, 68.5, -43, 62))
 					:constantHeading(0)
 					:add(path.line(-43, 62, -18.25, 62))
 					:constantHeading(0)
-					:add(path.line(-18.25, 62, -54, 90))
+					:add(path.curve3(-18.25, 62, -51, 68.5, -54, 90))
 					:constantHeading(0)
 					:build()
 				),
-				RobotActions.Shoot.new(1)
+				WaitForFirstAction.new(
+					SleepAction.new(0.9),
+					RobotActions.Shoot.new(1)
+				)
 			)
 		end,
 		gate = function ()
@@ -113,7 +125,10 @@ local config = {
 					:constantHeading(0)
 					:build()
 				),
-				RobotActions.Shoot.new(1)
+				WaitForFirstAction.new(
+					SleepAction.new(0.9),
+					RobotActions.Shoot.new(1)
+				)
 			)
 		end
 	},
@@ -130,7 +145,10 @@ local config = {
 				:constantHeading(0)
 				:build()
 			),
-			RobotActions.Shoot.new(1)
+			WaitForFirstAction.new(
+				SleepAction.new(0.9),
+				RobotActions.Shoot.new(1)
+			)
 		)
 	end,
 	line4 = function ()
@@ -151,7 +169,10 @@ local config = {
 				:linearHeading(-90, 0)
 				:build()
 			),
-			RobotActions.Shoot.new(1)
+			WaitForFirstAction.new(
+				SleepAction.new(0.9),
+				RobotActions.Shoot.new(1)
+			)
 		)
 	end,
 	cycle = function ()
@@ -159,7 +180,7 @@ local config = {
 			"cycle",
 			PathAction.new(
 				path.chain()
-				:add(path.curve3(-54, 90, -54, 63.5, -11.25, 63.5))
+				:add(path.curve3(-54, 90, -54, 63.5, -14, 62))
 				:linearHeading(0, 30.5)
 				:build()
 			),
@@ -167,11 +188,14 @@ local config = {
 			RobotActions.IntakeStop.new(),
 			PathAction.new(
 				path.chain()
-				:add(path.curve3(-11.25, 63.5, -54, 63.5, -54.00, 90.00))
+				:add(path.curve3(-14, 62, -54, 63.5, -54.00, 90.00))
 				:linearHeading(30.5, 0)
 				:build()
 			),
-			RobotActions.Shoot.new(1)
+			WaitForFirstAction.new(
+				SleepAction.new(0.9),
+				RobotActions.Shoot.new(1)
+			)
 		);
 	end,
 	park = function ()

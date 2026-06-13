@@ -19,6 +19,9 @@ local shooterAutomatic = true;
 ---@type integer
 local turretOffset = 0;
 
+---@type integer
+local turretOffset2 = 0;
+
 local fileId = os.time();
 
 ---@type Imu
@@ -118,10 +121,10 @@ function telopStartBlue()
 	shooter:start(shooter.vel);
 	--turret.reset();
 	led:displayArtBoard(1);
+	turretMotor:setPidf(20, 0, 0, 0);
 end
 
 function telopStartRed()
-	print("start");
 	drive.offset = -math.pi2;
 	turret.start();
 	shooter:close();
@@ -140,7 +143,7 @@ function telopStartRed()
 	drive.pinpoint:setHeading(startPos.z);
 	--turret.reset();
 	led:displayArtBoard(1);
-	print("start done");
+	turretMotor:setPidf(20, 0, 0, 0);
 end
 
 function telopUpdate(dt, et)
@@ -185,11 +188,21 @@ function telopUpdate(dt, et)
 	if (angle < -180) then
 		angle = angle + 360;
 	end
+
+	turretOffset2 = 0;
 	if (y < 24) then
 		if (x > 0) then
-			angle = angle - 2;
+			turretOffset2 = -2;
 		else
-			angle = angle + 2;
+			turretOffset2 = 2;
+		end
+	end
+
+	if (y > 24 * 5) then
+		if (x > 0) then
+			turretOffset2 = 2;
+		else
+			turretOffset2 = -2;
 		end
 	end
 
@@ -204,7 +217,7 @@ function telopUpdate(dt, et)
 	end
 
 	--angle = angle + turretOffset - da * (4 / 8) - vh * (5 / 32);
-	angle = angle + turretOffset;
+	angle = angle + turretOffset + turretOffset2;
 
 	if (angle > 180) then
 		angle = angle - 360;
@@ -253,12 +266,10 @@ function telopUpdate(dt, et)
 		local i = dashboard.geti();
 		local d = dashboard.getd();
 		local f = dashboard.getf();
-		shooter.motorL:setPidf(p, i, d, f);
-		shooter.motorR:setPidf(p, i, d, f);
-		actionPane:addLine(("p: %3.2f, i: %3.2f, d: %3.2f, f: %3.2f"):format(p, i, d, f));
-		intake.speed = dashboard.getIntakePower();
-		shooter:start(dashboard.getvel());
+		--turretMotor:setPidf(p, i, d, f);
+		--actionPane:addLine(("p: %3.2f, i: %3.2f, d: %3.2f, f: %3.2f"):format(p, i, d, f));
 		shooterAutomatic = false;
+		shooter:start(dashboard.getvel());
 	end
 
 	if (gamepad.getShare2()) then
@@ -303,7 +314,7 @@ function telopUpdate(dt, et)
 		prevLedState = ledState;
 	end
 
-	if(shooterAutomatic) then
+	if (shooterAutomatic) then
 		--shooter:updateVelocity(x, y, vx, vy);
 		shooter:updateVelocity(x, y);
 	end
@@ -341,6 +352,8 @@ function telopUpdate(dt, et)
 
 	--Automatically updates
 	if (shooter:update(et)) then
+		shooter.velOff = 0;
+		shooter:start(shooter.vel);
 		logVel = false;
 		counter:reset();
 		counter.stopIntake = true;
@@ -359,8 +372,8 @@ function telopUpdate(dt, et)
 	robotPane:addData("curPos", turretMotor:getCurrentPosition());
 	robotPane:addData("angle", angle + turretOffset);
 	robotPane:addData("offset", turretOffset);
+	robotPane:addData("offset2", turretOffset2);
 	robotPane:addData("ball count", counter.count);
-	robotPane:addData("stopIntake", counter.stopIntake);
 
 	shooter:telem();
 

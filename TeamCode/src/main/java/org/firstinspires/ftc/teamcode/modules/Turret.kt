@@ -37,6 +37,7 @@ class Turret(val hardwaremap: HardwareMap)
 	private var resetState = ResetState.Finding;
 	private var resetPos = 0;
 	private var resetDir = 0;
+	private var prevAngle = 0.0;
 
 	lateinit var motor: DcMotorEx;
 	lateinit var sensor: TouchSensor;
@@ -48,7 +49,12 @@ class Turret(val hardwaremap: HardwareMap)
 	private val ticksPerRev = 384.5;
 	private val gearRatio = 208.0 / 51.0;
 	private val ticksPerDeg = ticksPerRev / 360 * gearRatio;
-	private val limit = abs(ticksPerDeg * 89).toInt();
+
+	private val upperLimitDeg = 270;
+	private val lowerLimitDeg = -89;
+
+	private val upperLimit = (ticksPerDeg * upperLimitDeg).toInt();
+	private val lowerLimit = (ticksPerDeg * lowerLimitDeg).toInt();
 	private var offsetTicks = 0;
 
 	private var offset = 0.0;
@@ -164,21 +170,50 @@ class Turret(val hardwaremap: HardwareMap)
 		prevPos = motor.currentPosition;
 	}
 
-	@OpmodeLoaderFunction
-	fun turnAngle(angle: Double)
-	{
-		if (state == State.Resetting) return;
-		val newpos = motor.currentPosition + (angle * ticksPerDeg).toInt();
-		val targetPosition = clampi(-limit, limit, newpos);
-		motor.targetPosition = targetPosition;
-	}
+	//@OpmodeLoaderFunction
+	//fun turnAngle(a2: Double)
+	//{
+	//	var angle = a2;
+	//	if (state == State.Resetting) return;
+
+	//	//if(angle > prevAngle)
+	//	//{
+	//	//	if(angle < 0)
+	//	//		angle += 360;
+	//	//}
+	//	//else if(angle < prevAngle)
+	//	//{
+	//	//	if(angle > 0)
+	//	//		angle -= 360;
+	//	//}
+	//	//prevAngle = a2;
+
+	//	val newpos = motor.currentPosition + (angle * ticksPerDeg).toInt();
+	//	val targetPosition = clampi(lowerLimit, upperLimit, newpos);
+	//	motor.targetPosition = targetPosition;
+	//}
 
 	@OpmodeLoaderFunction
-	fun turnTo(angle: Double)
+	fun turnTo(a2: Double)
 	{
+		prevAngle = motor.targetPosition / ticksPerDeg;
+
+		var angle = a2;
 		if (state == State.Resetting) return;
+
+		//if(angle > prevAngle)
+		//{
+			if(angle < -89.5)
+				angle += 360;
+		//}
+		//else if(angle < prevAngle)
+		//{
+		//	if(angle > 89.5)
+		//		angle -= 360;
+		//}
+
 		val newpos = (angle * ticksPerDeg).toInt();
-		val targetPosition = clampi(-limit, limit, newpos) + offsetTicks;
+		val targetPosition = clampi(lowerLimit, upperLimit, newpos) + offsetTicks;
 		motor.targetPosition = targetPosition;
 	}
 }

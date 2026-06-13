@@ -36,7 +36,8 @@ shooter = {
 	running = false,
 	onField = true,
 	vel = 0,
-	velOff = 0
+	velOff = 0,
+	inBack = false
 }
 
 function shooter:init()
@@ -66,10 +67,10 @@ end
 
 local shooterVelMap = {
 	{ -001, -001, -001, -001, 0660, 0660 },
-	{ 0880, 0880, -001, 0660, 0660, 0660 },
-	{ 0880, 0880, 0680, 0680, 0660, 0660 },
-	{ 0940, 0940, 0720, 0720, 0700, 0700 },
-	{ 0940, 0940, -001, 0780, 0780, 0780 },
+	{ 0860, 0860, -001, 0660, 0660, 0660 },
+	{ 0860, 0860, 0680, 0680, 0660, 0660 },
+	{ 0900, 0900, 0730, 0730, 0700, 0700 },
+	{ 0900, 0900, -001, 0780, 0760, 0780 },
 	{ -001, -001, -001, -001, 0780, 0780 }
 };
 
@@ -82,11 +83,9 @@ local shooterVelMap = {
 --	{ -001, -001, -001, -001, 0960, 0860 }
 --};
 
-local inBack = false;
-
 ---@param b boolean
 function shooter:setInBack(b)
-	inBack = b;
+	self.inBack = b;
 end
 
 ---@param x number
@@ -127,7 +126,7 @@ function shooter:updateVelocity(x, y, vx, vy)
 		end
 	end
 
-	inBack = (ty < 2);
+	self.inBack = (ty < 2);
 
 	if (tx < 0 or tx >= 6 or ty < 0 or ty >= 6) then
 		if (self.onField == true) then
@@ -187,10 +186,10 @@ function shooter:shoot(et)
 	self.gate:setPosition(self.gateOpen);
 	self.time = et;
 	self.delay = self.openDelay;
-	if (inBack) then
-		intake:forward(0.75);
+	if (self.inBack) then
+		intake:forward(0.7);
 	else
-		intake:forward();
+		intake:forward(0.95);
 	end
 end
 
@@ -212,10 +211,10 @@ function shooter:shootNum(et, count)
 	self.gate:setPosition(self.gateOpen);
 	self.time = et;
 	self.delay = self.openDelay;
-	if (inBack) then
-		intake:forward(0.75);
+	if (self.inBack) then
+		intake:forward(0.7);
 	else
-		intake:forward();
+		intake:forward(0.95);
 	end
 end
 
@@ -231,6 +230,11 @@ function shooter:update(et)
 	--	self:start(self.vel);
 	--	actionPane:addLine("velOff = 40");
 	--end
+	if (self.time + 0.25 <= et) then
+		self.velOff = 300;
+		self:start(self.vel);
+		actionPane:addLine("velOff = 40");
+	end
 	if (self.time + self.delay <= et) then
 		if (self.state == shooterState.Rev) then
 			intake:stop();
@@ -295,11 +299,13 @@ function shooter:ready()
 	self.velocityDataPoints[1] = vel;
 	local sum = self.velocityDataPoints[5] - self.velocityDataPoints[1];
 	local slope = sum / 5;
-	return vel >= self.vel - 40 and vel <= self.vel + 40 and slope >= -10 and slope <= 10;
+	return vel >= self.vel - 40 and vel <= self.vel + 40; --and slope >= -10 and slope <= 10;
 end
 
 function shooter:close()
 	self.gate:setPosition(self.gateClosed);
+	self.velOff = 0;
+	self:start(self.vel);
 end
 
 function shooter:telem()

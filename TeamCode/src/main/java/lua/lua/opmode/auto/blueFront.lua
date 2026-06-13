@@ -180,7 +180,7 @@ local config = {
 			"cycle",
 			PathAction.new(
 				path.chain()
-				:add(path.curve3(54, 90, 54, 63.5, 11.25, 63.5))
+				:add(path.curve3(54, 90, 54, 63.5, 10.75, 63))
 				:linearHeading(180, 180 - 30.5)
 				:build()
 			),
@@ -191,7 +191,7 @@ local config = {
 			RobotActions.IntakeStop.new(),
 			PathAction.new(
 				path.chain()
-				:add(path.curve3(11.25, 63.5, 54, 63.5, 54.00, 90.00))
+				:add(path.curve3(10.75, 63, 54, 63.5, 52.00, 90.00))
 				:linearHeading(180 - 30.5, 180)
 				:build()
 			),
